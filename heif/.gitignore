@@ -1,0 +1,5 @@
+__pycache__/
+build/
+header_files/
+*.code-workspace
+*.pyd
