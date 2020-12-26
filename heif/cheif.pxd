@@ -3,6 +3,8 @@ from libc cimport stdint
 cdef extern from "libheif/heif.h":
     ctypedef unsigned char uint8_t
 
+    ctypedef unsigned int heif_item_id
+
     struct heif_context:
         pass
 
@@ -55,3 +57,18 @@ cdef extern from "libheif/heif.h":
     int heif_image_handle_get_height(const heif_image_handle* handle)
 
     int heif_image_handle_get_width(const heif_image_handle* handle)
+
+    int heif_image_handle_get_list_of_metadata_block_IDs(
+        const heif_image_handle* handle,
+        const char* type_filter,
+        heif_item_id* ids, 
+        int count)
+
+    size_t heif_image_handle_get_metadata_size(
+        const heif_image_handle* handle,
+        heif_item_id metadata_id)
+
+    heif_error heif_image_handle_get_metadata(
+        const heif_image_handle* handle,
+        heif_item_id metadata_id,
+        void* out_data)

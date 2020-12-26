@@ -2,10 +2,25 @@ cimport cheif
 
 from cpython.pycapsule cimport *
 
-from cpython cimport Py_buffer
-from cpython.buffer cimport PyBuffer_FillInfo
+from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free
 
 from PIL import Image
+
+cdef class HeifBuffer:
+    cdef unsigned char* _data
+    cdef size_t _sz
+
+    def __cinit__(self, size_t sz):
+        self._data = <unsigned char*>PyMem_Malloc(sz * sizeof(unsigned char))
+        if self._data is NULL:
+            raise MemoryError()
+        self._sz = sz
+
+    def __dealloc__(self):
+        print('Deallocing')
+        PyMem_Free(self._data)
+        self._data = NULL
+        self._sz = 0
 
 cdef class HeifError:
     def __cinit__(self, cheif.heif_error err):
@@ -54,13 +69,37 @@ cdef class HeifImageHandle:
         self._ctx = None
 
     cdef get_image_bytes(self, const unsigned char** data, int* sz):
-        #cdef const unsigned char* data = NULL
         cdef int stride = 0
         data[0] = cheif.heif_image_get_plane_readonly(self._img, 10, &stride)
         cdef int height = cheif.heif_image_handle_get_height(self._handle)
         sz[0] = height * stride
         if data is NULL:
             raise Exception('Read failed')
+
+    cdef cheif.heif_item_id get_image_exif_metadata_id(self):
+        cdef cheif.heif_item_id metadata_item_id
+        cdef int num_items = 0
+        num_items = cheif.heif_image_handle_get_list_of_metadata_block_IDs(
+            self._handle,
+            b'Exif',
+            &metadata_item_id,
+            1
+        )
+        if num_items != 1:
+            return 0
+        return metadata_item_id
+
+    cdef HeifBuffer get_image_exif_data(self):
+        cdef cheif.heif_item_id exif_id = self.get_image_exif_metadata_id()
+        if exif_id == 0:
+            return None
+        cdef size_t sz = cheif.heif_image_handle_get_metadata_size(self._handle, exif_id)
+        if sz < 4 or sz > 512*1024:
+            raise Exception('Invalid EXIF Data')
+        cdef HeifBuffer buf = HeifBuffer(sz)
+        res = cheif.heif_image_handle_get_metadata(self._handle, exif_id, buf._data)
+        HeifError(res)
+        return buf
 
 cdef class HeifImage:
     cdef const char* _file_name
@@ -86,12 +125,22 @@ cdef class HeifImage:
         self._stride = <int>(self._num_bytes / self._height)
         print('Read {0} bytes'.format(self._num_bytes))
 
-    def get_pil_image(self):
+    def get_pil_image(self, bint retain_exif=True):
         self.read_heif_image()
-        print('Size is {0}x{1}'.format(self._height, self._width))
         cdef const unsigned char[:] data_view = <const unsigned char[:self._num_bytes]>self._data
-        return Image.frombuffer('RGBX', (self._width, self._height), data_view, 'raw', 'RGBX', self._stride, 1)
+        pil_image = Image.frombuffer('RGBX', (self._width, self._height), data_view, 'raw', 'RGBX', self._stride, 1)
+        if retain_exif:
+            heif_buffer = self._heifImageHandle.get_image_exif_data()
+            pil_image.info['exif'] = bytes(heif_buffer._data[4:heif_buffer._sz])
+        return pil_image
 
+    def get_exif_data(self):
+        self.read_heif_image()
+        heif_buffer = self._heifImageHandle.get_image_exif_data()
+        exif = Image.Exif()
+        cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data
+        exif.load(bytes(data_view[4:]))
+        return exif
 
 def get_heif_version():
     return cheif.heif_get_version()
