@@ -30,9 +30,14 @@ cdef extern from "libheif/heif.h":
 
     const char* heif_get_version()
 
-    heif_error heif_context_read_from_file(heif_context* ctx, const char* filename, const heif_reading_options* read_options)
+    heif_error heif_context_read_from_file(
+        heif_context* ctx, 
+        const char* filename, 
+        const heif_reading_options* read_options)
 
-    heif_error heif_context_get_primary_image_handle(heif_context* ctx, heif_image_handle** img_handle)
+    heif_error heif_context_get_primary_image_handle(
+        heif_context* ctx, 
+        heif_image_handle** img_handle)
 
     heif_error heif_decode_image(
         const heif_image_handle* in_handle, 

@@ -2,7 +2,7 @@ cimport cheif
 
 from cpython.pycapsule cimport *
 
-from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free
+from cpython.mem cimport PyMem_Malloc, PyMem_Free
 
 from PIL import Image
 
@@ -17,7 +17,6 @@ cdef class HeifBuffer:
         self._sz = sz
 
     def __dealloc__(self):
-        print('Deallocing')
         PyMem_Free(self._data)
         self._data = NULL
         self._sz = 0
@@ -25,7 +24,9 @@ cdef class HeifBuffer:
 cdef class HeifError:
     def __cinit__(self, cheif.heif_error err):
         if err.code != 0:
-            raise Exception('Heif Error - Message: {0}, Code: {1}, Sub Code: {2}'.format(err.message, err.code, err.subcode))
+            raise Exception(
+                'Heif Error - Message: {0}, Code: {1}, Sub Code: {2}'.format(err.message, err.code, err.subcode)
+            )
 
 cdef class HeifContext:
     cdef cheif.heif_context* _heif_ctx
@@ -94,6 +95,7 @@ cdef class HeifImageHandle:
         if exif_id == 0:
             return None
         cdef size_t sz = cheif.heif_image_handle_get_metadata_size(self._handle, exif_id)
+        # TODO: Arbitrary sanity check - needs to be fixed
         if sz < 4 or sz > 512*1024:
             raise Exception('Invalid EXIF Data')
         cdef HeifBuffer buf = HeifBuffer(sz)
@@ -123,14 +125,23 @@ cdef class HeifImage:
         self._height = cheif.heif_image_handle_get_height(self._heifImageHandle._handle)
         self._heifImageHandle.get_image_bytes(&self._data, &self._num_bytes)
         self._stride = <int>(self._num_bytes / self._height)
-        print('Read {0} bytes'.format(self._num_bytes))
 
     def get_pil_image(self, bint retain_exif=True):
         self.read_heif_image()
         cdef const unsigned char[:] data_view = <const unsigned char[:self._num_bytes]>self._data
-        pil_image = Image.frombuffer('RGBX', (self._width, self._height), data_view, 'raw', 'RGBX', self._stride, 1)
+        pil_image = Image.frombuffer(
+            'RGBX', 
+            (self._width, self._height), 
+            data_view, 
+            'raw', 
+            'RGBX', 
+            self._stride, 
+            1
+        )
         if retain_exif:
             heif_buffer = self._heifImageHandle.get_image_exif_data()
+            # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
+            # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
             pil_image.info['exif'] = bytes(heif_buffer._data[4:heif_buffer._sz])
         return pil_image
 
@@ -139,6 +150,9 @@ cdef class HeifImage:
         heif_buffer = self._heifImageHandle.get_image_exif_data()
         exif = Image.Exif()
         cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data
+        # HACK - Reading PIL.Image.Exif sources shows passing a byte array to Exif.load will work
+        # HACK - Unfortunately, it needs to be a byte array as load calls starts_with on it
+        # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
         exif.load(bytes(data_view[4:]))
         return exif
 
