@@ -7,3 +7,6 @@ pyvenv.cfg
 build/
 bin/
 lib/
+example/sample.*
+dist/
+heiflib.egg-info/

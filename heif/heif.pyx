@@ -1,4 +1,4 @@
-cimport cheif
+cimport heif.cheif as cheif
 
 from cpython.pycapsule cimport *
 

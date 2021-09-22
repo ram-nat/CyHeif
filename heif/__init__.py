@@ -1,6 +1,11 @@
-import os
+import sys
 
-libheif_path = os.getenv('LIBHEIF_PATH', 'C:/vcpkg/installed/x64-windows/bin')
+if sys.platform.startswith('win32'):
+    import os
 
-with os.add_dll_directory(libheif_path):
+    libheif_path = os.getenv('LIBHEIF_PATH', 'C:/vcpkg/installed/x64-windows/bin')
+
+    with os.add_dll_directory(libheif_path):
+        import heiflib
+else:
     import heiflib

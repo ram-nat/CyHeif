@@ -1,5 +1,5 @@
-from distutils.core import setup
-from distutils.extension import Extension
+from setuptools import setup
+from setuptools.extension import Extension
 import sys
 import os
 import argparse
@@ -10,20 +10,25 @@ argparser.add_argument('--libheif_path', default='C:/vcpkg/installed/x64-windows
 args, unknown = argparser.parse_known_args()
 sys.argv = [sys.argv[0]] + unknown
 
-libheif_bin_path = os.path.join(args.libheif_path, 'bin')
-libheif_lib_path = os.path.join(args.libheif_path, 'lib')
-libheif_inc_path = os.path.join(args.libheif_path, 'include')
+lib_dirs = []
+inc_dirs = []
+if sys.platform.startswith('win32'):
+    libheif_bin_path = os.path.join(args.libheif_path, 'bin')
+    libheif_lib_path = os.path.join(args.libheif_path, 'lib')
+    libheif_inc_path = os.path.join(args.libheif_path, 'include')
+    lib_dirs = [libheif_bin_path, libheif_lib_path]
+    inc_dirs = [libheif_inc_path]
 
 ext = '.pyx' if args.use_cython else '.c'
 
 extensions = [
     Extension(
         'heiflib', 
-        ['heif/heif'+ext], 
+        sources=['heif/heif'+ext], 
         language='c', 
         libraries=['heif'], 
-        library_dirs=[libheif_bin_path, libheif_lib_path],
-        include_dirs=[libheif_inc_path],
+        library_dirs=lib_dirs,
+        include_dirs=inc_dirs
     )
 ]
 

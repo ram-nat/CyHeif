@@ -1,4 +1,4 @@
-import heif.heiflib as heif
+import heiflib as heif
 
 from PIL import Image
 
