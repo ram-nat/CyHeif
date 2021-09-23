@@ -9,4 +9,5 @@ bin/
 lib/
 example/sample.*
 dist/
-heiflib.egg-info/
+*.egg-info/
+**/__pycache__

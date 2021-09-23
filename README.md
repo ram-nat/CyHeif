@@ -2,12 +2,11 @@ CyHeif - Cython based Python binding for libheif
 ================================================
 Purpose
 -------
-This package provides Cython based Python binding for libheif allowing access to High-Efficiency Image Format from Python. One of the main goals for CyHeif is that it should work on Windows and allow for manipulating HEIF/HEIC images from Python in Windows. It works on Windows (unlike PyHeif). This is currently barebones but has the critical elements in place and adding functionality for working with HEIF/HEIC files and exposing them to Python as Pillow Images for manipulation.
+HEIF and HEIC read and write support for Python using LibHeif that works across platforms. This package provides Cython based Python binding for libheif allowing access to High-Efficiency Image Format from Python. One of the main goals for CyHeif is that it should work on Windows and allow for manipulating HEIF/HEIC images from Python in Windows. It works on Windows (unlike PyHeif) and Linux. This is currently barebones but has the critical elements in place and adding functionality for working with HEIF/HEIC files and exposing them to Python as Pillow Images for manipulation.
 
 Known Issues
 ------------
-Setup does not work - sorry, I am a complete novice at creating a Python package and right now this is not where I want to spend my time. Please contact me if you need help setting this package up and I will try to help. I do plan to get this to be an installable Python package at some point when I get time. If you have knowledge with setting up a Python package and want to help me, that would be awesome!
-
+No Documentation - working on it.
 
 Requirements
 ------------

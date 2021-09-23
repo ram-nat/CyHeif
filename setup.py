@@ -12,18 +12,20 @@ sys.argv = [sys.argv[0]] + unknown
 
 lib_dirs = []
 inc_dirs = []
+package_dirs = []
 if sys.platform.startswith('win32'):
     libheif_bin_path = os.path.join(args.libheif_path, 'bin')
     libheif_lib_path = os.path.join(args.libheif_path, 'lib')
     libheif_inc_path = os.path.join(args.libheif_path, 'include')
     lib_dirs = [libheif_bin_path, libheif_lib_path]
     inc_dirs = [libheif_inc_path]
+    package_dirs = ['cyheifloader']
 
 ext = '.pyx' if args.use_cython else '.c'
 
 extensions = [
     Extension(
-        'heiflib', 
+        'cyheif', 
         sources=['heif/heif'+ext], 
         language='c', 
         libraries=['heif'], 
@@ -38,7 +40,7 @@ if args.use_cython:
     extensions = cythonize(extensions, compiler_directives=compiler_directives)
 
 setup(
-    name='heiflib',
+    name='cyheif',
     ext_modules=extensions,
-    packages=['heif']
+    packages=package_dirs
 )
