@@ -1,9 +1,6 @@
 import sys
 
-if sys.platform.startswith('win32'):
-    from cyheifloader import cyheif 
-else:
-    import cyheif
+from cyheifloader import cyheif 
 
 from PIL import Image
 
