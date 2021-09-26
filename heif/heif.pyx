@@ -49,12 +49,13 @@ cdef class HeifContext:
 cdef class HeifDecodingOptions:
     cdef cheif.heif_decoding_options* _options
 
-    def __cinit__(self, bint convert_hdr_to_8bit=True, bint apply_transformations=True):
-        # TODO: AFAICT, Pillow does not have a decoder that can read 10 bits per pixel raw format
-        convert_hdr_to_8bit = True
+    def __cinit__(self, bint convert_hdr_to_8bit=False, bint apply_transformations=True):
+        # TODO: Default libheif versions in Ubuntu don't support this flag yet
+        convert_hdr_to_8bit = False
         if convert_hdr_to_8bit or not apply_transformations:
             self._options = cheif.heif_decoding_options_alloc()
-            self._options.convert_hdr_to_8bit = <int>(convert_hdr_to_8bit)
+            # TODO: Default libheif versions in Ubuntu don't support this flag yet
+            #self._options.convert_hdr_to_8bit = <int>(convert_hdr_to_8bit)
             self._options.ignore_transformations = <int>(not apply_transformations)
         else:
             self._options = NULL

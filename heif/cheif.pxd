@@ -82,7 +82,7 @@ cdef extern from "libheif/heif.h":
 
     struct heif_decoding_options:
         uint8_t ignore_transformations
-        uint8_t convert_hdr_to_8bit
+        #uint8_t convert_hdr_to_8bit
 
     heif_context* heif_context_alloc()
     void heif_context_free(heif_context* ctx)
