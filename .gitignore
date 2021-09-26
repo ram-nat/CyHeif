@@ -11,3 +11,4 @@ example/sample.*
 dist/
 *.egg-info/
 **/__pycache__
+**/heif.h
