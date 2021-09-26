@@ -5957,7 +5957,7 @@ static PyObject *__pyx_pw_6cyheif_9HeifImage_1get_pil_image(PyObject *__pyx_v_se
 static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, char const *__pyx_v_file_name, int __pyx_v_apply_transformations, int __pyx_v_retain_exif) {
   struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_heifImageHandle = NULL;
   int __pyx_v_num_bytes;
-  unsigned char *__pyx_v_data;
+  unsigned char const *__pyx_v_data;
   struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_img_attr = 0;
   int __pyx_v_stride;
   __Pyx_memviewslice __pyx_v_data_view = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -5989,7 +5989,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
  * 
  *         heifImageHandle = HeifImageHandle(file_name)             # <<<<<<<<<<<<<<
  *         cdef int num_bytes
- *         cdef unsigned char* data
+ *         cdef const unsigned char* data
  */
   __pyx_t_1 = __Pyx_PyBytes_FromString(__pyx_v_file_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -6001,7 +6001,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
 
   /* "heif/heif.pyx":223
  *         cdef int num_bytes
- *         cdef unsigned char* data
+ *         cdef const unsigned char* data
  *         cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)             # <<<<<<<<<<<<<<
  *         cdef int stride = <int>(num_bytes / img_attr.height)
  *         cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
@@ -6015,7 +6015,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
   __pyx_t_2 = 0;
 
   /* "heif/heif.pyx":224
- *         cdef unsigned char* data
+ *         cdef const unsigned char* data
  *         cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)
  *         cdef int stride = <int>(num_bytes / img_attr.height)             # <<<<<<<<<<<<<<
  *         cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data

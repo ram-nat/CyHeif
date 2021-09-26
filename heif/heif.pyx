@@ -219,7 +219,7 @@ cdef class HeifImage:
 
         heifImageHandle = HeifImageHandle(file_name)
         cdef int num_bytes
-        cdef unsigned char* data
+        cdef const unsigned char* data
         cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)
         cdef int stride = <int>(num_bytes / img_attr.height)
         cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
