@@ -23,7 +23,7 @@ cdef class HeifBuffer:
 
 cdef class HeifError:
     def __cinit__(self, cheif.heif_error err):
-        if err.code != 0:
+        if err.code != cheif.heif_error_code.heif_error_Ok:
             raise Exception(
                 'Heif Error - Message: {0}, Code: {1}, Sub Code: {2}'.format(err.message, err.code, err.subcode)
             )
@@ -46,18 +46,67 @@ cdef class HeifContext:
         res = cheif.heif_context_read_from_file(self._heif_ctx, file_name, NULL)
         HeifError(res)
 
+cdef class HeifDecodingOptions:
+    cdef cheif.heif_decoding_options* _options
+
+    def __cinit__(self, bint convert_hdr_to_8bit=True, bint apply_transformations=True):
+        # TODO: AFAICT, Pillow does not have a decoder that can read 10 bits per pixel raw format
+        convert_hdr_to_8bit = True
+        if convert_hdr_to_8bit or not apply_transformations:
+            self._options = cheif.heif_decoding_options_alloc()
+            self._options.convert_hdr_to_8bit = <int>(convert_hdr_to_8bit)
+            self._options.ignore_transformations = <int>(not apply_transformations)
+        else:
+            self._options = NULL
+
+    def __dealloc__(self):
+        if self._options is not NULL:
+            cheif.heif_decoding_options_free(self._options)
+            self._options = NULL
+
+    cdef cheif.heif_decoding_options* get_decoding_options(self):
+        return self._options
+
+cdef class HeifImageAttributes:
+    cdef cheif.heif_colorspace colorspace
+    cdef cheif.heif_chroma chroma
+    cdef int bits_per_pixel
+    cdef int width
+    cdef int height
+
+    def __cinit__(self):
+        return
+
+    @staticmethod
+    cdef HeifImageAttributes from_image(cheif.heif_image* img):
+        cdef HeifImageAttributes img_attr = HeifImageAttributes.__new__(HeifImageAttributes)
+        img_attr.colorspace = cheif.heif_image_get_colorspace(img)
+        img_attr.chroma = cheif.heif_image_get_chroma_format(img)
+        img_attr.bits_per_pixel = cheif.heif_image_get_bits_per_pixel_range(img, cheif.heif_channel.heif_channel_interleaved)
+        img_attr.width = cheif.heif_image_get_width(img, cheif.heif_channel.heif_channel_interleaved)
+        img_attr.height = cheif.heif_image_get_height(img, cheif.heif_channel.heif_channel_interleaved)
+        return img_attr
+
+    cdef str get_pillow_raw_format(self):
+        chroma_to_pillow_raw_format: Dict[cheif.heif_chroma, str] = {
+            cheif.heif_chroma.heif_chroma_interleaved_RGB: 'RGB',
+            cheif.heif_chroma.heif_chroma_interleaved_RGBA: 'RGBA',
+        }
+        return chroma_to_pillow_raw_format[self.chroma]
+
+    cdef print(self):
+        print('Width: {}, Height: {}, Bits Per Pixel: {}, Chroma: {}, ColorSpace: {}'.format(self.width, self.height, self.bits_per_pixel, self.chroma, self.colorspace))
+
+
 cdef class HeifImageHandle:
     cdef cheif.heif_image_handle* _handle
     cdef cheif.heif_image* _img
     cdef HeifContext _ctx
 
-    def __cinit__(self, const char* file_name = NULL, HeifContext ctx = None):
+    def __cinit__(self, const char* file_name, HeifContext ctx = None):
         self._ctx = ctx if ctx is not None else HeifContext()
-        if file_name is not NULL:
-            self._ctx.read_from_file(file_name)
-        res = cheif.heif_context_get_primary_image_handle(self._ctx._heif_ctx, &self._handle)        
-        HeifError(res)
-        res = cheif.heif_decode_image(self._handle, &self._img, 1, 11, NULL)
+        self._ctx.read_from_file(file_name)
+        res = cheif.heif_context_get_primary_image_handle(self._ctx._heif_ctx, &self._handle)      
         HeifError(res)
 
     def __dealloc__(self):
@@ -69,13 +118,70 @@ cdef class HeifImageHandle:
             self._handle = NULL
         self._ctx = None
 
-    cdef get_image_bytes(self, const unsigned char** data, int* sz):
+    cdef cheif.heif_colorspace get_image_colorspace(self):
+        return cheif.heif_image_get_colorspace(self._img)
+
+    cdef cheif.heif_chroma get_image_chroma_format(self):
+        return cheif.heif_image_get_chroma_format(self._img)
+
+    cdef int get_image_handle_has_alpha(self):
+        return cheif.heif_image_handle_has_alpha_channel(self._handle)
+
+    cdef int get_image_handle_luma_bits_per_pixel(self):
+        return cheif.heif_image_handle_get_luma_bits_per_pixel(self._handle)
+
+    cdef int get_image_height(self, cheif.heif_channel channel):
+        return cheif.heif_image_get_height(self._img, channel)
+
+    cdef int get_image_width(self, cheif.heif_channel channel):
+        return cheif.heif_image_get_width(self._img, channel)
+
+    cdef int get_image_bits_per_pixel_range(self, cheif.heif_channel channel):
+        return cheif.heif_image_get_bits_per_pixel_range(self._img, channel)
+
+    cdef (cheif.heif_colorspace, cheif.heif_chroma) get_colorspace_and_chroma(self, bint convert_hdr_to_8bit=False):
+        cdef cheif.heif_colorspace color_space = cheif.heif_colorspace.heif_colorspace_RGB
+        cdef int has_alpha = self.get_image_handle_has_alpha()
+        cdef int bits_per_pixel = self.get_image_handle_luma_bits_per_pixel()
+        cdef cheif.heif_chroma chroma = cheif.heif_chroma.heif_chroma_interleaved_RGB
+        # TODO: AFAICT, Pillow does not support 10 bits per pixel raw format
+        convert_hdr_to_8bit = True
+        if bits_per_pixel <= 8 or convert_hdr_to_8bit:
+            chroma = cheif.heif_chroma.heif_chroma_interleaved_RGBA if bool(has_alpha) else cheif.heif_chroma.heif_chroma_interleaved_RGB                
+        else:
+            chroma = cheif.heif_chroma.heif_chroma_interleaved_RRGGBBAA_LE if bool(has_alpha) else cheif.heif_chroma.heif_chroma_interleaved_RRGGBB_LE
+        return (color_space, chroma)
+    
+    cdef decode_image(self, bint convert_hdr_to_8bit=False, bint apply_transformations=True):
+        if self._img is not NULL:
+            cheif.heif_image_release(self._img)
+            self._img = NULL
+        cdef cheif.heif_colorspace color_space
+        cdef cheif.heif_chroma chroma
+        (color_space, chroma) = self.get_colorspace_and_chroma(convert_hdr_to_8bit)
+        cdef HeifDecodingOptions decoding_options = HeifDecodingOptions(convert_hdr_to_8bit, apply_transformations)
+        res = cheif.heif_decode_image(
+            self._handle, 
+            &self._img, 
+            color_space, 
+            chroma, 
+            decoding_options.get_decoding_options())
+        HeifError(res)
+
+    cdef HeifImageAttributes get_image_bytes(
+        self, 
+        const unsigned char** data, 
+        int* sz, 
+        bint convert_hdr_to_8bit=False, 
+        bint apply_transformations=True):
+        self.decode_image(convert_hdr_to_8bit, apply_transformations)
+        cdef HeifImageAttributes img_attr = HeifImageAttributes.from_image(self._img)
         cdef int stride = 0
-        data[0] = cheif.heif_image_get_plane_readonly(self._img, 10, &stride)
-        cdef int height = cheif.heif_image_handle_get_height(self._handle)
-        sz[0] = height * stride
+        data[0] = cheif.heif_image_get_plane_readonly(self._img, cheif.heif_channel.heif_channel_interleaved, &stride)
+        sz[0] = img_attr.height * stride
         if data is NULL:
             raise Exception('Read failed')
+        return img_attr
 
     cdef cheif.heif_item_id get_image_exif_metadata_id(self):
         cdef cheif.heif_item_id metadata_item_id
@@ -104,50 +210,37 @@ cdef class HeifImageHandle:
         return buf
 
 cdef class HeifImage:
-    cdef const char* _file_name
-    cdef const unsigned char* _data
-    cdef int _num_bytes
-    cdef int _width
-    cdef int _height
-    cdef HeifImageHandle _heifImageHandle
-    cdef int _stride
+    def get_pil_image(
+        self, 
+        const char* file_name,
+        bint apply_transformations=True, 
+        bint retain_exif=True) -> Image:
 
-    def __cinit__(self, const char* file_name):
-        self._file_name = file_name
-        self._data = NULL
-        self._heifImageHandle = None
-
-    cdef read_heif_image(self):
-        if self._data != NULL:
-            return       
-        self._heifImageHandle = HeifImageHandle(self._file_name)
-        self._width = cheif.heif_image_handle_get_width(self._heifImageHandle._handle)
-        self._height = cheif.heif_image_handle_get_height(self._heifImageHandle._handle)
-        self._heifImageHandle.get_image_bytes(&self._data, &self._num_bytes)
-        self._stride = <int>(self._num_bytes / self._height)
-
-    def get_pil_image(self, bint retain_exif=True):
-        self.read_heif_image()
-        cdef const unsigned char[:] data_view = <const unsigned char[:self._num_bytes]>self._data
+        heifImageHandle = HeifImageHandle(file_name)
+        cdef int num_bytes
+        cdef unsigned char* data
+        cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)
+        cdef int stride = <int>(num_bytes / img_attr.height)
+        cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
         pil_image = Image.frombuffer(
-            'RGBX', 
-            (self._width, self._height), 
+            img_attr.get_pillow_raw_format(), 
+            (img_attr.width, img_attr.height), 
             data_view, 
             'raw', 
-            'RGBX', 
-            self._stride, 
+            img_attr.get_pillow_raw_format(), 
+            stride, 
             1
         )
         if retain_exif:
-            heif_buffer = self._heifImageHandle.get_image_exif_data()
+            heif_buffer = heifImageHandle.get_image_exif_data()
             # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
             # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
             pil_image.info['exif'] = bytes(heif_buffer._data[4:heif_buffer._sz])
         return pil_image
 
-    def get_exif_data(self):
-        self.read_heif_image()
-        heif_buffer = self._heifImageHandle.get_image_exif_data()
+    def get_exif_data(self, const char* file_name) -> Image.Exif:
+        cdef HeifImageHandle heifImageHandle = HeifImageHandle(file_name)
+        heif_buffer = heifImageHandle.get_image_exif_data()
         exif = Image.Exif()
         cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data
         # HACK - Reading PIL.Image.Exif sources shows passing a byte array to Exif.load will work
