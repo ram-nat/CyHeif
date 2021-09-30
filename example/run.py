@@ -18,3 +18,6 @@ print('showing image')
 pil_img.show()
 pil_img.save('sample.jpg', 'JPEG', exif=pil_img.getexif().tobytes())
 print('Done')
+pil_img_exif.image_description = 'A test image for CyHeif'
+heif_img = cyheif.HeifImage()
+heif_img.write_exif_data(b'sample.heic', b'sample_exif.heic', pil_img_exif)
