@@ -68,6 +68,26 @@ cdef class HeifDecodingOptions:
     cdef cheif.heif_decoding_options* get_decoding_options(self):
         return self._options
 
+cdef class HeifEncoder:
+    cdef cheif.heif_encoder* _encoder
+    cdef HeifContext _ctx
+
+    def __cinit__(self, cheif.heif_compression_format fmt, HeifContext ctx = None):
+        self._ctx = ctx if ctx is not None else HeifContext()
+        res = cheif.heif_context_get_encoder_for_format(self._ctx._heif_ctx, fmt, &self._encoder)
+        HeifError(res)
+    
+    def __dealloc__(self):
+        if self._encoder is not NULL:
+            cheif.heif_encoder_release(self._encoder)
+            self._encoder = NULL
+        self._ctx = None
+
+    cdef set_logging_level(self: HeifEncoder, int lvl):
+        res = cheif.heif_encoder_set_logging_level(self._encoder, lvl)
+        HeifError(res)
+
+
 cdef class HeifImageAttributes:
     cdef cheif.heif_colorspace colorspace
     cdef cheif.heif_chroma chroma
@@ -104,12 +124,6 @@ cdef class HeifImageHandle:
     cdef cheif.heif_image* _img
     cdef HeifContext _ctx
 
-    def __cinit__(self, const char* file_name, HeifContext ctx = None):
-        self._ctx = ctx if ctx is not None else HeifContext()
-        self._ctx.read_from_file(file_name)
-        res = cheif.heif_context_get_primary_image_handle(self._ctx._heif_ctx, &self._handle)      
-        HeifError(res)
-
     def __dealloc__(self):
         if self._img is not NULL:
             cheif.heif_image_release(self._img)
@@ -118,6 +132,23 @@ cdef class HeifImageHandle:
             cheif.heif_image_handle_release(self._handle)
             self._handle = NULL
         self._ctx = None
+
+    @staticmethod
+    cdef HeifImageHandle from_image_handle(cheif.heif_image_handle* handle, HeifContext ctx = None):
+        ctx = ctx if ctx is not None else HeifContext()
+        cdef HeifImageHandle image_handle = HeifImageHandle()
+        image_handle._ctx = ctx
+        image_handle._handle = handle
+        return image_handle
+
+    @staticmethod
+    cdef HeifImageHandle from_file(const char* file_name, HeifContext ctx = None):
+        ctx = ctx if ctx is not None else HeifContext()
+        ctx.read_from_file(file_name)
+        cdef cheif.heif_image_handle* handle
+        res = cheif.heif_context_get_primary_image_handle(ctx._heif_ctx, &handle)
+        HeifError(res)
+        return HeifImageHandle.from_image_handle(handle, ctx)
 
     cdef cheif.heif_colorspace get_image_colorspace(self):
         return cheif.heif_image_get_colorspace(self._img)
@@ -210,14 +241,33 @@ cdef class HeifImageHandle:
         HeifError(res)
         return buf
 
+    cdef HeifImageHandle add_exif_data(self: HeifImageHandle, const unsigned char[:] exif_data, int sz):
+        self.decode_image()
+        cdef HeifContext out_context = HeifContext()
+        cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC, out_context)
+        cdef cheif.heif_image_handle* out_handle
+        res = cheif.heif_context_encode_image(out_context._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
+        HeifError(res)
+        cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)
+        res = cheif.heif_context_add_exif_metadata(self._ctx._heif_ctx, self._handle, &exif_data[0], sz)
+        HeifError(res)
+        return new_image_handle
+
+    cdef write_to_file(self: HeifImageHandle, const char* file_name):
+        #res = cheif.heif_context_set_primary_image(self._ctx._heif_ctx, self._handle)
+        #HeifError(res)
+        res = cheif.heif_context_write_to_file(self._ctx._heif_ctx, file_name)
+        HeifError(res)
+
+
 cdef class HeifImage:
     def get_pil_image(
-        self, 
+        self: HeifImage, 
         const char* file_name,
         bint apply_transformations=True, 
         bint retain_exif=True) -> Image:
 
-        heifImageHandle = HeifImageHandle(file_name)
+        heifImageHandle = HeifImageHandle.from_file(file_name)
         cdef int num_bytes
         cdef const unsigned char* data
         cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)
@@ -239,8 +289,8 @@ cdef class HeifImage:
             pil_image.info['exif'] = bytes(heif_buffer._data[4:heif_buffer._sz])
         return pil_image
 
-    def get_exif_data(self, const char* file_name) -> Image.Exif:
-        cdef HeifImageHandle heifImageHandle = HeifImageHandle(file_name)
+    def get_exif_data(self: HeifImage, const char* file_name) -> Image.Exif:
+        cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
         heif_buffer = heifImageHandle.get_image_exif_data()
         exif = Image.Exif()
         cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data
@@ -249,6 +299,23 @@ cdef class HeifImage:
         # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
         exif.load(bytes(data_view[4:]))
         return exif
+
+    def write_exif_data_from_bytes(
+        self: HeifImage, 
+        const char* input_file_name,
+        const char* output_file_name, 
+        exif_data: bytes) -> None:
+        cdef HeifImageHandle input_image = HeifImageHandle.from_file(input_file_name)
+        cdef HeifImageHandle output_image = input_image.add_exif_data(exif_data, len(exif_data))
+        output_image.write_to_file(output_file_name)
+
+    def write_exif_data(
+        self: HeifImage, 
+        const char* input_file_name,
+        const char* output_file_name, 
+        exif_data: Image.Exif) -> None:
+        exif_bytes = exif_data.tobytes()
+        self.write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
 
 def get_heif_version():
     return cheif.heif_get_version()

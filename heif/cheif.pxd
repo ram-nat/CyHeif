@@ -164,3 +164,58 @@ cdef extern from "libheif/heif.h":
         const heif_image_handle* handle,
         heif_item_id metadata_id,
         void* out_data)
+
+    # Write APIs
+    struct heif_encoder:
+        pass
+
+    struct heif_encoder_descriptor:
+        pass
+
+    struct heif_encoding_options:
+        pass
+
+    cpdef enum heif_compression_format:
+        heif_compression_undefined = 0,
+        heif_compression_HEVC = 1,
+        heif_compression_AVC = 2,
+        heif_compression_JPEG = 3,
+        heif_compression_AV1 = 4
+
+    int heif_context_get_encoder_descriptors(
+        heif_context* ctx, 
+        heif_compression_format fmt_filter, 
+        const char* name_filter, 
+        const heif_encoder_descriptor** descriptors, 
+        int count)
+
+    heif_error heif_context_get_encoder(
+        heif_context* ctx, 
+        const heif_encoder_descriptor* desc, 
+        heif_encoder** encoder)
+
+    heif_error heif_context_get_encoder_for_format(
+        heif_context* ctx, 
+        heif_compression_format fmt, 
+        heif_encoder** encoder)
+
+    heif_error heif_encoder_set_logging_level(heif_encoder*, int level)
+
+    void heif_encoder_release(heif_encoder* encoder)
+
+    heif_error heif_context_encode_image(
+        heif_context* ctx, 
+        heif_image* img, 
+        heif_encoder* encoder, 
+        heif_encoding_options* opt, 
+        heif_image_handle** img_handle)
+
+    heif_error heif_context_add_exif_metadata(
+        heif_context* ctx, 
+        const heif_image_handle* handle, 
+        const void* data, 
+        int size)
+
+    heif_error heif_context_set_primary_image(heif_context* ctx, heif_image_handle* handle)
+
+    heif_error heif_context_write_to_file(heif_context* ctx, const char* filename)
