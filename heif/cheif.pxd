@@ -216,4 +216,6 @@ cdef extern from "libheif/heif.h":
         const void* data, 
         int size)
 
+    heif_error heif_context_set_primary_image(heif_context* ctx, heif_image_handle* handle)
+
     heif_error heif_context_write_to_file(heif_context* ctx, const char* filename)

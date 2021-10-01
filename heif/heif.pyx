@@ -73,11 +73,9 @@ cdef class HeifEncoder:
     cdef HeifContext _ctx
 
     def __cinit__(self, cheif.heif_compression_format fmt, HeifContext ctx = None):
-        print('Here')
         self._ctx = ctx if ctx is not None else HeifContext()
         res = cheif.heif_context_get_encoder_for_format(self._ctx._heif_ctx, fmt, &self._encoder)
         HeifError(res)
-        print('Encoder: {0:X}'.format(<unsigned long>self._encoder))
     
     def __dealloc__(self):
         if self._encoder is not NULL:
@@ -245,23 +243,19 @@ cdef class HeifImageHandle:
 
     cdef HeifImageHandle add_exif_data(self: HeifImageHandle, const unsigned char[:] exif_data, int sz):
         self.decode_image()
-        print('Here 1')
         cdef HeifContext out_context = HeifContext()
-        cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_JPEG, out_context)
-        encoder.set_logging_level(4)
-        print('Here 2')
+        cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC, out_context)
         cdef cheif.heif_image_handle* out_handle
-        print('Encoding Image')
         res = cheif.heif_context_encode_image(out_context._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
-        print('Encoded Image')
         HeifError(res)
         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)
-        res = cheif.heif_context_add_exif_metadata(self._ctx._heif_ctx, out_handle, &exif_data[0], sz)
+        res = cheif.heif_context_add_exif_metadata(self._ctx._heif_ctx, self._handle, &exif_data[0], sz)
         HeifError(res)
-        print('Got New Image Handle')
         return new_image_handle
 
     cdef write_to_file(self: HeifImageHandle, const char* file_name):
+        #res = cheif.heif_context_set_primary_image(self._ctx._heif_ctx, self._handle)
+        #HeifError(res)
         res = cheif.heif_context_write_to_file(self._ctx._heif_ctx, file_name)
         HeifError(res)
 
@@ -313,9 +307,7 @@ cdef class HeifImage:
         exif_data: bytes) -> None:
         cdef HeifImageHandle input_image = HeifImageHandle.from_file(input_file_name)
         cdef HeifImageHandle output_image = input_image.add_exif_data(exif_data, len(exif_data))
-        print('Writing')
         output_image.write_to_file(output_file_name)
-        print('Written')
 
     def write_exif_data(
         self: HeifImage, 

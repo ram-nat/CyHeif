@@ -8,6 +8,7 @@ build/
 bin/
 lib/
 example/sample.*
+example/*.heic
 dist/
 *.egg-info/
 **/__pycache__
