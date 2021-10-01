@@ -3,10 +3,19 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
-        "depends": [],
+        "depends": [
+            "C:\\vcpkg\\installed\\x64-windows\\include\\libheif\\heif.h"
+        ],
+        "include_dirs": [
+            "C:/vcpkg/installed/x64-windows\\include"
+        ],
         "language": "c",
         "libraries": [
             "heif"
+        ],
+        "library_dirs": [
+            "C:/vcpkg/installed/x64-windows\\bin",
+            "C:/vcpkg/installed/x64-windows\\lib"
         ],
         "name": "cyheif",
         "sources": [
@@ -847,7 +856,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "heif/heif.pyx",
+  "heif\\heif.pyx",
   "stringsource",
 };
 /* MemviewSliceStruct.proto */
@@ -2277,7 +2286,7 @@ static const char __pyx_k_Read_failed[] = "Read failed";
 static const char __pyx_k_retain_exif[] = "retain_exif";
 static const char __pyx_k_pyx_checksum[] = "__pyx_checksum";
 static const char __pyx_k_stringsource[] = "stringsource";
-static const char __pyx_k_heif_heif_pyx[] = "heif/heif.pyx";
+static const char __pyx_k_heif_heif_pyx[] = "heif\\heif.pyx";
 static const char __pyx_k_pyx_getbuffer[] = "__pyx_getbuffer";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_HeifImageHandle[] = "HeifImageHandle";
@@ -6385,7 +6394,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
  *         res = cheif.heif_context_encode_image(out_context._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
  *         HeifError(res)             # <<<<<<<<<<<<<<
  *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)
- *         res = cheif.heif_context_add_exif_metadata(self._ctx._heif_ctx, self._handle, &exif_data[0], sz)
+ *         res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)
  */
   __pyx_t_1 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -6398,7 +6407,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
  *         res = cheif.heif_context_encode_image(out_context._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
  *         HeifError(res)
  *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)             # <<<<<<<<<<<<<<
- *         res = cheif.heif_context_add_exif_metadata(self._ctx._heif_ctx, self._handle, &exif_data[0], sz)
+ *         res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)
  *         HeifError(res)
  */
   __pyx_t_3.__pyx_n = 1;
@@ -6411,7 +6420,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   /* "heif/heif.pyx":252
  *         HeifError(res)
  *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)
- *         res = cheif.heif_context_add_exif_metadata(self._ctx._heif_ctx, self._handle, &exif_data[0], sz)             # <<<<<<<<<<<<<<
+ *         res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)             # <<<<<<<<<<<<<<
  *         HeifError(res)
  *         return new_image_handle
  */
@@ -6425,11 +6434,11 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
     __Pyx_RaiseBufferIndexError(__pyx_t_5);
     __PYX_ERR(0, 252, __pyx_L1_error)
   }
-  __pyx_v_res = heif_context_add_exif_metadata(__pyx_v_self->_ctx->_heif_ctx, __pyx_v_self->_handle, (&(*((unsigned char const  *) ( /* dim=0 */ (__pyx_v_exif_data.data + __pyx_t_4 * __pyx_v_exif_data.strides[0]) )))), __pyx_v_sz);
+  __pyx_v_res = heif_context_add_exif_metadata(__pyx_v_out_context->_heif_ctx, __pyx_v_out_handle, (&(*((unsigned char const  *) ( /* dim=0 */ (__pyx_v_exif_data.data + __pyx_t_4 * __pyx_v_exif_data.strides[0]) )))), __pyx_v_sz);
 
   /* "heif/heif.pyx":253
  *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)
- *         res = cheif.heif_context_add_exif_metadata(self._ctx._heif_ctx, self._handle, &exif_data[0], sz)
+ *         res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)
  *         HeifError(res)             # <<<<<<<<<<<<<<
  *         return new_image_handle
  * 
@@ -6442,7 +6451,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "heif/heif.pyx":254
- *         res = cheif.heif_context_add_exif_metadata(self._ctx._heif_ctx, self._handle, &exif_data[0], sz)
+ *         res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)
  *         HeifError(res)
  *         return new_image_handle             # <<<<<<<<<<<<<<
  * 

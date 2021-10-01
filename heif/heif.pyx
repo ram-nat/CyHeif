@@ -249,7 +249,7 @@ cdef class HeifImageHandle:
         res = cheif.heif_context_encode_image(out_context._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
         HeifError(res)
         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)
-        res = cheif.heif_context_add_exif_metadata(self._ctx._heif_ctx, self._handle, &exif_data[0], sz)
+        res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)
         HeifError(res)
         return new_image_handle
 
