@@ -95,9 +95,6 @@ cdef class HeifImageAttributes:
     cdef int width
     cdef int height
 
-    def __cinit__(self):
-        return
-
     @staticmethod
     cdef HeifImageAttributes from_image(cheif.heif_image* img):
         cdef HeifImageAttributes img_attr = HeifImageAttributes.__new__(HeifImageAttributes)
@@ -115,9 +112,22 @@ cdef class HeifImageAttributes:
         }
         return chroma_to_pillow_raw_format[self.chroma]
 
-    cdef print(self):
+    cdef print_image_attributes(self):
         print('Width: {}, Height: {}, Bits Per Pixel: {}, Chroma: {}, ColorSpace: {}'.format(self.width, self.height, self.bits_per_pixel, self.chroma, self.colorspace))
 
+cdef class HeifImage:
+    cdef cheif.heif_image* _img
+
+    def __dealloc__(self):
+        if self._img is not NULL:
+            cheif.heif_image_release(self._img)
+            self._img = NULL
+
+    @staticmethod
+    cdef HeifImage from_image(cheif.heif_image* img):
+        cdef HeifImage image = HeifImage()
+        image._img = img
+        return image
 
 cdef class HeifImageHandle:
     cdef cheif.heif_image_handle* _handle
@@ -211,6 +221,7 @@ cdef class HeifImageHandle:
         cdef int stride = 0
         data[0] = cheif.heif_image_get_plane_readonly(self._img, cheif.heif_channel.heif_channel_interleaved, &stride)
         sz[0] = img_attr.height * stride
+        print('Width: {}, Height: {}, Stride: {}'.format(img_attr.width, img_attr.height, stride))
         if data is NULL:
             raise Exception('Read failed')
         return img_attr
@@ -243,79 +254,141 @@ cdef class HeifImageHandle:
 
     cdef HeifImageHandle add_exif_data(self: HeifImageHandle, const unsigned char[:] exif_data, int sz):
         self.decode_image()
-        cdef HeifContext out_context = HeifContext()
-        cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC, out_context)
+        cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC)
         cdef cheif.heif_image_handle* out_handle
-        res = cheif.heif_context_encode_image(out_context._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
+        res = cheif.heif_context_encode_image(encoder._ctx._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
         HeifError(res)
-        cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)
-        res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)
+        cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)
+        res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], sz)
         HeifError(res)
         return new_image_handle
 
+    @staticmethod
+    cdef HeifImageHandle get_image_from_rgb_bytes(
+        const unsigned char[:] image_data, 
+        int sz, 
+        int width, 
+        int height,
+        const unsigned char[:] exif_data = None,
+        int exif_sz = 0):
+        cdef HeifImage img = HeifImage()
+        res = cheif.heif_image_create(
+            width, 
+            height, 
+            cheif.heif_colorspace.heif_colorspace_RGB, 
+            cheif.heif_chroma.heif_chroma_interleaved_RGB, 
+            &img._img)
+        HeifError(res)
+
+        res = cheif.heif_image_add_plane(
+            img._img,
+            cheif.heif_channel.heif_channel_interleaved,
+            width,
+            height,
+            24)
+        HeifError(res)
+
+        cdef int stride
+        cdef unsigned char* img_buffer 
+        img_buffer = cheif.heif_image_get_plane(img._img, cheif.heif_channel.heif_channel_interleaved, &stride)
+        img_buffer_view = <unsigned char[:height*stride]>img_buffer
+
+        assert(height*stride >= sz)
+        img_buffer_view[:sz] = image_data[:sz]
+
+        cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC)
+        cdef cheif.heif_image_handle* out_handle
+        res = cheif.heif_context_encode_image(encoder._ctx._heif_ctx, img._img, encoder._encoder, NULL, &out_handle)
+        HeifError(res)
+
+        cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)
+        if exif_sz > 0:
+            res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], exif_sz)
+            HeifError(res)
+        
+        return new_image_handle
+
     cdef write_to_file(self: HeifImageHandle, const char* file_name):
-        #res = cheif.heif_context_set_primary_image(self._ctx._heif_ctx, self._handle)
-        #HeifError(res)
         res = cheif.heif_context_write_to_file(self._ctx._heif_ctx, file_name)
         HeifError(res)
 
+def get_pil_image(
+    const char* file_name,
+    bint apply_transformations=True, 
+    bint retain_exif=True) -> Image:
 
-cdef class HeifImage:
-    def get_pil_image(
-        self: HeifImage, 
-        const char* file_name,
-        bint apply_transformations=True, 
-        bint retain_exif=True) -> Image:
-
-        heifImageHandle = HeifImageHandle.from_file(file_name)
-        cdef int num_bytes
-        cdef const unsigned char* data
-        cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)
-        cdef int stride = <int>(num_bytes / img_attr.height)
-        cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
-        pil_image = Image.frombuffer(
-            img_attr.get_pillow_raw_format(), 
-            (img_attr.width, img_attr.height), 
-            data_view, 
-            'raw', 
-            img_attr.get_pillow_raw_format(), 
-            stride, 
-            1
-        )
-        if retain_exif:
-            heif_buffer = heifImageHandle.get_image_exif_data()
-            # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
-            # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
-            pil_image.info['exif'] = bytes(heif_buffer._data[4:heif_buffer._sz])
-        return pil_image
-
-    def get_exif_data(self: HeifImage, const char* file_name) -> Image.Exif:
-        cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
+    heifImageHandle = HeifImageHandle.from_file(file_name)
+    cdef int num_bytes
+    cdef const unsigned char* data
+    cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)
+    cdef int stride = <int>(num_bytes / img_attr.height)
+    cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
+    pil_image = Image.frombuffer(
+        img_attr.get_pillow_raw_format(), 
+        (img_attr.width, img_attr.height), 
+        data_view, 
+        'raw', 
+        img_attr.get_pillow_raw_format(), 
+        stride, 
+        1
+    )
+    if retain_exif:
         heif_buffer = heifImageHandle.get_image_exif_data()
-        exif = Image.Exif()
-        cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data
-        # HACK - Reading PIL.Image.Exif sources shows passing a byte array to Exif.load will work
-        # HACK - Unfortunately, it needs to be a byte array as load calls starts_with on it
+        # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
         # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
-        exif.load(bytes(data_view[4:]))
-        return exif
+        pil_image.info['exif'] = bytes(heif_buffer._data[4:heif_buffer._sz])
+    return pil_image
 
-    def write_exif_data_from_bytes(
-        self: HeifImage, 
-        const char* input_file_name,
-        const char* output_file_name, 
-        exif_data: bytes) -> None:
-        cdef HeifImageHandle input_image = HeifImageHandle.from_file(input_file_name)
-        cdef HeifImageHandle output_image = input_image.add_exif_data(exif_data, len(exif_data))
-        output_image.write_to_file(output_file_name)
+def write_pil_image(
+    input_img: Image,
+    const char* output_file_name,
+    bint retain_exif=True) -> None:
 
-    def write_exif_data(
-        self: HeifImage, 
-        const char* input_file_name,
-        const char* output_file_name, 
-        exif_data: Image.Exif) -> None:
-        exif_bytes = exif_data.tobytes()
-        self.write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
+    # TODO: libheif seems to have a bug where images that have width that are not multiple of 8
+    # will not be handled properly (bytes in plane will not match bytes in raw image). Round up
+    # and resize the input image to work around this bug.
+    if input_img.width % 8 != 0:
+        width = input_img.width + (8 - (input_img.width % 8))
+        input_img = input_img.resize((width, input_img.height))
+
+    cdef bytes img_bytes = input_img.tobytes('raw', 'RGB')
+    cdef bytes exif_bytes
+    if retain_exif:
+        exif_bytes = input_img.getexif().tobytes()
+    cdef HeifImageHandle output_image = HeifImageHandle.get_image_from_rgb_bytes(
+        img_bytes,
+        int(len(img_bytes)),
+        input_img.width,
+        input_img.height,
+        exif_bytes,
+        int(len(exif_bytes)))
+    output_image.write_to_file(output_file_name)
+
+def get_exif_data(const char* file_name) -> Image.Exif:
+    cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
+    heif_buffer = heifImageHandle.get_image_exif_data()
+    exif = Image.Exif()
+    cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data
+    # HACK - Reading PIL.Image.Exif sources shows passing a byte array to Exif.load will work
+    # HACK - Unfortunately, it needs to be a byte array as load calls starts_with on it
+    # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
+    exif.load(bytes(data_view[4:]))
+    return exif
+
+def write_exif_data_from_bytes(
+    const char* input_file_name,
+    const char* output_file_name, 
+    exif_data: bytes) -> None:
+    cdef HeifImageHandle input_image = HeifImageHandle.from_file(input_file_name)
+    cdef HeifImageHandle output_image = input_image.add_exif_data(exif_data, int(len(exif_data)))
+    output_image.write_to_file(output_file_name)
+
+def write_exif_data(
+    const char* input_file_name,
+    const char* output_file_name, 
+    exif_data: Image.Exif) -> None:
+    exif_bytes = exif_data.tobytes()
+    write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
 
 def get_heif_version():
     return cheif.heif_get_version()

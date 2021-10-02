@@ -975,8 +975,8 @@ struct __pyx_obj_6cyheif_HeifContext;
 struct __pyx_obj_6cyheif_HeifDecodingOptions;
 struct __pyx_obj_6cyheif_HeifEncoder;
 struct __pyx_obj_6cyheif_HeifImageAttributes;
-struct __pyx_obj_6cyheif_HeifImageHandle;
 struct __pyx_obj_6cyheif_HeifImage;
+struct __pyx_obj_6cyheif_HeifImageHandle;
 struct __pyx_array_obj;
 struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
@@ -988,8 +988,9 @@ typedef struct __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_ch
 struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_colorspace_and_chroma;
 struct __pyx_opt_args_6cyheif_15HeifImageHandle_decode_image;
 struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_image_bytes;
+struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_image_from_rgb_bytes;
 
-/* "heif/heif.pyx":137
+/* "heif/heif.pyx":147
  * 
  *     @staticmethod
  *     cdef HeifImageHandle from_image_handle(cheif.heif_image_handle* handle, HeifContext ctx = None):             # <<<<<<<<<<<<<<
@@ -1001,7 +1002,7 @@ struct __pyx_opt_args_6cyheif_15HeifImageHandle_from_image_handle {
   struct __pyx_obj_6cyheif_HeifContext *ctx;
 };
 
-/* "heif/heif.pyx":145
+/* "heif/heif.pyx":155
  * 
  *     @staticmethod
  *     cdef HeifImageHandle from_file(const char* file_name, HeifContext ctx = None):             # <<<<<<<<<<<<<<
@@ -1013,7 +1014,7 @@ struct __pyx_opt_args_6cyheif_15HeifImageHandle_from_file {
   struct __pyx_obj_6cyheif_HeifContext *ctx;
 };
 
-/* "heif/heif.pyx":174
+/* "heif/heif.pyx":184
  *         return cheif.heif_image_get_bits_per_pixel_range(self._img, channel)
  * 
  *     cdef (cheif.heif_colorspace, cheif.heif_chroma) get_colorspace_and_chroma(self, bint convert_hdr_to_8bit=False):             # <<<<<<<<<<<<<<
@@ -1029,7 +1030,7 @@ struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_colorspace_and_chroma {
   int convert_hdr_to_8bit;
 };
 
-/* "heif/heif.pyx":187
+/* "heif/heif.pyx":197
  *         return (color_space, chroma)
  * 
  *     cdef decode_image(self, bint convert_hdr_to_8bit=False, bint apply_transformations=True):             # <<<<<<<<<<<<<<
@@ -1042,7 +1043,7 @@ struct __pyx_opt_args_6cyheif_15HeifImageHandle_decode_image {
   int apply_transformations;
 };
 
-/* "heif/heif.pyx":203
+/* "heif/heif.pyx":213
  *         HeifError(res)
  * 
  *     cdef HeifImageAttributes get_image_bytes(             # <<<<<<<<<<<<<<
@@ -1053,6 +1054,19 @@ struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_image_bytes {
   int __pyx_n;
   int convert_hdr_to_8bit;
   int apply_transformations;
+};
+
+/* "heif/heif.pyx":267
+ * 
+ *     @staticmethod
+ *     cdef HeifImageHandle get_image_from_rgb_bytes(             # <<<<<<<<<<<<<<
+ *         const unsigned char[:] image_data,
+ *         int sz,
+ */
+struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_image_from_rgb_bytes {
+  int __pyx_n;
+  __Pyx_memviewslice exif_data;
+  int exif_sz;
 };
 
 /* "heif/heif.pyx":9
@@ -1142,8 +1156,22 @@ struct __pyx_obj_6cyheif_HeifImageAttributes {
 };
 
 
-/* "heif/heif.pyx":122
+/* "heif/heif.pyx":118
+ *         print('Width: {}, Height: {}, Bits Per Pixel: {}, Chroma: {}, ColorSpace: {}'.format(self.width, self.height, self.bits_per_pixel, self.chroma, self.colorspace))
  * 
+ * cdef class HeifImage:             # <<<<<<<<<<<<<<
+ *     cdef cheif.heif_image* _img
+ * 
+ */
+struct __pyx_obj_6cyheif_HeifImage {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_6cyheif_HeifImage *__pyx_vtab;
+  struct heif_image *_img;
+};
+
+
+/* "heif/heif.pyx":132
+ *         return image
  * 
  * cdef class HeifImageHandle:             # <<<<<<<<<<<<<<
  *     cdef cheif.heif_image_handle* _handle
@@ -1155,18 +1183,6 @@ struct __pyx_obj_6cyheif_HeifImageHandle {
   struct heif_image_handle *_handle;
   struct heif_image *_img;
   struct __pyx_obj_6cyheif_HeifContext *_ctx;
-};
-
-
-/* "heif/heif.pyx":263
- * 
- * 
- * cdef class HeifImage:             # <<<<<<<<<<<<<<
- *     def get_pil_image(
- *         self: HeifImage,
- */
-struct __pyx_obj_6cyheif_HeifImage {
-  PyObject_HEAD
 };
 
 
@@ -1301,13 +1317,27 @@ static struct __pyx_vtabstruct_6cyheif_HeifEncoder *__pyx_vtabptr_6cyheif_HeifEn
 struct __pyx_vtabstruct_6cyheif_HeifImageAttributes {
   struct __pyx_obj_6cyheif_HeifImageAttributes *(*from_image)(struct heif_image *);
   PyObject *(*get_pillow_raw_format)(struct __pyx_obj_6cyheif_HeifImageAttributes *);
-  PyObject *(*print)(struct __pyx_obj_6cyheif_HeifImageAttributes *);
+  PyObject *(*print_image_attributes)(struct __pyx_obj_6cyheif_HeifImageAttributes *);
 };
 static struct __pyx_vtabstruct_6cyheif_HeifImageAttributes *__pyx_vtabptr_6cyheif_HeifImageAttributes;
 
 
-/* "heif/heif.pyx":122
+/* "heif/heif.pyx":118
+ *         print('Width: {}, Height: {}, Bits Per Pixel: {}, Chroma: {}, ColorSpace: {}'.format(self.width, self.height, self.bits_per_pixel, self.chroma, self.colorspace))
  * 
+ * cdef class HeifImage:             # <<<<<<<<<<<<<<
+ *     cdef cheif.heif_image* _img
+ * 
+ */
+
+struct __pyx_vtabstruct_6cyheif_HeifImage {
+  struct __pyx_obj_6cyheif_HeifImage *(*from_image)(struct heif_image *);
+};
+static struct __pyx_vtabstruct_6cyheif_HeifImage *__pyx_vtabptr_6cyheif_HeifImage;
+
+
+/* "heif/heif.pyx":132
+ *         return image
  * 
  * cdef class HeifImageHandle:             # <<<<<<<<<<<<<<
  *     cdef cheif.heif_image_handle* _handle
@@ -1330,6 +1360,7 @@ struct __pyx_vtabstruct_6cyheif_HeifImageHandle {
   heif_item_id (*get_image_exif_metadata_id)(struct __pyx_obj_6cyheif_HeifImageHandle *);
   struct __pyx_obj_6cyheif_HeifBuffer *(*get_image_exif_data)(struct __pyx_obj_6cyheif_HeifImageHandle *);
   struct __pyx_obj_6cyheif_HeifImageHandle *(*add_exif_data)(struct __pyx_obj_6cyheif_HeifImageHandle *, __Pyx_memviewslice, int);
+  struct __pyx_obj_6cyheif_HeifImageHandle *(*get_image_from_rgb_bytes)(__Pyx_memviewslice, int, int, int, struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_image_from_rgb_bytes *__pyx_optional_args);
   PyObject *(*write_to_file)(struct __pyx_obj_6cyheif_HeifImageHandle *, char const *);
 };
 static struct __pyx_vtabstruct_6cyheif_HeifImageHandle *__pyx_vtabptr_6cyheif_HeifImageHandle;
@@ -1579,13 +1610,19 @@ static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key);
 #define __Pyx_PyObject_Dict_GetItem(obj, name)  PyObject_GetItem(obj, name)
 #endif
 
-/* WriteUnraisableException.proto */
-static void __Pyx_WriteUnraisable(const char *name, int clineno,
-                                  int lineno, const char *filename,
-                                  int full_traceback, int nogil);
+/* PyErrExceptionMatches.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_PyErr_ExceptionMatches(err) __Pyx_PyErr_ExceptionMatchesInState(__pyx_tstate, err)
+static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err);
+#else
+#define __Pyx_PyErr_ExceptionMatches(err)  PyErr_ExceptionMatches(err)
+#endif
 
-/* BufferIndexError.proto */
-static void __Pyx_RaiseBufferIndexError(int axis);
+/* GetAttr.proto */
+static CYTHON_INLINE PyObject *__Pyx_GetAttr(PyObject *, PyObject *);
+
+/* GetAttr3.proto */
+static CYTHON_INLINE PyObject *__Pyx_GetAttr3(PyObject *, PyObject *, PyObject *);
 
 /* PyDictVersioning.proto */
 #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
@@ -1634,6 +1671,14 @@ static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_ve
 static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #endif
 
+/* WriteUnraisableException.proto */
+static void __Pyx_WriteUnraisable(const char *name, int clineno,
+                                  int lineno, const char *filename,
+                                  int full_traceback, int nogil);
+
+/* BufferIndexError.proto */
+static void __Pyx_RaiseBufferIndexError(int axis);
+
 /* MemviewSliceInit.proto */
 #define __Pyx_BUF_MAX_NDIMS %(BUF_MAX_NDIMS)d
 #define __Pyx_MEMVIEW_DIRECT   1
@@ -1660,34 +1705,44 @@ static CYTHON_INLINE int __pyx_sub_acquisition_count_locked(
 static CYTHON_INLINE void __Pyx_INC_MEMVIEW(__Pyx_memviewslice *, int, int);
 static CYTHON_INLINE void __Pyx_XDEC_MEMVIEW(__Pyx_memviewslice *, int, int);
 
-/* None.proto */
-static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname);
+/* SliceObject.proto */
+#define __Pyx_PyObject_DelSlice(obj, cstart, cstop, py_start, py_stop, py_slice, has_cstart, has_cstop, wraparound)\
+    __Pyx_PyObject_SetSlice(obj, (PyObject*)NULL, cstart, cstop, py_start, py_stop, py_slice, has_cstart, has_cstop, wraparound)
+static CYTHON_INLINE int __Pyx_PyObject_SetSlice(
+        PyObject* obj, PyObject* value, Py_ssize_t cstart, Py_ssize_t cstop,
+        PyObject** py_start, PyObject** py_stop, PyObject** py_slice,
+        int has_cstart, int has_cstop, int wraparound);
+
+/* PyIntCompare.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_NeObjC(PyObject *op1, PyObject *op2, long intval, long inplace);
+
+/* PyIntBinop.proto */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_RemainderObjC(PyObject *op1, PyObject *op2, long intval, int inplace, int zerodivision_check);
+#else
+#define __Pyx_PyInt_RemainderObjC(op1, op2, intval, inplace, zerodivision_check)\
+    (inplace ? PyNumber_InPlaceRemainder(op1, op2) : PyNumber_Remainder(op1, op2))
+#endif
+
+/* PyIntBinop.proto */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_SubtractCObj(PyObject *op1, PyObject *op2, long intval, int inplace, int zerodivision_check);
+#else
+#define __Pyx_PyInt_SubtractCObj(op1, op2, intval, inplace, zerodivision_check)\
+    (inplace ? PyNumber_InPlaceSubtract(op1, op2) : PyNumber_Subtract(op1, op2))
+#endif
 
 /* PyObjectCall2Args.proto */
 static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
 
-/* PyErrExceptionMatches.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_PyErr_ExceptionMatches(err) __Pyx_PyErr_ExceptionMatchesInState(__pyx_tstate, err)
-static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err);
-#else
-#define __Pyx_PyErr_ExceptionMatches(err)  PyErr_ExceptionMatches(err)
-#endif
-
-/* GetAttr.proto */
-static CYTHON_INLINE PyObject *__Pyx_GetAttr(PyObject *, PyObject *);
-
-/* GetAttr3.proto */
-static CYTHON_INLINE PyObject *__Pyx_GetAttr3(PyObject *, PyObject *, PyObject *);
+/* None.proto */
+static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname);
 
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 
 /* ImportFrom.proto */
 static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name);
-
-/* HasAttr.proto */
-static CYTHON_INLINE int __Pyx_HasAttr(PyObject *, PyObject *);
 
 /* GetItemInt.proto */
 #define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
@@ -1710,6 +1765,9 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize
 static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
 static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
                                                      int is_list, int wraparound, int boundscheck);
+
+/* HasAttr.proto */
+static CYTHON_INLINE int __Pyx_HasAttr(PyObject *, PyObject *);
 
 /* GetTopmostException.proto */
 #if CYTHON_USE_EXC_INFO_STACK
@@ -1994,7 +2052,6 @@ static CYTHON_INLINE PyObject *__pyx_capsule_create(void *p, const char *sig);
 #define __Pyx_HAS_GCC_DIAGNOSTIC
 #endif
 
-static PyObject* __pyx_convert__to_py_struct__heif_error(struct heif_error s);
 /* IsLittleEndian.proto */
 static CYTHON_INLINE int __Pyx_Is_Little_Endian(void);
 
@@ -2021,6 +2078,11 @@ static int __Pyx_ValidateAndInit_memviewslice(
 /* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(PyObject *, int writable_flag);
 
+static PyObject* __pyx_convert__to_py_struct__heif_error(struct heif_error s);
+/* MemviewDtypeToObject.proto */
+static CYTHON_INLINE PyObject *__pyx_memview_get_unsigned_char(const char *itemp);
+static CYTHON_INLINE int __pyx_memview_set_unsigned_char(const char *itemp, PyObject *obj);
+
 /* MemviewDtypeToObject.proto */
 static CYTHON_INLINE PyObject *__pyx_memview_get_unsigned_char__const__(const char *itemp);
 
@@ -2031,20 +2093,35 @@ __pyx_memoryview_copy_new_contig(const __Pyx_memviewslice *from_mvs,
                                  size_t sizeof_dtype, int contig_flag,
                                  int dtype_is_object);
 
-/* CIntFromPy.proto */
-static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE enum heif_error_code __Pyx_PyInt_As_enum__heif_error_code(PyObject *);
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__heif_chroma(enum heif_chroma value);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE enum heif_chroma __Pyx_PyInt_As_enum__heif_chroma(PyObject *);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__heif_colorspace(enum heif_colorspace value);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE enum heif_colorspace __Pyx_PyInt_As_enum__heif_colorspace(PyObject *);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
 
 /* TypeInfoToFormat.proto */
 struct __pyx_typeinfo_string {
     char string[3];
 };
 static struct __pyx_typeinfo_string __Pyx_TypeInfoToFormat(__Pyx_TypeInfo *type);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE enum heif_error_code __Pyx_PyInt_As_enum__heif_error_code(PyObject *);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE enum heif_compression_format __Pyx_PyInt_As_enum__heif_compression_format(PyObject *);
@@ -2056,19 +2133,13 @@ static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__heif_error_code(enum heif_error_code value);
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__heif_chroma(enum heif_chroma value);
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__heif_colorspace(enum heif_colorspace value);
-
-/* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__heif_compression_format(enum heif_compression_format value);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_char(unsigned char value);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE unsigned char __Pyx_PyInt_As_unsigned_char(PyObject *);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
@@ -2087,7 +2158,8 @@ static struct heif_decoding_options *__pyx_f_6cyheif_19HeifDecodingOptions_get_d
 static PyObject *__pyx_f_6cyheif_11HeifEncoder_set_logging_level(struct __pyx_obj_6cyheif_HeifEncoder *__pyx_v_self, int __pyx_v_lvl); /* proto*/
 static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_19HeifImageAttributes_from_image(struct heif_image *__pyx_v_img); /* proto*/
 static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_get_pillow_raw_format(struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self); /* proto*/
-static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_print(struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_print_image_attributes(struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self); /* proto*/
+static struct __pyx_obj_6cyheif_HeifImage *__pyx_f_6cyheif_9HeifImage_from_image(struct heif_image *__pyx_v_img); /* proto*/
 static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHandle_from_image_handle(struct heif_image_handle *__pyx_v_handle, struct __pyx_opt_args_6cyheif_15HeifImageHandle_from_image_handle *__pyx_optional_args); /* proto*/
 static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHandle_from_file(char const *__pyx_v_file_name, struct __pyx_opt_args_6cyheif_15HeifImageHandle_from_file *__pyx_optional_args); /* proto*/
 static enum heif_colorspace __pyx_f_6cyheif_15HeifImageHandle_get_image_colorspace(struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_self); /* proto*/
@@ -2103,6 +2175,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_15HeifImage
 static heif_item_id __pyx_f_6cyheif_15HeifImageHandle_get_image_exif_metadata_id(struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_self); /* proto*/
 static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_get_image_exif_data(struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_self); /* proto*/
 static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHandle_add_exif_data(struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_self, __Pyx_memviewslice __pyx_v_exif_data, int __pyx_v_sz); /* proto*/
+static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHandle_get_image_from_rgb_bytes(__Pyx_memviewslice __pyx_v_image_data, int __pyx_v_sz, int __pyx_v_width, int __pyx_v_height, struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_image_from_rgb_bytes *__pyx_optional_args); /* proto*/
 static PyObject *__pyx_f_6cyheif_15HeifImageHandle_write_to_file(struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_self, char const *__pyx_v_file_name); /* proto*/
 static PyObject *__pyx_array_get_memview(struct __pyx_array_obj *__pyx_v_self); /* proto*/
 static char *__pyx_memoryview_get_item_pointer(struct __pyx_memoryview_obj *__pyx_v_self, PyObject *__pyx_v_index); /* proto*/
@@ -2132,8 +2205,8 @@ static PyTypeObject *__pyx_ptype_6cyheif_HeifContext = 0;
 static PyTypeObject *__pyx_ptype_6cyheif_HeifDecodingOptions = 0;
 static PyTypeObject *__pyx_ptype_6cyheif_HeifEncoder = 0;
 static PyTypeObject *__pyx_ptype_6cyheif_HeifImageAttributes = 0;
-static PyTypeObject *__pyx_ptype_6cyheif_HeifImageHandle = 0;
 static PyTypeObject *__pyx_ptype_6cyheif_HeifImage = 0;
+static PyTypeObject *__pyx_ptype_6cyheif_HeifImageHandle = 0;
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
 static PyTypeObject *__pyx_memoryview_type = 0;
@@ -2145,7 +2218,7 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static PyObject *__pyx_f_6cyheif___pyx_unpickle_HeifImage__set_state(struct __pyx_obj_6cyheif_HeifImage *, PyObject *); /*proto*/
+static PyObject *__pyx_f_6cyheif___pyx_unpickle_HeifImageAttributes__set_state(struct __pyx_obj_6cyheif_HeifImageAttributes *, PyObject *); /*proto*/
 static struct heif_error __pyx_convert__from_py_struct__heif_error(PyObject *); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static void *__pyx_align_pointer(void *, size_t); /*proto*/
@@ -2181,6 +2254,7 @@ static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
 static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo *); /*proto*/
+static __Pyx_TypeInfo __Pyx_TypeInfo_unsigned_char = { "unsigned char", NULL, sizeof(unsigned char), { 0 }, 0, IS_UNSIGNED(unsigned char) ? 'U' : 'I', IS_UNSIGNED(unsigned char), 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_unsigned_char__const__ = { "const unsigned char", NULL, sizeof(unsigned char const ), { 0 }, 0, IS_UNSIGNED(unsigned char const ) ? 'U' : 'I', IS_UNSIGNED(unsigned char const ), 0 };
 #define __Pyx_MODULE_NAME "cyheif"
 extern int __pyx_module_is_main_cyheif;
@@ -2205,11 +2279,11 @@ static const char __pyx_k_T[] = "T{";
   static const char __pyx_k_sz[] = "sz";
   static const char __pyx_k_PIL[] = "PIL";
   static const char __pyx_k_RGB[] = "RGB";
-  static const char __pyx_k__39[] = "^";
-  static const char __pyx_k__40[] = "";
-  static const char __pyx_k__41[] = ":";
-static const char __pyx_k__42[] = "}";
-static const char __pyx_k__43[] = ",";
+  static const char __pyx_k__41[] = "^";
+  static const char __pyx_k__42[] = "";
+  static const char __pyx_k__43[] = ":";
+static const char __pyx_k__44[] = "}";
+static const char __pyx_k__45[] = ",";
 static const char __pyx_k_ctx[] = "ctx";
 static const char __pyx_k_err[] = "err";
 static const char __pyx_k_fmt[] = "fmt";
@@ -2220,6 +2294,7 @@ static const char __pyx_k_Exif[] = "Exif";
 static const char __pyx_k_RGBA[] = "RGBA";
 static const char __pyx_k_base[] = "base";
 static const char __pyx_k_code[] = "code";
+static const char __pyx_k_data[] = "data";
 static const char __pyx_k_dict[] = "__dict__";
 static const char __pyx_k_exif[] = "exif";
 static const char __pyx_k_info[] = "info";
@@ -2243,17 +2318,22 @@ static const char __pyx_k_print[] = "print";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_shape[] = "shape";
 static const char __pyx_k_start[] = "start";
+static const char __pyx_k_width[] = "width";
 static const char __pyx_k_cyheif[] = "cyheif";
 static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_format[] = "format";
+static const char __pyx_k_height[] = "height";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_name_2[] = "__name__";
 static const char __pyx_k_pickle[] = "pickle";
 static const char __pyx_k_reduce[] = "__reduce__";
+static const char __pyx_k_resize[] = "resize";
+static const char __pyx_k_stride[] = "stride";
 static const char __pyx_k_struct[] = "struct";
 static const char __pyx_k_unpack[] = "unpack";
 static const char __pyx_k_update[] = "update";
 static const char __pyx_k_fortran[] = "fortran";
+static const char __pyx_k_getexif[] = "getexif";
 static const char __pyx_k_memview[] = "memview";
 static const char __pyx_k_message[] = "message";
 static const char __pyx_k_subcode[] = "subcode";
@@ -2261,20 +2341,27 @@ static const char __pyx_k_tobytes[] = "tobytes";
 static const char __pyx_k_Ellipsis[] = "Ellipsis";
 static const char __pyx_k_KeyError[] = "KeyError";
 static const char __pyx_k_getstate[] = "__getstate__";
+static const char __pyx_k_img_attr[] = "img_attr";
 static const char __pyx_k_itemsize[] = "itemsize";
 static const char __pyx_k_pyx_type[] = "__pyx_type";
 static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_HeifError[] = "HeifError";
 static const char __pyx_k_HeifImage[] = "HeifImage";
 static const char __pyx_k_TypeError[] = "TypeError";
+static const char __pyx_k_data_view[] = "data_view";
 static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_exif_data[] = "exif_data";
 static const char __pyx_k_file_name[] = "file_name";
+static const char __pyx_k_img_bytes[] = "img_bytes";
+static const char __pyx_k_input_img[] = "input_img";
+static const char __pyx_k_num_bytes[] = "num_bytes";
+static const char __pyx_k_pil_image[] = "pil_image";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
 static const char __pyx_k_HeifBuffer[] = "HeifBuffer";
 static const char __pyx_k_IndexError[] = "IndexError";
 static const char __pyx_k_ValueError[] = "ValueError";
+static const char __pyx_k_exif_bytes[] = "exif_bytes";
 static const char __pyx_k_frombuffer[] = "frombuffer";
 static const char __pyx_k_pyx_result[] = "__pyx_result";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
@@ -2283,9 +2370,14 @@ static const char __pyx_k_HeifEncoder[] = "HeifEncoder";
 static const char __pyx_k_MemoryError[] = "MemoryError";
 static const char __pyx_k_PickleError[] = "PickleError";
 static const char __pyx_k_Read_failed[] = "Read failed";
+static const char __pyx_k_heif_buffer[] = "heif_buffer";
+static const char __pyx_k_input_image[] = "input_image";
 static const char __pyx_k_retain_exif[] = "retain_exif";
+static const char __pyx_k_output_image[] = "output_image";
 static const char __pyx_k_pyx_checksum[] = "__pyx_checksum";
 static const char __pyx_k_stringsource[] = "stringsource";
+static const char __pyx_k_get_exif_data[] = "get_exif_data";
+static const char __pyx_k_get_pil_image[] = "get_pil_image";
 static const char __pyx_k_heif_heif_pyx[] = "heif\\heif.pyx";
 static const char __pyx_k_pyx_getbuffer[] = "__pyx_getbuffer";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
@@ -2293,9 +2385,12 @@ static const char __pyx_k_HeifImageHandle[] = "HeifImageHandle";
 static const char __pyx_k_View_MemoryView[] = "View.MemoryView";
 static const char __pyx_k_allocate_buffer[] = "allocate_buffer";
 static const char __pyx_k_dtype_is_object[] = "dtype_is_object";
+static const char __pyx_k_heifImageHandle[] = "heifImageHandle";
 static const char __pyx_k_input_file_name[] = "input_file_name";
 static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
+static const char __pyx_k_write_exif_data[] = "write_exif_data";
+static const char __pyx_k_write_pil_image[] = "write_pil_image";
 static const char __pyx_k_get_heif_version[] = "get_heif_version";
 static const char __pyx_k_output_file_name[] = "output_file_name";
 static const char __pyx_k_Invalid_EXIF_Data[] = "Invalid EXIF Data";
@@ -2304,12 +2399,12 @@ static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_strided_and_direct[] = "<strided and direct>";
 static const char __pyx_k_HeifDecodingOptions[] = "HeifDecodingOptions";
 static const char __pyx_k_HeifImageAttributes[] = "HeifImageAttributes";
+static const char __pyx_k_Width_Height_Stride[] = "Width: {}, Height: {}, Stride: {}";
 static const char __pyx_k_convert_hdr_to_8bit[] = "convert_hdr_to_8bit";
 static const char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static const char __pyx_k_apply_transformations[] = "apply_transformations";
 static const char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
 static const char __pyx_k_MemoryView_of_r_object[] = "<MemoryView of %r object>";
-static const char __pyx_k_pyx_unpickle_HeifImage[] = "__pyx_unpickle_HeifImage";
 static const char __pyx_k_MemoryView_of_r_at_0x_x[] = "<MemoryView of %r at 0x%x>";
 static const char __pyx_k_contiguous_and_indirect[] = "<contiguous and indirect>";
 static const char __pyx_k_Cannot_index_with_type_s[] = "Cannot index with type '%s'";
@@ -2318,6 +2413,7 @@ static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %
 static const char __pyx_k_write_exif_data_from_bytes[] = "write_exif_data_from_bytes";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
+static const char __pyx_k_pyx_unpickle_HeifImageAttribut[] = "__pyx_unpickle_HeifImageAttributes";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
 static const char __pyx_k_Heif_Error_Message_0_Code_1_Sub[] = "Heif Error - Message: {0}, Code: {1}, Sub Code: {2}";
 static const char __pyx_k_Buffer_view_does_not_expose_stri[] = "Buffer view does not expose strides";
@@ -2325,8 +2421,8 @@ static const char __pyx_k_Can_only_create_a_buffer_that_is[] = "Can only create 
 static const char __pyx_k_Cannot_assign_to_read_only_memor[] = "Cannot assign to read-only memoryview";
 static const char __pyx_k_Cannot_create_writable_memory_vi[] = "Cannot create writable memory view from read-only memoryview";
 static const char __pyx_k_Empty_shape_tuple_for_cython_arr[] = "Empty shape tuple for cython.array";
+static const char __pyx_k_Incompatible_checksums_s_vs_0x6e[] = "Incompatible checksums (%s vs 0x6eaffd9 = (bits_per_pixel, chroma, colorspace, height, width))";
 static const char __pyx_k_Incompatible_checksums_s_vs_0xb0[] = "Incompatible checksums (%s vs 0xb068931 = (name))";
-static const char __pyx_k_Incompatible_checksums_s_vs_0xd4[] = "Incompatible checksums (%s vs 0xd41d8cd = ())";
 static const char __pyx_k_Indirect_dimensions_not_supporte[] = "Indirect dimensions not supported";
 static const char __pyx_k_Invalid_mode_expected_c_or_fortr[] = "Invalid mode, expected 'c' or 'fortran', got %s";
 static const char __pyx_k_No_value_specified_for_struct_at[] = "No value specified for struct attribute 'code'";
@@ -2336,6 +2432,7 @@ static const char __pyx_k_Width_Height_Bits_Per_Pixel_Chro[] = "Width: {}, Heigh
 static const char __pyx_k_got_differing_extents_in_dimensi[] = "got differing extents in dimension %d (got %d and %d)";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static const char __pyx_k_self__handle_self__img_cannot_be[] = "self._handle,self._img cannot be converted to a Python object for pickling";
+static const char __pyx_k_self__img_cannot_be_converted_to[] = "self._img cannot be converted to a Python object for pickling";
 static const char __pyx_k_unable_to_allocate_shape_and_str[] = "unable to allocate shape and strides.";
 static const char __pyx_k_No_value_specified_for_struct_at_2[] = "No value specified for struct attribute 'subcode'";
 static const char __pyx_k_No_value_specified_for_struct_at_3[] = "No value specified for struct attribute 'message'";
@@ -2359,8 +2456,8 @@ static PyObject *__pyx_n_s_HeifImageAttributes;
 static PyObject *__pyx_n_s_HeifImageHandle;
 static PyObject *__pyx_kp_u_Heif_Error_Message_0_Code_1_Sub;
 static PyObject *__pyx_n_s_Image;
+static PyObject *__pyx_kp_s_Incompatible_checksums_s_vs_0x6e;
 static PyObject *__pyx_kp_s_Incompatible_checksums_s_vs_0xb0;
-static PyObject *__pyx_kp_s_Incompatible_checksums_s_vs_0xd4;
 static PyObject *__pyx_n_s_IndexError;
 static PyObject *__pyx_kp_s_Indirect_dimensions_not_supporte;
 static PyObject *__pyx_kp_u_Invalid_EXIF_Data;
@@ -2386,11 +2483,12 @@ static PyObject *__pyx_kp_s_Unable_to_convert_item_to_object;
 static PyObject *__pyx_n_s_ValueError;
 static PyObject *__pyx_n_s_View_MemoryView;
 static PyObject *__pyx_kp_u_Width_Height_Bits_Per_Pixel_Chro;
-static PyObject *__pyx_kp_b__39;
-static PyObject *__pyx_kp_b__40;
+static PyObject *__pyx_kp_u_Width_Height_Stride;
 static PyObject *__pyx_kp_b__41;
 static PyObject *__pyx_kp_b__42;
-static PyObject *__pyx_kp_u__43;
+static PyObject *__pyx_kp_b__43;
+static PyObject *__pyx_kp_b__44;
+static PyObject *__pyx_kp_u__45;
 static PyObject *__pyx_n_s_allocate_buffer;
 static PyObject *__pyx_n_s_apply_transformations;
 static PyObject *__pyx_n_s_base;
@@ -2404,13 +2502,17 @@ static PyObject *__pyx_kp_s_contiguous_and_indirect;
 static PyObject *__pyx_n_s_convert_hdr_to_8bit;
 static PyObject *__pyx_n_s_ctx;
 static PyObject *__pyx_n_s_cyheif;
+static PyObject *__pyx_n_s_data;
+static PyObject *__pyx_n_s_data_view;
 static PyObject *__pyx_n_s_dict;
 static PyObject *__pyx_n_s_dtype_is_object;
 static PyObject *__pyx_n_s_encode;
 static PyObject *__pyx_n_s_enumerate;
 static PyObject *__pyx_n_s_err;
 static PyObject *__pyx_n_s_error;
+static PyObject *__pyx_n_s_exif;
 static PyObject *__pyx_n_u_exif;
+static PyObject *__pyx_n_s_exif_bytes;
 static PyObject *__pyx_n_s_exif_data;
 static PyObject *__pyx_n_s_file_name;
 static PyObject *__pyx_n_s_flags;
@@ -2419,14 +2521,24 @@ static PyObject *__pyx_n_s_format;
 static PyObject *__pyx_n_s_fortran;
 static PyObject *__pyx_n_u_fortran;
 static PyObject *__pyx_n_s_frombuffer;
+static PyObject *__pyx_n_s_get_exif_data;
 static PyObject *__pyx_n_s_get_heif_version;
+static PyObject *__pyx_n_s_get_pil_image;
+static PyObject *__pyx_n_s_getexif;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_kp_s_got_differing_extents_in_dimensi;
+static PyObject *__pyx_n_s_heifImageHandle;
+static PyObject *__pyx_n_s_heif_buffer;
 static PyObject *__pyx_kp_s_heif_heif_pyx;
+static PyObject *__pyx_n_s_height;
 static PyObject *__pyx_n_s_id;
+static PyObject *__pyx_n_s_img_attr;
+static PyObject *__pyx_n_s_img_bytes;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_info;
 static PyObject *__pyx_n_s_input_file_name;
+static PyObject *__pyx_n_s_input_image;
+static PyObject *__pyx_n_s_input_img;
 static PyObject *__pyx_n_s_itemsize;
 static PyObject *__pyx_kp_s_itemsize_0_for_cython_array;
 static PyObject *__pyx_n_s_join;
@@ -2440,10 +2552,13 @@ static PyObject *__pyx_n_s_name_2;
 static PyObject *__pyx_n_s_ndim;
 static PyObject *__pyx_n_s_new;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
+static PyObject *__pyx_n_s_num_bytes;
 static PyObject *__pyx_n_s_obj;
 static PyObject *__pyx_n_s_output_file_name;
+static PyObject *__pyx_n_s_output_image;
 static PyObject *__pyx_n_s_pack;
 static PyObject *__pyx_n_s_pickle;
+static PyObject *__pyx_n_s_pil_image;
 static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_pyx_PickleError;
 static PyObject *__pyx_n_s_pyx_checksum;
@@ -2452,16 +2567,18 @@ static PyObject *__pyx_n_s_pyx_result;
 static PyObject *__pyx_n_s_pyx_state;
 static PyObject *__pyx_n_s_pyx_type;
 static PyObject *__pyx_n_s_pyx_unpickle_Enum;
-static PyObject *__pyx_n_s_pyx_unpickle_HeifImage;
+static PyObject *__pyx_n_s_pyx_unpickle_HeifImageAttribut;
 static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_u_raw;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
+static PyObject *__pyx_n_s_resize;
 static PyObject *__pyx_n_s_retain_exif;
 static PyObject *__pyx_kp_u_s;
 static PyObject *__pyx_kp_s_self__handle_self__img_cannot_be;
+static PyObject *__pyx_kp_s_self__img_cannot_be_converted_to;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_shape;
@@ -2469,6 +2586,7 @@ static PyObject *__pyx_n_s_size;
 static PyObject *__pyx_n_s_start;
 static PyObject *__pyx_n_s_step;
 static PyObject *__pyx_n_s_stop;
+static PyObject *__pyx_n_s_stride;
 static PyObject *__pyx_kp_s_strided_and_direct;
 static PyObject *__pyx_kp_s_strided_and_direct_or_indirect;
 static PyObject *__pyx_kp_s_strided_and_indirect;
@@ -2482,7 +2600,10 @@ static PyObject *__pyx_kp_s_unable_to_allocate_array_data;
 static PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
+static PyObject *__pyx_n_s_width;
+static PyObject *__pyx_n_s_write_exif_data;
 static PyObject *__pyx_n_s_write_exif_data_from_bytes;
+static PyObject *__pyx_n_s_write_pil_image;
 static int __pyx_pf_6cyheif_10HeifBuffer___cinit__(struct __pyx_obj_6cyheif_HeifBuffer *__pyx_v_self, size_t __pyx_v_sz); /* proto */
 static void __pyx_pf_6cyheif_10HeifBuffer_2__dealloc__(struct __pyx_obj_6cyheif_HeifBuffer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6cyheif_10HeifBuffer_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifBuffer *__pyx_v_self); /* proto */
@@ -2502,20 +2623,21 @@ static int __pyx_pf_6cyheif_11HeifEncoder___cinit__(struct __pyx_obj_6cyheif_Hei
 static void __pyx_pf_6cyheif_11HeifEncoder_2__dealloc__(struct __pyx_obj_6cyheif_HeifEncoder *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6cyheif_11HeifEncoder_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifEncoder *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6cyheif_11HeifEncoder_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifEncoder *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_6cyheif_19HeifImageAttributes___cinit__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes___reduce_cython__(struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes_2__setstate_cython__(struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static void __pyx_pf_6cyheif_9HeifImage___dealloc__(struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cyheif_9HeifImage_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cyheif_9HeifImage_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6cyheif_15HeifImageHandle_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6cyheif_15HeifImageHandle_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, char const *__pyx_v_file_name, int __pyx_v_apply_transformations, int __pyx_v_retain_exif); /* proto */
-static PyObject *__pyx_pf_6cyheif_9HeifImage_2get_exif_data(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, char const *__pyx_v_file_name); /* proto */
-static PyObject *__pyx_pf_6cyheif_9HeifImage_4write_exif_data_from_bytes(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, char const *__pyx_v_input_file_name, char const *__pyx_v_output_file_name, PyObject *__pyx_v_exif_data); /* proto */
-static PyObject *__pyx_pf_6cyheif_9HeifImage_6write_exif_data(struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, char const *__pyx_v_input_file_name, char const *__pyx_v_output_file_name, PyObject *__pyx_v_exif_data); /* proto */
-static PyObject *__pyx_pf_6cyheif_9HeifImage_8__reduce_cython__(struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6cyheif_9HeifImage_10__setstate_cython__(struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_6cyheif_get_heif_version(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
-static PyObject *__pyx_pf_6cyheif_2__pyx_unpickle_HeifImage(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_6cyheif_get_pil_image(CYTHON_UNUSED PyObject *__pyx_self, char const *__pyx_v_file_name, int __pyx_v_apply_transformations, int __pyx_v_retain_exif); /* proto */
+static PyObject *__pyx_pf_6cyheif_2write_pil_image(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_input_img, char const *__pyx_v_output_file_name, int __pyx_v_retain_exif); /* proto */
+static PyObject *__pyx_pf_6cyheif_4get_exif_data(CYTHON_UNUSED PyObject *__pyx_self, char const *__pyx_v_file_name); /* proto */
+static PyObject *__pyx_pf_6cyheif_6write_exif_data_from_bytes(CYTHON_UNUSED PyObject *__pyx_self, char const *__pyx_v_input_file_name, char const *__pyx_v_output_file_name, PyObject *__pyx_v_exif_data); /* proto */
+static PyObject *__pyx_pf_6cyheif_8write_exif_data(CYTHON_UNUSED PyObject *__pyx_self, char const *__pyx_v_input_file_name, char const *__pyx_v_output_file_name, PyObject *__pyx_v_exif_data); /* proto */
+static PyObject *__pyx_pf_6cyheif_10get_heif_version(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
+static PyObject *__pyx_pf_6cyheif_12__pyx_unpickle_HeifImageAttributes(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -2564,17 +2686,19 @@ static PyObject *__pyx_tp_new_6cyheif_HeifContext(PyTypeObject *t, PyObject *a, 
 static PyObject *__pyx_tp_new_6cyheif_HeifDecodingOptions(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6cyheif_HeifEncoder(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6cyheif_HeifImageAttributes(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_6cyheif_HeifImageHandle(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6cyheif_HeifImage(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_6cyheif_HeifImageHandle(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_array(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_Enum(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_memoryview(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new__memoryviewslice(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
+static PyObject *__pyx_int_8;
+static PyObject *__pyx_int_116064217;
 static PyObject *__pyx_int_184977713;
-static PyObject *__pyx_int_222419149;
 static PyObject *__pyx_int_neg_1;
+static __Pyx_memviewslice __pyx_k__16;
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
@@ -2584,14 +2708,13 @@ static PyObject *__pyx_tuple__6;
 static PyObject *__pyx_tuple__7;
 static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_tuple__9;
-static PyObject *__pyx_slice__35;
+static PyObject *__pyx_slice__37;
 static PyObject *__pyx_tuple__10;
 static PyObject *__pyx_tuple__11;
 static PyObject *__pyx_tuple__12;
 static PyObject *__pyx_tuple__13;
 static PyObject *__pyx_tuple__14;
 static PyObject *__pyx_tuple__15;
-static PyObject *__pyx_tuple__16;
 static PyObject *__pyx_tuple__17;
 static PyObject *__pyx_tuple__18;
 static PyObject *__pyx_tuple__19;
@@ -2610,19 +2733,31 @@ static PyObject *__pyx_tuple__31;
 static PyObject *__pyx_tuple__32;
 static PyObject *__pyx_tuple__33;
 static PyObject *__pyx_tuple__34;
+static PyObject *__pyx_tuple__35;
 static PyObject *__pyx_tuple__36;
-static PyObject *__pyx_tuple__37;
 static PyObject *__pyx_tuple__38;
-static PyObject *__pyx_tuple__45;
-static PyObject *__pyx_tuple__47;
+static PyObject *__pyx_tuple__39;
+static PyObject *__pyx_tuple__40;
+static PyObject *__pyx_tuple__46;
 static PyObject *__pyx_tuple__48;
-static PyObject *__pyx_tuple__49;
 static PyObject *__pyx_tuple__50;
-static PyObject *__pyx_tuple__51;
 static PyObject *__pyx_tuple__52;
-static PyObject *__pyx_codeobj__44;
-static PyObject *__pyx_codeobj__46;
+static PyObject *__pyx_tuple__54;
+static PyObject *__pyx_tuple__57;
+static PyObject *__pyx_tuple__59;
+static PyObject *__pyx_tuple__60;
+static PyObject *__pyx_tuple__61;
+static PyObject *__pyx_tuple__62;
+static PyObject *__pyx_tuple__63;
+static PyObject *__pyx_tuple__64;
+static PyObject *__pyx_codeobj__47;
+static PyObject *__pyx_codeobj__49;
+static PyObject *__pyx_codeobj__51;
 static PyObject *__pyx_codeobj__53;
+static PyObject *__pyx_codeobj__55;
+static PyObject *__pyx_codeobj__56;
+static PyObject *__pyx_codeobj__58;
+static PyObject *__pyx_codeobj__65;
 /* Late includes */
 
 /* "heif/heif.pyx":13
@@ -4420,60 +4555,7 @@ static PyObject *__pyx_pf_6cyheif_11HeifEncoder_6__setstate_cython__(CYTHON_UNUS
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":98
- *     cdef int height
- * 
- *     def __cinit__(self):             # <<<<<<<<<<<<<<
- *         return
- * 
- */
-
-/* Python wrapper */
-static int __pyx_pw_6cyheif_19HeifImageAttributes_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_6cyheif_19HeifImageAttributes_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
-  if (unlikely(PyTuple_GET_SIZE(__pyx_args) > 0)) {
-    __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 0, 0, PyTuple_GET_SIZE(__pyx_args)); return -1;}
-  if (unlikely(__pyx_kwds) && unlikely(PyDict_Size(__pyx_kwds) > 0) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__cinit__", 0))) return -1;
-  __pyx_r = __pyx_pf_6cyheif_19HeifImageAttributes___cinit__(((struct __pyx_obj_6cyheif_HeifImageAttributes *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_6cyheif_19HeifImageAttributes___cinit__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__cinit__", 0);
-
-  /* "heif/heif.pyx":99
- * 
- *     def __cinit__(self):
- *         return             # <<<<<<<<<<<<<<
- * 
- *     @staticmethod
- */
-  __pyx_r = 0;
-  goto __pyx_L0;
-
-  /* "heif/heif.pyx":98
- *     cdef int height
- * 
- *     def __cinit__(self):             # <<<<<<<<<<<<<<
- *         return
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "heif/heif.pyx":102
+/* "heif/heif.pyx":99
  * 
  *     @staticmethod
  *     cdef HeifImageAttributes from_image(cheif.heif_image* img):             # <<<<<<<<<<<<<<
@@ -4491,19 +4573,19 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_19HeifImage
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("from_image", 0);
 
-  /* "heif/heif.pyx":103
+  /* "heif/heif.pyx":100
  *     @staticmethod
  *     cdef HeifImageAttributes from_image(cheif.heif_image* img):
  *         cdef HeifImageAttributes img_attr = HeifImageAttributes.__new__(HeifImageAttributes)             # <<<<<<<<<<<<<<
  *         img_attr.colorspace = cheif.heif_image_get_colorspace(img)
  *         img_attr.chroma = cheif.heif_image_get_chroma_format(img)
  */
-  __pyx_t_1 = ((PyObject *)__pyx_tp_new_6cyheif_HeifImageAttributes(((PyTypeObject *)__pyx_ptype_6cyheif_HeifImageAttributes), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_6cyheif_HeifImageAttributes(((PyTypeObject *)__pyx_ptype_6cyheif_HeifImageAttributes), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
   __Pyx_GOTREF(((PyObject *)__pyx_t_1));
   __pyx_v_img_attr = ((struct __pyx_obj_6cyheif_HeifImageAttributes *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":104
+  /* "heif/heif.pyx":101
  *     cdef HeifImageAttributes from_image(cheif.heif_image* img):
  *         cdef HeifImageAttributes img_attr = HeifImageAttributes.__new__(HeifImageAttributes)
  *         img_attr.colorspace = cheif.heif_image_get_colorspace(img)             # <<<<<<<<<<<<<<
@@ -4512,7 +4594,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_19HeifImage
  */
   __pyx_v_img_attr->colorspace = heif_image_get_colorspace(__pyx_v_img);
 
-  /* "heif/heif.pyx":105
+  /* "heif/heif.pyx":102
  *         cdef HeifImageAttributes img_attr = HeifImageAttributes.__new__(HeifImageAttributes)
  *         img_attr.colorspace = cheif.heif_image_get_colorspace(img)
  *         img_attr.chroma = cheif.heif_image_get_chroma_format(img)             # <<<<<<<<<<<<<<
@@ -4521,7 +4603,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_19HeifImage
  */
   __pyx_v_img_attr->chroma = heif_image_get_chroma_format(__pyx_v_img);
 
-  /* "heif/heif.pyx":106
+  /* "heif/heif.pyx":103
  *         img_attr.colorspace = cheif.heif_image_get_colorspace(img)
  *         img_attr.chroma = cheif.heif_image_get_chroma_format(img)
  *         img_attr.bits_per_pixel = cheif.heif_image_get_bits_per_pixel_range(img, cheif.heif_channel.heif_channel_interleaved)             # <<<<<<<<<<<<<<
@@ -4530,7 +4612,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_19HeifImage
  */
   __pyx_v_img_attr->bits_per_pixel = heif_image_get_bits_per_pixel_range(__pyx_v_img, heif_channel_interleaved);
 
-  /* "heif/heif.pyx":107
+  /* "heif/heif.pyx":104
  *         img_attr.chroma = cheif.heif_image_get_chroma_format(img)
  *         img_attr.bits_per_pixel = cheif.heif_image_get_bits_per_pixel_range(img, cheif.heif_channel.heif_channel_interleaved)
  *         img_attr.width = cheif.heif_image_get_width(img, cheif.heif_channel.heif_channel_interleaved)             # <<<<<<<<<<<<<<
@@ -4539,7 +4621,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_19HeifImage
  */
   __pyx_v_img_attr->width = heif_image_get_width(__pyx_v_img, heif_channel_interleaved);
 
-  /* "heif/heif.pyx":108
+  /* "heif/heif.pyx":105
  *         img_attr.bits_per_pixel = cheif.heif_image_get_bits_per_pixel_range(img, cheif.heif_channel.heif_channel_interleaved)
  *         img_attr.width = cheif.heif_image_get_width(img, cheif.heif_channel.heif_channel_interleaved)
  *         img_attr.height = cheif.heif_image_get_height(img, cheif.heif_channel.heif_channel_interleaved)             # <<<<<<<<<<<<<<
@@ -4548,7 +4630,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_19HeifImage
  */
   __pyx_v_img_attr->height = heif_image_get_height(__pyx_v_img, heif_channel_interleaved);
 
-  /* "heif/heif.pyx":109
+  /* "heif/heif.pyx":106
  *         img_attr.width = cheif.heif_image_get_width(img, cheif.heif_channel.heif_channel_interleaved)
  *         img_attr.height = cheif.heif_image_get_height(img, cheif.heif_channel.heif_channel_interleaved)
  *         return img_attr             # <<<<<<<<<<<<<<
@@ -4560,7 +4642,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_19HeifImage
   __pyx_r = __pyx_v_img_attr;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":102
+  /* "heif/heif.pyx":99
  * 
  *     @staticmethod
  *     cdef HeifImageAttributes from_image(cheif.heif_image* img):             # <<<<<<<<<<<<<<
@@ -4580,7 +4662,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_19HeifImage
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":111
+/* "heif/heif.pyx":108
  *         return img_attr
  * 
  *     cdef str get_pillow_raw_format(self):             # <<<<<<<<<<<<<<
@@ -4599,53 +4681,53 @@ static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_get_pillow_raw_format(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_pillow_raw_format", 0);
 
-  /* "heif/heif.pyx":113
+  /* "heif/heif.pyx":110
  *     cdef str get_pillow_raw_format(self):
  *         chroma_to_pillow_raw_format: Dict[cheif.heif_chroma, str] = {
  *             cheif.heif_chroma.heif_chroma_interleaved_RGB: 'RGB',             # <<<<<<<<<<<<<<
  *             cheif.heif_chroma.heif_chroma_interleaved_RGBA: 'RGBA',
  *         }
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_enum__heif_chroma(heif_chroma_interleaved_RGB); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_enum__heif_chroma(heif_chroma_interleaved_RGB); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_t_2, __pyx_n_u_RGB) < 0) __PYX_ERR(0, 113, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_t_2, __pyx_n_u_RGB) < 0) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "heif/heif.pyx":114
+  /* "heif/heif.pyx":111
  *         chroma_to_pillow_raw_format: Dict[cheif.heif_chroma, str] = {
  *             cheif.heif_chroma.heif_chroma_interleaved_RGB: 'RGB',
  *             cheif.heif_chroma.heif_chroma_interleaved_RGBA: 'RGBA',             # <<<<<<<<<<<<<<
  *         }
  *         return chroma_to_pillow_raw_format[self.chroma]
  */
-  __pyx_t_2 = __Pyx_PyInt_From_enum__heif_chroma(heif_chroma_interleaved_RGBA); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_enum__heif_chroma(heif_chroma_interleaved_RGBA); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_t_2, __pyx_n_u_RGBA) < 0) __PYX_ERR(0, 113, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_t_2, __pyx_n_u_RGBA) < 0) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_chroma_to_pillow_raw_format = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":116
+  /* "heif/heif.pyx":113
  *             cheif.heif_chroma.heif_chroma_interleaved_RGBA: 'RGBA',
  *         }
  *         return chroma_to_pillow_raw_format[self.chroma]             # <<<<<<<<<<<<<<
  * 
- *     cdef print(self):
+ *     cdef print_image_attributes(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_enum__heif_chroma(__pyx_v_self->chroma); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_enum__heif_chroma(__pyx_v_self->chroma); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_chroma_to_pillow_raw_format, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_chroma_to_pillow_raw_format, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 116, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 113, __pyx_L1_error)
   __pyx_r = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":111
+  /* "heif/heif.pyx":108
  *         return img_attr
  * 
  *     cdef str get_pillow_raw_format(self):             # <<<<<<<<<<<<<<
@@ -4666,15 +4748,15 @@ static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_get_pillow_raw_format(str
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":118
+/* "heif/heif.pyx":115
  *         return chroma_to_pillow_raw_format[self.chroma]
  * 
- *     cdef print(self):             # <<<<<<<<<<<<<<
+ *     cdef print_image_attributes(self):             # <<<<<<<<<<<<<<
  *         print('Width: {}, Height: {}, Bits Per Pixel: {}, Chroma: {}, ColorSpace: {}'.format(self.width, self.height, self.bits_per_pixel, self.chroma, self.colorspace))
  * 
  */
 
-static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_print(struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self) {
+static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_print_image_attributes(struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4690,26 +4772,26 @@ static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_print(struct __pyx_obj_6c
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("print", 0);
+  __Pyx_RefNannySetupContext("print_image_attributes", 0);
 
-  /* "heif/heif.pyx":119
+  /* "heif/heif.pyx":116
  * 
- *     cdef print(self):
+ *     cdef print_image_attributes(self):
  *         print('Width: {}, Height: {}, Bits Per Pixel: {}, Chroma: {}, ColorSpace: {}'.format(self.width, self.height, self.bits_per_pixel, self.chroma, self.colorspace))             # <<<<<<<<<<<<<<
  * 
- * 
+ * cdef class HeifImage:
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_kp_u_Width_Height_Bits_Per_Pixel_Chro, __pyx_n_s_format); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_kp_u_Width_Height_Bits_Per_Pixel_Chro, __pyx_n_s_format); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->width); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->width); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->height); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->height); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_self->bits_per_pixel); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_self->bits_per_pixel); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyInt_From_enum__heif_chroma(__pyx_v_self->chroma); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_From_enum__heif_chroma(__pyx_v_self->chroma); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = __Pyx_PyInt_From_enum__heif_colorspace(__pyx_v_self->colorspace); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_From_enum__heif_colorspace(__pyx_v_self->colorspace); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_8 = NULL;
   __pyx_t_9 = 0;
@@ -4726,7 +4808,7 @@ static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_print(struct __pyx_obj_6c
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[6] = {__pyx_t_8, __pyx_t_3, __pyx_t_4, __pyx_t_5, __pyx_t_6, __pyx_t_7};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 5+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 5+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4739,7 +4821,7 @@ static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_print(struct __pyx_obj_6c
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[6] = {__pyx_t_8, __pyx_t_3, __pyx_t_4, __pyx_t_5, __pyx_t_6, __pyx_t_7};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 5+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 5+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4750,7 +4832,7 @@ static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_print(struct __pyx_obj_6c
   } else
   #endif
   {
-    __pyx_t_10 = PyTuple_New(5+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_10 = PyTuple_New(5+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 116, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     if (__pyx_t_8) {
       __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -4770,20 +4852,20 @@ static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_print(struct __pyx_obj_6c
     __pyx_t_5 = 0;
     __pyx_t_6 = 0;
     __pyx_t_7 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_print, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_print, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "heif/heif.pyx":118
+  /* "heif/heif.pyx":115
  *         return chroma_to_pillow_raw_format[self.chroma]
  * 
- *     cdef print(self):             # <<<<<<<<<<<<<<
+ *     cdef print_image_attributes(self):             # <<<<<<<<<<<<<<
  *         print('Width: {}, Height: {}, Bits Per Pixel: {}, Chroma: {}, ColorSpace: {}'.format(self.width, self.height, self.bits_per_pixel, self.chroma, self.colorspace))
  * 
  */
@@ -4801,7 +4883,7 @@ static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_print(struct __pyx_obj_6c
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("cyheif.HeifImageAttributes.print", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.HeifImageAttributes.print_image_attributes", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4811,24 +4893,488 @@ static PyObject *__pyx_f_6cyheif_19HeifImageAttributes_print(struct __pyx_obj_6c
 
 /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
- * def __setstate_cython__(self, __pyx_state):
+ *     cdef tuple state
+ *     cdef object _dict
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6cyheif_19HeifImageAttributes_3__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6cyheif_19HeifImageAttributes_3__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6cyheif_19HeifImageAttributes_1__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6cyheif_19HeifImageAttributes_1__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6cyheif_19HeifImageAttributes_2__reduce_cython__(((struct __pyx_obj_6cyheif_HeifImageAttributes *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6cyheif_19HeifImageAttributes___reduce_cython__(((struct __pyx_obj_6cyheif_HeifImageAttributes *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self) {
+static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes___reduce_cython__(struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self) {
+  PyObject *__pyx_v_state = 0;
+  PyObject *__pyx_v__dict = 0;
+  int __pyx_v_use_setstate;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__reduce_cython__", 0);
+
+  /* "(tree fragment)":5
+ *     cdef object _dict
+ *     cdef bint use_setstate
+ *     state = (self.bits_per_pixel, self.chroma, self.colorspace, self.height, self.width)             # <<<<<<<<<<<<<<
+ *     _dict = getattr(self, '__dict__', None)
+ *     if _dict is not None:
+ */
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->bits_per_pixel); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyInt_From_enum__heif_chroma(__pyx_v_self->chroma); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyInt_From_enum__heif_colorspace(__pyx_v_self->colorspace); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->height); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_self->width); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = PyTuple_New(5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_6, 4, __pyx_t_5);
+  __pyx_t_1 = 0;
+  __pyx_t_2 = 0;
+  __pyx_t_3 = 0;
+  __pyx_t_4 = 0;
+  __pyx_t_5 = 0;
+  __pyx_v_state = ((PyObject*)__pyx_t_6);
+  __pyx_t_6 = 0;
+
+  /* "(tree fragment)":6
+ *     cdef bint use_setstate
+ *     state = (self.bits_per_pixel, self.chroma, self.colorspace, self.height, self.width)
+ *     _dict = getattr(self, '__dict__', None)             # <<<<<<<<<<<<<<
+ *     if _dict is not None:
+ *         state += (_dict,)
+ */
+  __pyx_t_6 = __Pyx_GetAttr3(((PyObject *)__pyx_v_self), __pyx_n_s_dict, Py_None); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 6, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_v__dict = __pyx_t_6;
+  __pyx_t_6 = 0;
+
+  /* "(tree fragment)":7
+ *     state = (self.bits_per_pixel, self.chroma, self.colorspace, self.height, self.width)
+ *     _dict = getattr(self, '__dict__', None)
+ *     if _dict is not None:             # <<<<<<<<<<<<<<
+ *         state += (_dict,)
+ *         use_setstate = True
+ */
+  __pyx_t_7 = (__pyx_v__dict != Py_None);
+  __pyx_t_8 = (__pyx_t_7 != 0);
+  if (__pyx_t_8) {
+
+    /* "(tree fragment)":8
+ *     _dict = getattr(self, '__dict__', None)
+ *     if _dict is not None:
+ *         state += (_dict,)             # <<<<<<<<<<<<<<
+ *         use_setstate = True
+ *     else:
+ */
+    __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 8, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_INCREF(__pyx_v__dict);
+    __Pyx_GIVEREF(__pyx_v__dict);
+    PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_v__dict);
+    __pyx_t_5 = PyNumber_InPlaceAdd(__pyx_v_state, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 8, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_DECREF_SET(__pyx_v_state, ((PyObject*)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "(tree fragment)":9
+ *     if _dict is not None:
+ *         state += (_dict,)
+ *         use_setstate = True             # <<<<<<<<<<<<<<
+ *     else:
+ *         use_setstate = False
+ */
+    __pyx_v_use_setstate = 1;
+
+    /* "(tree fragment)":7
+ *     state = (self.bits_per_pixel, self.chroma, self.colorspace, self.height, self.width)
+ *     _dict = getattr(self, '__dict__', None)
+ *     if _dict is not None:             # <<<<<<<<<<<<<<
+ *         state += (_dict,)
+ *         use_setstate = True
+ */
+    goto __pyx_L3;
+  }
+
+  /* "(tree fragment)":11
+ *         use_setstate = True
+ *     else:
+ *         use_setstate = False             # <<<<<<<<<<<<<<
+ *     if use_setstate:
+ *         return __pyx_unpickle_HeifImageAttributes, (type(self), 0x6eaffd9, None), state
+ */
+  /*else*/ {
+    __pyx_v_use_setstate = 0;
+  }
+  __pyx_L3:;
+
+  /* "(tree fragment)":12
+ *     else:
+ *         use_setstate = False
+ *     if use_setstate:             # <<<<<<<<<<<<<<
+ *         return __pyx_unpickle_HeifImageAttributes, (type(self), 0x6eaffd9, None), state
+ *     else:
+ */
+  __pyx_t_8 = (__pyx_v_use_setstate != 0);
+  if (__pyx_t_8) {
+
+    /* "(tree fragment)":13
+ *         use_setstate = False
+ *     if use_setstate:
+ *         return __pyx_unpickle_HeifImageAttributes, (type(self), 0x6eaffd9, None), state             # <<<<<<<<<<<<<<
+ *     else:
+ *         return __pyx_unpickle_HeifImageAttributes, (type(self), 0x6eaffd9, state)
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_pyx_unpickle_HeifImageAttribut); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_INCREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __Pyx_GIVEREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    PyTuple_SET_ITEM(__pyx_t_6, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __Pyx_INCREF(__pyx_int_116064217);
+    __Pyx_GIVEREF(__pyx_int_116064217);
+    PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_int_116064217);
+    __Pyx_INCREF(Py_None);
+    __Pyx_GIVEREF(Py_None);
+    PyTuple_SET_ITEM(__pyx_t_6, 2, Py_None);
+    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_6);
+    PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_6);
+    __Pyx_INCREF(__pyx_v_state);
+    __Pyx_GIVEREF(__pyx_v_state);
+    PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_v_state);
+    __pyx_t_5 = 0;
+    __pyx_t_6 = 0;
+    __pyx_r = __pyx_t_4;
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
+
+    /* "(tree fragment)":12
+ *     else:
+ *         use_setstate = False
+ *     if use_setstate:             # <<<<<<<<<<<<<<
+ *         return __pyx_unpickle_HeifImageAttributes, (type(self), 0x6eaffd9, None), state
+ *     else:
+ */
+  }
+
+  /* "(tree fragment)":15
+ *         return __pyx_unpickle_HeifImageAttributes, (type(self), 0x6eaffd9, None), state
+ *     else:
+ *         return __pyx_unpickle_HeifImageAttributes, (type(self), 0x6eaffd9, state)             # <<<<<<<<<<<<<<
+ * def __setstate_cython__(self, __pyx_state):
+ *     __pyx_unpickle_HeifImageAttributes__set_state(self, __pyx_state)
+ */
+  /*else*/ {
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_pyx_unpickle_HeifImageAttribut); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 15, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 15, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_INCREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __Pyx_GIVEREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    PyTuple_SET_ITEM(__pyx_t_6, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __Pyx_INCREF(__pyx_int_116064217);
+    __Pyx_GIVEREF(__pyx_int_116064217);
+    PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_int_116064217);
+    __Pyx_INCREF(__pyx_v_state);
+    __Pyx_GIVEREF(__pyx_v_state);
+    PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_v_state);
+    __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 15, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_6);
+    PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_6);
+    __pyx_t_4 = 0;
+    __pyx_t_6 = 0;
+    __pyx_r = __pyx_t_5;
+    __pyx_t_5 = 0;
+    goto __pyx_L0;
+  }
+
+  /* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     cdef tuple state
+ *     cdef object _dict
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_AddTraceback("cyheif.HeifImageAttributes.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_state);
+  __Pyx_XDECREF(__pyx_v__dict);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":16
+ *     else:
+ *         return __pyx_unpickle_HeifImageAttributes, (type(self), 0x6eaffd9, state)
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     __pyx_unpickle_HeifImageAttributes__set_state(self, __pyx_state)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cyheif_19HeifImageAttributes_3__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_6cyheif_19HeifImageAttributes_3__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cyheif_19HeifImageAttributes_2__setstate_cython__(((struct __pyx_obj_6cyheif_HeifImageAttributes *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes_2__setstate_cython__(struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__setstate_cython__", 0);
+
+  /* "(tree fragment)":17
+ *         return __pyx_unpickle_HeifImageAttributes, (type(self), 0x6eaffd9, state)
+ * def __setstate_cython__(self, __pyx_state):
+ *     __pyx_unpickle_HeifImageAttributes__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
+ */
+  if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6cyheif___pyx_unpickle_HeifImageAttributes__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "(tree fragment)":16
+ *     else:
+ *         return __pyx_unpickle_HeifImageAttributes, (type(self), 0x6eaffd9, state)
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     __pyx_unpickle_HeifImageAttributes__set_state(self, __pyx_state)
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cyheif.HeifImageAttributes.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "heif/heif.pyx":121
+ *     cdef cheif.heif_image* _img
+ * 
+ *     def __dealloc__(self):             # <<<<<<<<<<<<<<
+ *         if self._img is not NULL:
+ *             cheif.heif_image_release(self._img)
+ */
+
+/* Python wrapper */
+static void __pyx_pw_6cyheif_9HeifImage_1__dealloc__(PyObject *__pyx_v_self); /*proto*/
+static void __pyx_pw_6cyheif_9HeifImage_1__dealloc__(PyObject *__pyx_v_self) {
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__dealloc__ (wrapper)", 0);
+  __pyx_pf_6cyheif_9HeifImage___dealloc__(((struct __pyx_obj_6cyheif_HeifImage *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+}
+
+static void __pyx_pf_6cyheif_9HeifImage___dealloc__(struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self) {
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  __Pyx_RefNannySetupContext("__dealloc__", 0);
+
+  /* "heif/heif.pyx":122
+ * 
+ *     def __dealloc__(self):
+ *         if self._img is not NULL:             # <<<<<<<<<<<<<<
+ *             cheif.heif_image_release(self._img)
+ *             self._img = NULL
+ */
+  __pyx_t_1 = ((__pyx_v_self->_img != NULL) != 0);
+  if (__pyx_t_1) {
+
+    /* "heif/heif.pyx":123
+ *     def __dealloc__(self):
+ *         if self._img is not NULL:
+ *             cheif.heif_image_release(self._img)             # <<<<<<<<<<<<<<
+ *             self._img = NULL
+ * 
+ */
+    heif_image_release(__pyx_v_self->_img);
+
+    /* "heif/heif.pyx":124
+ *         if self._img is not NULL:
+ *             cheif.heif_image_release(self._img)
+ *             self._img = NULL             # <<<<<<<<<<<<<<
+ * 
+ *     @staticmethod
+ */
+    __pyx_v_self->_img = NULL;
+
+    /* "heif/heif.pyx":122
+ * 
+ *     def __dealloc__(self):
+ *         if self._img is not NULL:             # <<<<<<<<<<<<<<
+ *             cheif.heif_image_release(self._img)
+ *             self._img = NULL
+ */
+  }
+
+  /* "heif/heif.pyx":121
+ *     cdef cheif.heif_image* _img
+ * 
+ *     def __dealloc__(self):             # <<<<<<<<<<<<<<
+ *         if self._img is not NULL:
+ *             cheif.heif_image_release(self._img)
+ */
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+}
+
+/* "heif/heif.pyx":127
+ * 
+ *     @staticmethod
+ *     cdef HeifImage from_image(cheif.heif_image* img):             # <<<<<<<<<<<<<<
+ *         cdef HeifImage image = HeifImage()
+ *         image._img = img
+ */
+
+static struct __pyx_obj_6cyheif_HeifImage *__pyx_f_6cyheif_9HeifImage_from_image(struct heif_image *__pyx_v_img) {
+  struct __pyx_obj_6cyheif_HeifImage *__pyx_v_image = 0;
+  struct __pyx_obj_6cyheif_HeifImage *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("from_image", 0);
+
+  /* "heif/heif.pyx":128
+ *     @staticmethod
+ *     cdef HeifImage from_image(cheif.heif_image* img):
+ *         cdef HeifImage image = HeifImage()             # <<<<<<<<<<<<<<
+ *         image._img = img
+ *         return image
+ */
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cyheif_HeifImage)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_image = ((struct __pyx_obj_6cyheif_HeifImage *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "heif/heif.pyx":129
+ *     cdef HeifImage from_image(cheif.heif_image* img):
+ *         cdef HeifImage image = HeifImage()
+ *         image._img = img             # <<<<<<<<<<<<<<
+ *         return image
+ * 
+ */
+  __pyx_v_image->_img = __pyx_v_img;
+
+  /* "heif/heif.pyx":130
+ *         cdef HeifImage image = HeifImage()
+ *         image._img = img
+ *         return image             # <<<<<<<<<<<<<<
+ * 
+ * cdef class HeifImageHandle:
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_image));
+  __pyx_r = __pyx_v_image;
+  goto __pyx_L0;
+
+  /* "heif/heif.pyx":127
+ * 
+ *     @staticmethod
+ *     cdef HeifImage from_image(cheif.heif_image* img):             # <<<<<<<<<<<<<<
+ *         cdef HeifImage image = HeifImage()
+ *         image._img = img
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cyheif.HeifImage.from_image", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_image);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")
+ * def __setstate_cython__(self, __pyx_state):
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cyheif_9HeifImage_3__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6cyheif_9HeifImage_3__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cyheif_9HeifImage_2__reduce_cython__(((struct __pyx_obj_6cyheif_HeifImage *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cyheif_9HeifImage_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4839,9 +5385,9 @@ static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes_2__reduce_cython__(CYTHO
 
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  * def __setstate_cython__(self, __pyx_state):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")
  */
   __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -4851,14 +5397,14 @@ static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes_2__reduce_cython__(CYTHO
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")
  * def __setstate_cython__(self, __pyx_state):
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cyheif.HeifImageAttributes.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.HeifImage.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -4867,25 +5413,25 @@ static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes_2__reduce_cython__(CYTHO
 
 /* "(tree fragment)":3
  * def __reduce_cython__(self):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6cyheif_19HeifImageAttributes_5__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_6cyheif_19HeifImageAttributes_5__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_6cyheif_9HeifImage_5__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_6cyheif_9HeifImage_5__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6cyheif_19HeifImageAttributes_4__setstate_cython__(((struct __pyx_obj_6cyheif_HeifImageAttributes *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_6cyheif_9HeifImage_4__setstate_cython__(((struct __pyx_obj_6cyheif_HeifImage *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6cyheif_9HeifImage_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4895,9 +5441,9 @@ static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes_4__setstate_cython__(CYT
   __Pyx_RefNannySetupContext("__setstate_cython__", 0);
 
   /* "(tree fragment)":4
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")
  * def __setstate_cython__(self, __pyx_state):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
   __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -4907,22 +5453,22 @@ static PyObject *__pyx_pf_6cyheif_19HeifImageAttributes_4__setstate_cython__(CYT
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cyheif.HeifImageAttributes.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.HeifImage.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":127
+/* "heif/heif.pyx":137
  *     cdef HeifContext _ctx
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -4946,7 +5492,7 @@ static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyh
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "heif/heif.pyx":128
+  /* "heif/heif.pyx":138
  * 
  *     def __dealloc__(self):
  *         if self._img is not NULL:             # <<<<<<<<<<<<<<
@@ -4956,7 +5502,7 @@ static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyh
   __pyx_t_1 = ((__pyx_v_self->_img != NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "heif/heif.pyx":129
+    /* "heif/heif.pyx":139
  *     def __dealloc__(self):
  *         if self._img is not NULL:
  *             cheif.heif_image_release(self._img)             # <<<<<<<<<<<<<<
@@ -4965,7 +5511,7 @@ static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyh
  */
     heif_image_release(__pyx_v_self->_img);
 
-    /* "heif/heif.pyx":130
+    /* "heif/heif.pyx":140
  *         if self._img is not NULL:
  *             cheif.heif_image_release(self._img)
  *             self._img = NULL             # <<<<<<<<<<<<<<
@@ -4974,7 +5520,7 @@ static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyh
  */
     __pyx_v_self->_img = NULL;
 
-    /* "heif/heif.pyx":128
+    /* "heif/heif.pyx":138
  * 
  *     def __dealloc__(self):
  *         if self._img is not NULL:             # <<<<<<<<<<<<<<
@@ -4983,7 +5529,7 @@ static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyh
  */
   }
 
-  /* "heif/heif.pyx":131
+  /* "heif/heif.pyx":141
  *             cheif.heif_image_release(self._img)
  *             self._img = NULL
  *         if self._handle is not NULL:             # <<<<<<<<<<<<<<
@@ -4993,7 +5539,7 @@ static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyh
   __pyx_t_1 = ((__pyx_v_self->_handle != NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "heif/heif.pyx":132
+    /* "heif/heif.pyx":142
  *             self._img = NULL
  *         if self._handle is not NULL:
  *             cheif.heif_image_handle_release(self._handle)             # <<<<<<<<<<<<<<
@@ -5002,7 +5548,7 @@ static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyh
  */
     heif_image_handle_release(__pyx_v_self->_handle);
 
-    /* "heif/heif.pyx":133
+    /* "heif/heif.pyx":143
  *         if self._handle is not NULL:
  *             cheif.heif_image_handle_release(self._handle)
  *             self._handle = NULL             # <<<<<<<<<<<<<<
@@ -5011,7 +5557,7 @@ static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyh
  */
     __pyx_v_self->_handle = NULL;
 
-    /* "heif/heif.pyx":131
+    /* "heif/heif.pyx":141
  *             cheif.heif_image_release(self._img)
  *             self._img = NULL
  *         if self._handle is not NULL:             # <<<<<<<<<<<<<<
@@ -5020,7 +5566,7 @@ static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyh
  */
   }
 
-  /* "heif/heif.pyx":134
+  /* "heif/heif.pyx":144
  *             cheif.heif_image_handle_release(self._handle)
  *             self._handle = NULL
  *         self._ctx = None             # <<<<<<<<<<<<<<
@@ -5033,7 +5579,7 @@ static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyh
   __Pyx_DECREF(((PyObject *)__pyx_v_self->_ctx));
   __pyx_v_self->_ctx = ((struct __pyx_obj_6cyheif_HeifContext *)Py_None);
 
-  /* "heif/heif.pyx":127
+  /* "heif/heif.pyx":137
  *     cdef HeifContext _ctx
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -5045,7 +5591,7 @@ static void __pyx_pf_6cyheif_15HeifImageHandle___dealloc__(struct __pyx_obj_6cyh
   __Pyx_RefNannyFinishContext();
 }
 
-/* "heif/heif.pyx":137
+/* "heif/heif.pyx":147
  * 
  *     @staticmethod
  *     cdef HeifImageHandle from_image_handle(cheif.heif_image_handle* handle, HeifContext ctx = None):             # <<<<<<<<<<<<<<
@@ -5072,7 +5618,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   }
   __Pyx_INCREF((PyObject *)__pyx_v_ctx);
 
-  /* "heif/heif.pyx":138
+  /* "heif/heif.pyx":148
  *     @staticmethod
  *     cdef HeifImageHandle from_image_handle(cheif.heif_image_handle* handle, HeifContext ctx = None):
  *         ctx = ctx if ctx is not None else HeifContext()             # <<<<<<<<<<<<<<
@@ -5084,7 +5630,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
     __Pyx_INCREF(((PyObject *)__pyx_v_ctx));
     __pyx_t_1 = ((PyObject *)__pyx_v_ctx);
   } else {
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cyheif_HeifContext)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 138, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cyheif_HeifContext)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_1 = __pyx_t_3;
     __pyx_t_3 = 0;
@@ -5092,19 +5638,19 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   __Pyx_DECREF_SET(__pyx_v_ctx, ((struct __pyx_obj_6cyheif_HeifContext *)__pyx_t_1));
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":139
+  /* "heif/heif.pyx":149
  *     cdef HeifImageHandle from_image_handle(cheif.heif_image_handle* handle, HeifContext ctx = None):
  *         ctx = ctx if ctx is not None else HeifContext()
  *         cdef HeifImageHandle image_handle = HeifImageHandle()             # <<<<<<<<<<<<<<
  *         image_handle._ctx = ctx
  *         image_handle._handle = handle
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cyheif_HeifImageHandle)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cyheif_HeifImageHandle)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_image_handle = ((struct __pyx_obj_6cyheif_HeifImageHandle *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":140
+  /* "heif/heif.pyx":150
  *         ctx = ctx if ctx is not None else HeifContext()
  *         cdef HeifImageHandle image_handle = HeifImageHandle()
  *         image_handle._ctx = ctx             # <<<<<<<<<<<<<<
@@ -5117,7 +5663,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   __Pyx_DECREF(((PyObject *)__pyx_v_image_handle->_ctx));
   __pyx_v_image_handle->_ctx = __pyx_v_ctx;
 
-  /* "heif/heif.pyx":141
+  /* "heif/heif.pyx":151
  *         cdef HeifImageHandle image_handle = HeifImageHandle()
  *         image_handle._ctx = ctx
  *         image_handle._handle = handle             # <<<<<<<<<<<<<<
@@ -5126,7 +5672,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
  */
   __pyx_v_image_handle->_handle = __pyx_v_handle;
 
-  /* "heif/heif.pyx":142
+  /* "heif/heif.pyx":152
  *         image_handle._ctx = ctx
  *         image_handle._handle = handle
  *         return image_handle             # <<<<<<<<<<<<<<
@@ -5138,7 +5684,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   __pyx_r = __pyx_v_image_handle;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":137
+  /* "heif/heif.pyx":147
  * 
  *     @staticmethod
  *     cdef HeifImageHandle from_image_handle(cheif.heif_image_handle* handle, HeifContext ctx = None):             # <<<<<<<<<<<<<<
@@ -5160,7 +5706,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":145
+/* "heif/heif.pyx":155
  * 
  *     @staticmethod
  *     cdef HeifImageHandle from_file(const char* file_name, HeifContext ctx = None):             # <<<<<<<<<<<<<<
@@ -5189,7 +5735,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   }
   __Pyx_INCREF((PyObject *)__pyx_v_ctx);
 
-  /* "heif/heif.pyx":146
+  /* "heif/heif.pyx":156
  *     @staticmethod
  *     cdef HeifImageHandle from_file(const char* file_name, HeifContext ctx = None):
  *         ctx = ctx if ctx is not None else HeifContext()             # <<<<<<<<<<<<<<
@@ -5201,7 +5747,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
     __Pyx_INCREF(((PyObject *)__pyx_v_ctx));
     __pyx_t_1 = ((PyObject *)__pyx_v_ctx);
   } else {
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cyheif_HeifContext)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 146, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cyheif_HeifContext)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_1 = __pyx_t_3;
     __pyx_t_3 = 0;
@@ -5209,18 +5755,18 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   __Pyx_DECREF_SET(__pyx_v_ctx, ((struct __pyx_obj_6cyheif_HeifContext *)__pyx_t_1));
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":147
+  /* "heif/heif.pyx":157
  *     cdef HeifImageHandle from_file(const char* file_name, HeifContext ctx = None):
  *         ctx = ctx if ctx is not None else HeifContext()
  *         ctx.read_from_file(file_name)             # <<<<<<<<<<<<<<
  *         cdef cheif.heif_image_handle* handle
  *         res = cheif.heif_context_get_primary_image_handle(ctx._heif_ctx, &handle)
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_6cyheif_HeifContext *)__pyx_v_ctx->__pyx_vtab)->read_from_file(__pyx_v_ctx, __pyx_v_file_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_6cyheif_HeifContext *)__pyx_v_ctx->__pyx_vtab)->read_from_file(__pyx_v_ctx, __pyx_v_file_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":149
+  /* "heif/heif.pyx":159
  *         ctx.read_from_file(file_name)
  *         cdef cheif.heif_image_handle* handle
  *         res = cheif.heif_context_get_primary_image_handle(ctx._heif_ctx, &handle)             # <<<<<<<<<<<<<<
@@ -5229,21 +5775,21 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
  */
   __pyx_v_res = heif_context_get_primary_image_handle(__pyx_v_ctx->_heif_ctx, (&__pyx_v_handle));
 
-  /* "heif/heif.pyx":150
+  /* "heif/heif.pyx":160
  *         cdef cheif.heif_image_handle* handle
  *         res = cheif.heif_context_get_primary_image_handle(ctx._heif_ctx, &handle)
  *         HeifError(res)             # <<<<<<<<<<<<<<
  *         return HeifImageHandle.from_image_handle(handle, ctx)
  * 
  */
-  __pyx_t_1 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "heif/heif.pyx":151
+  /* "heif/heif.pyx":161
  *         res = cheif.heif_context_get_primary_image_handle(ctx._heif_ctx, &handle)
  *         HeifError(res)
  *         return HeifImageHandle.from_image_handle(handle, ctx)             # <<<<<<<<<<<<<<
@@ -5253,13 +5799,13 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   __Pyx_XDECREF(((PyObject *)__pyx_r));
   __pyx_t_4.__pyx_n = 1;
   __pyx_t_4.ctx = __pyx_v_ctx;
-  __pyx_t_3 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->from_image_handle(__pyx_v_handle, &__pyx_t_4)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_t_3 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->from_image_handle(__pyx_v_handle, &__pyx_t_4)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = ((struct __pyx_obj_6cyheif_HeifImageHandle *)__pyx_t_3);
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":145
+  /* "heif/heif.pyx":155
  * 
  *     @staticmethod
  *     cdef HeifImageHandle from_file(const char* file_name, HeifContext ctx = None):             # <<<<<<<<<<<<<<
@@ -5280,7 +5826,7 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":153
+/* "heif/heif.pyx":163
  *         return HeifImageHandle.from_image_handle(handle, ctx)
  * 
  *     cdef cheif.heif_colorspace get_image_colorspace(self):             # <<<<<<<<<<<<<<
@@ -5293,7 +5839,7 @@ static enum heif_colorspace __pyx_f_6cyheif_15HeifImageHandle_get_image_colorspa
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_image_colorspace", 0);
 
-  /* "heif/heif.pyx":154
+  /* "heif/heif.pyx":164
  * 
  *     cdef cheif.heif_colorspace get_image_colorspace(self):
  *         return cheif.heif_image_get_colorspace(self._img)             # <<<<<<<<<<<<<<
@@ -5303,7 +5849,7 @@ static enum heif_colorspace __pyx_f_6cyheif_15HeifImageHandle_get_image_colorspa
   __pyx_r = heif_image_get_colorspace(__pyx_v_self->_img);
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":153
+  /* "heif/heif.pyx":163
  *         return HeifImageHandle.from_image_handle(handle, ctx)
  * 
  *     cdef cheif.heif_colorspace get_image_colorspace(self):             # <<<<<<<<<<<<<<
@@ -5317,7 +5863,7 @@ static enum heif_colorspace __pyx_f_6cyheif_15HeifImageHandle_get_image_colorspa
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":156
+/* "heif/heif.pyx":166
  *         return cheif.heif_image_get_colorspace(self._img)
  * 
  *     cdef cheif.heif_chroma get_image_chroma_format(self):             # <<<<<<<<<<<<<<
@@ -5330,7 +5876,7 @@ static enum heif_chroma __pyx_f_6cyheif_15HeifImageHandle_get_image_chroma_forma
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_image_chroma_format", 0);
 
-  /* "heif/heif.pyx":157
+  /* "heif/heif.pyx":167
  * 
  *     cdef cheif.heif_chroma get_image_chroma_format(self):
  *         return cheif.heif_image_get_chroma_format(self._img)             # <<<<<<<<<<<<<<
@@ -5340,7 +5886,7 @@ static enum heif_chroma __pyx_f_6cyheif_15HeifImageHandle_get_image_chroma_forma
   __pyx_r = heif_image_get_chroma_format(__pyx_v_self->_img);
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":156
+  /* "heif/heif.pyx":166
  *         return cheif.heif_image_get_colorspace(self._img)
  * 
  *     cdef cheif.heif_chroma get_image_chroma_format(self):             # <<<<<<<<<<<<<<
@@ -5354,7 +5900,7 @@ static enum heif_chroma __pyx_f_6cyheif_15HeifImageHandle_get_image_chroma_forma
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":159
+/* "heif/heif.pyx":169
  *         return cheif.heif_image_get_chroma_format(self._img)
  * 
  *     cdef int get_image_handle_has_alpha(self):             # <<<<<<<<<<<<<<
@@ -5367,7 +5913,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_handle_has_alpha(struct _
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_image_handle_has_alpha", 0);
 
-  /* "heif/heif.pyx":160
+  /* "heif/heif.pyx":170
  * 
  *     cdef int get_image_handle_has_alpha(self):
  *         return cheif.heif_image_handle_has_alpha_channel(self._handle)             # <<<<<<<<<<<<<<
@@ -5377,7 +5923,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_handle_has_alpha(struct _
   __pyx_r = heif_image_handle_has_alpha_channel(__pyx_v_self->_handle);
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":159
+  /* "heif/heif.pyx":169
  *         return cheif.heif_image_get_chroma_format(self._img)
  * 
  *     cdef int get_image_handle_has_alpha(self):             # <<<<<<<<<<<<<<
@@ -5391,7 +5937,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_handle_has_alpha(struct _
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":162
+/* "heif/heif.pyx":172
  *         return cheif.heif_image_handle_has_alpha_channel(self._handle)
  * 
  *     cdef int get_image_handle_luma_bits_per_pixel(self):             # <<<<<<<<<<<<<<
@@ -5404,7 +5950,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_handle_luma_bits_per_pixe
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_image_handle_luma_bits_per_pixel", 0);
 
-  /* "heif/heif.pyx":163
+  /* "heif/heif.pyx":173
  * 
  *     cdef int get_image_handle_luma_bits_per_pixel(self):
  *         return cheif.heif_image_handle_get_luma_bits_per_pixel(self._handle)             # <<<<<<<<<<<<<<
@@ -5414,7 +5960,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_handle_luma_bits_per_pixe
   __pyx_r = heif_image_handle_get_luma_bits_per_pixel(__pyx_v_self->_handle);
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":162
+  /* "heif/heif.pyx":172
  *         return cheif.heif_image_handle_has_alpha_channel(self._handle)
  * 
  *     cdef int get_image_handle_luma_bits_per_pixel(self):             # <<<<<<<<<<<<<<
@@ -5428,7 +5974,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_handle_luma_bits_per_pixe
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":165
+/* "heif/heif.pyx":175
  *         return cheif.heif_image_handle_get_luma_bits_per_pixel(self._handle)
  * 
  *     cdef int get_image_height(self, cheif.heif_channel channel):             # <<<<<<<<<<<<<<
@@ -5441,7 +5987,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_height(struct __pyx_obj_6
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_image_height", 0);
 
-  /* "heif/heif.pyx":166
+  /* "heif/heif.pyx":176
  * 
  *     cdef int get_image_height(self, cheif.heif_channel channel):
  *         return cheif.heif_image_get_height(self._img, channel)             # <<<<<<<<<<<<<<
@@ -5451,7 +5997,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_height(struct __pyx_obj_6
   __pyx_r = heif_image_get_height(__pyx_v_self->_img, __pyx_v_channel);
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":165
+  /* "heif/heif.pyx":175
  *         return cheif.heif_image_handle_get_luma_bits_per_pixel(self._handle)
  * 
  *     cdef int get_image_height(self, cheif.heif_channel channel):             # <<<<<<<<<<<<<<
@@ -5465,7 +6011,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_height(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":168
+/* "heif/heif.pyx":178
  *         return cheif.heif_image_get_height(self._img, channel)
  * 
  *     cdef int get_image_width(self, cheif.heif_channel channel):             # <<<<<<<<<<<<<<
@@ -5478,7 +6024,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_width(struct __pyx_obj_6c
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_image_width", 0);
 
-  /* "heif/heif.pyx":169
+  /* "heif/heif.pyx":179
  * 
  *     cdef int get_image_width(self, cheif.heif_channel channel):
  *         return cheif.heif_image_get_width(self._img, channel)             # <<<<<<<<<<<<<<
@@ -5488,7 +6034,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_width(struct __pyx_obj_6c
   __pyx_r = heif_image_get_width(__pyx_v_self->_img, __pyx_v_channel);
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":168
+  /* "heif/heif.pyx":178
  *         return cheif.heif_image_get_height(self._img, channel)
  * 
  *     cdef int get_image_width(self, cheif.heif_channel channel):             # <<<<<<<<<<<<<<
@@ -5502,7 +6048,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_width(struct __pyx_obj_6c
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":171
+/* "heif/heif.pyx":181
  *         return cheif.heif_image_get_width(self._img, channel)
  * 
  *     cdef int get_image_bits_per_pixel_range(self, cheif.heif_channel channel):             # <<<<<<<<<<<<<<
@@ -5515,7 +6061,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_bits_per_pixel_range(stru
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_image_bits_per_pixel_range", 0);
 
-  /* "heif/heif.pyx":172
+  /* "heif/heif.pyx":182
  * 
  *     cdef int get_image_bits_per_pixel_range(self, cheif.heif_channel channel):
  *         return cheif.heif_image_get_bits_per_pixel_range(self._img, channel)             # <<<<<<<<<<<<<<
@@ -5525,7 +6071,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_bits_per_pixel_range(stru
   __pyx_r = heif_image_get_bits_per_pixel_range(__pyx_v_self->_img, __pyx_v_channel);
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":171
+  /* "heif/heif.pyx":181
  *         return cheif.heif_image_get_width(self._img, channel)
  * 
  *     cdef int get_image_bits_per_pixel_range(self, cheif.heif_channel channel):             # <<<<<<<<<<<<<<
@@ -5539,7 +6085,7 @@ static int __pyx_f_6cyheif_15HeifImageHandle_get_image_bits_per_pixel_range(stru
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":174
+/* "heif/heif.pyx":184
  *         return cheif.heif_image_get_bits_per_pixel_range(self._img, channel)
  * 
  *     cdef (cheif.heif_colorspace, cheif.heif_chroma) get_colorspace_and_chroma(self, bint convert_hdr_to_8bit=False):             # <<<<<<<<<<<<<<
@@ -5570,7 +6116,7 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
     }
   }
 
-  /* "heif/heif.pyx":175
+  /* "heif/heif.pyx":185
  * 
  *     cdef (cheif.heif_colorspace, cheif.heif_chroma) get_colorspace_and_chroma(self, bint convert_hdr_to_8bit=False):
  *         cdef cheif.heif_colorspace color_space = cheif.heif_colorspace.heif_colorspace_RGB             # <<<<<<<<<<<<<<
@@ -5579,7 +6125,7 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
  */
   __pyx_v_color_space = heif_colorspace_RGB;
 
-  /* "heif/heif.pyx":176
+  /* "heif/heif.pyx":186
  *     cdef (cheif.heif_colorspace, cheif.heif_chroma) get_colorspace_and_chroma(self, bint convert_hdr_to_8bit=False):
  *         cdef cheif.heif_colorspace color_space = cheif.heif_colorspace.heif_colorspace_RGB
  *         cdef int has_alpha = self.get_image_handle_has_alpha()             # <<<<<<<<<<<<<<
@@ -5588,7 +6134,7 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
  */
   __pyx_v_has_alpha = ((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_self->__pyx_vtab)->get_image_handle_has_alpha(__pyx_v_self);
 
-  /* "heif/heif.pyx":177
+  /* "heif/heif.pyx":187
  *         cdef cheif.heif_colorspace color_space = cheif.heif_colorspace.heif_colorspace_RGB
  *         cdef int has_alpha = self.get_image_handle_has_alpha()
  *         cdef int bits_per_pixel = self.get_image_handle_luma_bits_per_pixel()             # <<<<<<<<<<<<<<
@@ -5597,7 +6143,7 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
  */
   __pyx_v_bits_per_pixel = ((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_self->__pyx_vtab)->get_image_handle_luma_bits_per_pixel(__pyx_v_self);
 
-  /* "heif/heif.pyx":178
+  /* "heif/heif.pyx":188
  *         cdef int has_alpha = self.get_image_handle_has_alpha()
  *         cdef int bits_per_pixel = self.get_image_handle_luma_bits_per_pixel()
  *         cdef cheif.heif_chroma chroma = cheif.heif_chroma.heif_chroma_interleaved_RGB             # <<<<<<<<<<<<<<
@@ -5606,7 +6152,7 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
  */
   __pyx_v_chroma = heif_chroma_interleaved_RGB;
 
-  /* "heif/heif.pyx":180
+  /* "heif/heif.pyx":190
  *         cdef cheif.heif_chroma chroma = cheif.heif_chroma.heif_chroma_interleaved_RGB
  *         # TODO: AFAICT, Pillow does not support 10 bits per pixel raw format
  *         convert_hdr_to_8bit = True             # <<<<<<<<<<<<<<
@@ -5615,7 +6161,7 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
  */
   __pyx_v_convert_hdr_to_8bit = 1;
 
-  /* "heif/heif.pyx":181
+  /* "heif/heif.pyx":191
  *         # TODO: AFAICT, Pillow does not support 10 bits per pixel raw format
  *         convert_hdr_to_8bit = True
  *         if bits_per_pixel <= 8 or convert_hdr_to_8bit:             # <<<<<<<<<<<<<<
@@ -5633,16 +6179,16 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "heif/heif.pyx":182
+    /* "heif/heif.pyx":192
  *         convert_hdr_to_8bit = True
  *         if bits_per_pixel <= 8 or convert_hdr_to_8bit:
  *             chroma = cheif.heif_chroma.heif_chroma_interleaved_RGBA if bool(has_alpha) else cheif.heif_chroma.heif_chroma_interleaved_RGB             # <<<<<<<<<<<<<<
  *         else:
  *             chroma = cheif.heif_chroma.heif_chroma_interleaved_RRGGBBAA_LE if bool(has_alpha) else cheif.heif_chroma.heif_chroma_interleaved_RRGGBB_LE
  */
-    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_has_alpha); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 182, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_has_alpha); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 182, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (((!(!__pyx_t_1)) != 0)) {
       __pyx_t_3 = heif_chroma_interleaved_RGBA;
@@ -5651,7 +6197,7 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
     }
     __pyx_v_chroma = __pyx_t_3;
 
-    /* "heif/heif.pyx":181
+    /* "heif/heif.pyx":191
  *         # TODO: AFAICT, Pillow does not support 10 bits per pixel raw format
  *         convert_hdr_to_8bit = True
  *         if bits_per_pixel <= 8 or convert_hdr_to_8bit:             # <<<<<<<<<<<<<<
@@ -5661,7 +6207,7 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
     goto __pyx_L3;
   }
 
-  /* "heif/heif.pyx":184
+  /* "heif/heif.pyx":194
  *             chroma = cheif.heif_chroma.heif_chroma_interleaved_RGBA if bool(has_alpha) else cheif.heif_chroma.heif_chroma_interleaved_RGB
  *         else:
  *             chroma = cheif.heif_chroma.heif_chroma_interleaved_RRGGBBAA_LE if bool(has_alpha) else cheif.heif_chroma.heif_chroma_interleaved_RRGGBB_LE             # <<<<<<<<<<<<<<
@@ -5669,9 +6215,9 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
  * 
  */
   /*else*/ {
-    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_has_alpha); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 184, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_has_alpha); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 184, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 194, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (((!(!__pyx_t_1)) != 0)) {
       __pyx_t_3 = heif_chroma_interleaved_RRGGBBAA_LE;
@@ -5682,7 +6228,7 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
   }
   __pyx_L3:;
 
-  /* "heif/heif.pyx":185
+  /* "heif/heif.pyx":195
  *         else:
  *             chroma = cheif.heif_chroma.heif_chroma_interleaved_RRGGBBAA_LE if bool(has_alpha) else cheif.heif_chroma.heif_chroma_interleaved_RRGGBB_LE
  *         return (color_space, chroma)             # <<<<<<<<<<<<<<
@@ -5694,7 +6240,7 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
   __pyx_r = __pyx_t_5;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":174
+  /* "heif/heif.pyx":184
  *         return cheif.heif_image_get_bits_per_pixel_range(self._img, channel)
  * 
  *     cdef (cheif.heif_colorspace, cheif.heif_chroma) get_colorspace_and_chroma(self, bint convert_hdr_to_8bit=False):             # <<<<<<<<<<<<<<
@@ -5712,7 +6258,7 @@ static __pyx_ctuple_enum__space_heif_colorspace__and_enum__space_heif_chroma __p
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":187
+/* "heif/heif.pyx":197
  *         return (color_space, chroma)
  * 
  *     cdef decode_image(self, bint convert_hdr_to_8bit=False, bint apply_transformations=True):             # <<<<<<<<<<<<<<
@@ -5750,7 +6296,7 @@ static PyObject *__pyx_f_6cyheif_15HeifImageHandle_decode_image(struct __pyx_obj
     }
   }
 
-  /* "heif/heif.pyx":188
+  /* "heif/heif.pyx":198
  * 
  *     cdef decode_image(self, bint convert_hdr_to_8bit=False, bint apply_transformations=True):
  *         if self._img is not NULL:             # <<<<<<<<<<<<<<
@@ -5760,7 +6306,7 @@ static PyObject *__pyx_f_6cyheif_15HeifImageHandle_decode_image(struct __pyx_obj
   __pyx_t_1 = ((__pyx_v_self->_img != NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "heif/heif.pyx":189
+    /* "heif/heif.pyx":199
  *     cdef decode_image(self, bint convert_hdr_to_8bit=False, bint apply_transformations=True):
  *         if self._img is not NULL:
  *             cheif.heif_image_release(self._img)             # <<<<<<<<<<<<<<
@@ -5769,7 +6315,7 @@ static PyObject *__pyx_f_6cyheif_15HeifImageHandle_decode_image(struct __pyx_obj
  */
     heif_image_release(__pyx_v_self->_img);
 
-    /* "heif/heif.pyx":190
+    /* "heif/heif.pyx":200
  *         if self._img is not NULL:
  *             cheif.heif_image_release(self._img)
  *             self._img = NULL             # <<<<<<<<<<<<<<
@@ -5778,7 +6324,7 @@ static PyObject *__pyx_f_6cyheif_15HeifImageHandle_decode_image(struct __pyx_obj
  */
     __pyx_v_self->_img = NULL;
 
-    /* "heif/heif.pyx":188
+    /* "heif/heif.pyx":198
  * 
  *     cdef decode_image(self, bint convert_hdr_to_8bit=False, bint apply_transformations=True):
  *         if self._img is not NULL:             # <<<<<<<<<<<<<<
@@ -5787,7 +6333,7 @@ static PyObject *__pyx_f_6cyheif_15HeifImageHandle_decode_image(struct __pyx_obj
  */
   }
 
-  /* "heif/heif.pyx":193
+  /* "heif/heif.pyx":203
  *         cdef cheif.heif_colorspace color_space
  *         cdef cheif.heif_chroma chroma
  *         (color_space, chroma) = self.get_colorspace_and_chroma(convert_hdr_to_8bit)             # <<<<<<<<<<<<<<
@@ -5802,18 +6348,18 @@ static PyObject *__pyx_f_6cyheif_15HeifImageHandle_decode_image(struct __pyx_obj
   __pyx_v_color_space = __pyx_t_4;
   __pyx_v_chroma = __pyx_t_5;
 
-  /* "heif/heif.pyx":194
+  /* "heif/heif.pyx":204
  *         cdef cheif.heif_chroma chroma
  *         (color_space, chroma) = self.get_colorspace_and_chroma(convert_hdr_to_8bit)
  *         cdef HeifDecodingOptions decoding_options = HeifDecodingOptions(convert_hdr_to_8bit, apply_transformations)             # <<<<<<<<<<<<<<
  *         res = cheif.heif_decode_image(
  *             self._handle,
  */
-  __pyx_t_6 = __Pyx_PyBool_FromLong(__pyx_v_convert_hdr_to_8bit); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyBool_FromLong(__pyx_v_convert_hdr_to_8bit); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 204, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = __Pyx_PyBool_FromLong(__pyx_v_apply_transformations); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyBool_FromLong(__pyx_v_apply_transformations); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 204, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 204, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_GIVEREF(__pyx_t_6);
   PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6);
@@ -5821,13 +6367,13 @@ static PyObject *__pyx_f_6cyheif_15HeifImageHandle_decode_image(struct __pyx_obj
   PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_7);
   __pyx_t_6 = 0;
   __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6cyheif_HeifDecodingOptions), __pyx_t_8, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6cyheif_HeifDecodingOptions), __pyx_t_8, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 204, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_v_decoding_options = ((struct __pyx_obj_6cyheif_HeifDecodingOptions *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "heif/heif.pyx":195
+  /* "heif/heif.pyx":205
  *         (color_space, chroma) = self.get_colorspace_and_chroma(convert_hdr_to_8bit)
  *         cdef HeifDecodingOptions decoding_options = HeifDecodingOptions(convert_hdr_to_8bit, apply_transformations)
  *         res = cheif.heif_decode_image(             # <<<<<<<<<<<<<<
@@ -5836,21 +6382,21 @@ static PyObject *__pyx_f_6cyheif_15HeifImageHandle_decode_image(struct __pyx_obj
  */
   __pyx_v_res = heif_decode_image(__pyx_v_self->_handle, (&__pyx_v_self->_img), __pyx_v_color_space, __pyx_v_chroma, ((struct __pyx_vtabstruct_6cyheif_HeifDecodingOptions *)__pyx_v_decoding_options->__pyx_vtab)->get_decoding_options(__pyx_v_decoding_options));
 
-  /* "heif/heif.pyx":201
+  /* "heif/heif.pyx":211
  *             chroma,
  *             decoding_options.get_decoding_options())
  *         HeifError(res)             # <<<<<<<<<<<<<<
  * 
  *     cdef HeifImageAttributes get_image_bytes(
  */
-  __pyx_t_7 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_t_7 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "heif/heif.pyx":187
+  /* "heif/heif.pyx":197
  *         return (color_space, chroma)
  * 
  *     cdef decode_image(self, bint convert_hdr_to_8bit=False, bint apply_transformations=True):             # <<<<<<<<<<<<<<
@@ -5874,7 +6420,7 @@ static PyObject *__pyx_f_6cyheif_15HeifImageHandle_decode_image(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":203
+/* "heif/heif.pyx":213
  *         HeifError(res)
  * 
  *     cdef HeifImageAttributes get_image_bytes(             # <<<<<<<<<<<<<<
@@ -5884,7 +6430,7 @@ static PyObject *__pyx_f_6cyheif_15HeifImageHandle_decode_image(struct __pyx_obj
 
 static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_15HeifImageHandle_get_image_bytes(struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_self, unsigned char const **__pyx_v_data, int *__pyx_v_sz, struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_image_bytes *__pyx_optional_args) {
 
-  /* "heif/heif.pyx":207
+  /* "heif/heif.pyx":217
  *         const unsigned char** data,
  *         int* sz,
  *         bint convert_hdr_to_8bit=False,             # <<<<<<<<<<<<<<
@@ -5893,7 +6439,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_15HeifImage
  */
   int __pyx_v_convert_hdr_to_8bit = ((int)0);
 
-  /* "heif/heif.pyx":208
+  /* "heif/heif.pyx":218
  *         int* sz,
  *         bint convert_hdr_to_8bit=False,
  *         bint apply_transformations=True):             # <<<<<<<<<<<<<<
@@ -5907,7 +6453,14 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_15HeifImage
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   struct __pyx_opt_args_6cyheif_15HeifImageHandle_decode_image __pyx_t_2;
-  int __pyx_t_3;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  int __pyx_t_8;
+  PyObject *__pyx_t_9 = NULL;
+  int __pyx_t_10;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -5921,7 +6474,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_15HeifImage
     }
   }
 
-  /* "heif/heif.pyx":209
+  /* "heif/heif.pyx":219
  *         bint convert_hdr_to_8bit=False,
  *         bint apply_transformations=True):
  *         self.decode_image(convert_hdr_to_8bit, apply_transformations)             # <<<<<<<<<<<<<<
@@ -5931,23 +6484,23 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_15HeifImage
   __pyx_t_2.__pyx_n = 2;
   __pyx_t_2.convert_hdr_to_8bit = __pyx_v_convert_hdr_to_8bit;
   __pyx_t_2.apply_transformations = __pyx_v_apply_transformations;
-  __pyx_t_1 = ((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_self->__pyx_vtab)->decode_image(__pyx_v_self, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_self->__pyx_vtab)->decode_image(__pyx_v_self, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":210
+  /* "heif/heif.pyx":220
  *         bint apply_transformations=True):
  *         self.decode_image(convert_hdr_to_8bit, apply_transformations)
  *         cdef HeifImageAttributes img_attr = HeifImageAttributes.from_image(self._img)             # <<<<<<<<<<<<<<
  *         cdef int stride = 0
  *         data[0] = cheif.heif_image_get_plane_readonly(self._img, cheif.heif_channel.heif_channel_interleaved, &stride)
  */
-  __pyx_t_1 = ((PyObject *)__pyx_f_6cyheif_19HeifImageAttributes_from_image(__pyx_v_self->_img)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_6cyheif_19HeifImageAttributes_from_image(__pyx_v_self->_img)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_img_attr = ((struct __pyx_obj_6cyheif_HeifImageAttributes *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":211
+  /* "heif/heif.pyx":221
  *         self.decode_image(convert_hdr_to_8bit, apply_transformations)
  *         cdef HeifImageAttributes img_attr = HeifImageAttributes.from_image(self._img)
  *         cdef int stride = 0             # <<<<<<<<<<<<<<
@@ -5956,57 +6509,131 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_15HeifImage
  */
   __pyx_v_stride = 0;
 
-  /* "heif/heif.pyx":212
+  /* "heif/heif.pyx":222
  *         cdef HeifImageAttributes img_attr = HeifImageAttributes.from_image(self._img)
  *         cdef int stride = 0
  *         data[0] = cheif.heif_image_get_plane_readonly(self._img, cheif.heif_channel.heif_channel_interleaved, &stride)             # <<<<<<<<<<<<<<
  *         sz[0] = img_attr.height * stride
- *         if data is NULL:
+ *         print('Width: {}, Height: {}, Stride: {}'.format(img_attr.width, img_attr.height, stride))
  */
   (__pyx_v_data[0]) = heif_image_get_plane_readonly(__pyx_v_self->_img, heif_channel_interleaved, (&__pyx_v_stride));
 
-  /* "heif/heif.pyx":213
+  /* "heif/heif.pyx":223
  *         cdef int stride = 0
  *         data[0] = cheif.heif_image_get_plane_readonly(self._img, cheif.heif_channel.heif_channel_interleaved, &stride)
  *         sz[0] = img_attr.height * stride             # <<<<<<<<<<<<<<
+ *         print('Width: {}, Height: {}, Stride: {}'.format(img_attr.width, img_attr.height, stride))
  *         if data is NULL:
- *             raise Exception('Read failed')
  */
   (__pyx_v_sz[0]) = (__pyx_v_img_attr->height * __pyx_v_stride);
 
-  /* "heif/heif.pyx":214
+  /* "heif/heif.pyx":224
  *         data[0] = cheif.heif_image_get_plane_readonly(self._img, cheif.heif_channel.heif_channel_interleaved, &stride)
  *         sz[0] = img_attr.height * stride
+ *         print('Width: {}, Height: {}, Stride: {}'.format(img_attr.width, img_attr.height, stride))             # <<<<<<<<<<<<<<
+ *         if data is NULL:
+ *             raise Exception('Read failed')
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_u_Width_Height_Stride, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_img_attr->width); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_img_attr->height); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_stride); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = NULL;
+  __pyx_t_8 = 0;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_7)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_7);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+      __pyx_t_8 = 1;
+    }
+  }
+  #if CYTHON_FAST_PYCALL
+  if (PyFunction_Check(__pyx_t_3)) {
+    PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_t_4, __pyx_t_5, __pyx_t_6};
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  } else
+  #endif
+  #if CYTHON_FAST_PYCCALL
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
+    PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_t_4, __pyx_t_5, __pyx_t_6};
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  } else
+  #endif
+  {
+    __pyx_t_9 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    if (__pyx_t_7) {
+      __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __pyx_t_7 = NULL;
+    }
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_9, 0+__pyx_t_8, __pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyTuple_SET_ITEM(__pyx_t_9, 1+__pyx_t_8, __pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_6);
+    PyTuple_SET_ITEM(__pyx_t_9, 2+__pyx_t_8, __pyx_t_6);
+    __pyx_t_4 = 0;
+    __pyx_t_5 = 0;
+    __pyx_t_6 = 0;
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_print, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "heif/heif.pyx":225
+ *         sz[0] = img_attr.height * stride
+ *         print('Width: {}, Height: {}, Stride: {}'.format(img_attr.width, img_attr.height, stride))
  *         if data is NULL:             # <<<<<<<<<<<<<<
  *             raise Exception('Read failed')
  *         return img_attr
  */
-  __pyx_t_3 = ((__pyx_v_data == NULL) != 0);
-  if (unlikely(__pyx_t_3)) {
+  __pyx_t_10 = ((__pyx_v_data == NULL) != 0);
+  if (unlikely(__pyx_t_10)) {
 
-    /* "heif/heif.pyx":215
- *         sz[0] = img_attr.height * stride
+    /* "heif/heif.pyx":226
+ *         print('Width: {}, Height: {}, Stride: {}'.format(img_attr.width, img_attr.height, stride))
  *         if data is NULL:
  *             raise Exception('Read failed')             # <<<<<<<<<<<<<<
  *         return img_attr
  * 
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 215, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_Raise(__pyx_t_3, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __PYX_ERR(0, 226, __pyx_L1_error)
 
-    /* "heif/heif.pyx":214
- *         data[0] = cheif.heif_image_get_plane_readonly(self._img, cheif.heif_channel.heif_channel_interleaved, &stride)
+    /* "heif/heif.pyx":225
  *         sz[0] = img_attr.height * stride
+ *         print('Width: {}, Height: {}, Stride: {}'.format(img_attr.width, img_attr.height, stride))
  *         if data is NULL:             # <<<<<<<<<<<<<<
  *             raise Exception('Read failed')
  *         return img_attr
  */
   }
 
-  /* "heif/heif.pyx":216
+  /* "heif/heif.pyx":227
  *         if data is NULL:
  *             raise Exception('Read failed')
  *         return img_attr             # <<<<<<<<<<<<<<
@@ -6018,7 +6645,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_15HeifImage
   __pyx_r = __pyx_v_img_attr;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":203
+  /* "heif/heif.pyx":213
  *         HeifError(res)
  * 
  *     cdef HeifImageAttributes get_image_bytes(             # <<<<<<<<<<<<<<
@@ -6029,6 +6656,12 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_15HeifImage
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_9);
   __Pyx_AddTraceback("cyheif.HeifImageHandle.get_image_bytes", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -6038,7 +6671,7 @@ static struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_f_6cyheif_15HeifImage
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":218
+/* "heif/heif.pyx":229
  *         return img_attr
  * 
  *     cdef cheif.heif_item_id get_image_exif_metadata_id(self):             # <<<<<<<<<<<<<<
@@ -6054,7 +6687,7 @@ static heif_item_id __pyx_f_6cyheif_15HeifImageHandle_get_image_exif_metadata_id
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("get_image_exif_metadata_id", 0);
 
-  /* "heif/heif.pyx":220
+  /* "heif/heif.pyx":231
  *     cdef cheif.heif_item_id get_image_exif_metadata_id(self):
  *         cdef cheif.heif_item_id metadata_item_id
  *         cdef int num_items = 0             # <<<<<<<<<<<<<<
@@ -6063,7 +6696,7 @@ static heif_item_id __pyx_f_6cyheif_15HeifImageHandle_get_image_exif_metadata_id
  */
   __pyx_v_num_items = 0;
 
-  /* "heif/heif.pyx":221
+  /* "heif/heif.pyx":232
  *         cdef cheif.heif_item_id metadata_item_id
  *         cdef int num_items = 0
  *         num_items = cheif.heif_image_handle_get_list_of_metadata_block_IDs(             # <<<<<<<<<<<<<<
@@ -6072,7 +6705,7 @@ static heif_item_id __pyx_f_6cyheif_15HeifImageHandle_get_image_exif_metadata_id
  */
   __pyx_v_num_items = heif_image_handle_get_list_of_metadata_block_IDs(__pyx_v_self->_handle, ((char const *)"Exif"), (&__pyx_v_metadata_item_id), 1);
 
-  /* "heif/heif.pyx":227
+  /* "heif/heif.pyx":238
  *             1
  *         )
  *         if num_items != 1:             # <<<<<<<<<<<<<<
@@ -6082,7 +6715,7 @@ static heif_item_id __pyx_f_6cyheif_15HeifImageHandle_get_image_exif_metadata_id
   __pyx_t_1 = ((__pyx_v_num_items != 1) != 0);
   if (__pyx_t_1) {
 
-    /* "heif/heif.pyx":228
+    /* "heif/heif.pyx":239
  *         )
  *         if num_items != 1:
  *             return 0             # <<<<<<<<<<<<<<
@@ -6092,7 +6725,7 @@ static heif_item_id __pyx_f_6cyheif_15HeifImageHandle_get_image_exif_metadata_id
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "heif/heif.pyx":227
+    /* "heif/heif.pyx":238
  *             1
  *         )
  *         if num_items != 1:             # <<<<<<<<<<<<<<
@@ -6101,7 +6734,7 @@ static heif_item_id __pyx_f_6cyheif_15HeifImageHandle_get_image_exif_metadata_id
  */
   }
 
-  /* "heif/heif.pyx":229
+  /* "heif/heif.pyx":240
  *         if num_items != 1:
  *             return 0
  *         return metadata_item_id             # <<<<<<<<<<<<<<
@@ -6111,7 +6744,7 @@ static heif_item_id __pyx_f_6cyheif_15HeifImageHandle_get_image_exif_metadata_id
   __pyx_r = __pyx_v_metadata_item_id;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":218
+  /* "heif/heif.pyx":229
  *         return img_attr
  * 
  *     cdef cheif.heif_item_id get_image_exif_metadata_id(self):             # <<<<<<<<<<<<<<
@@ -6125,7 +6758,7 @@ static heif_item_id __pyx_f_6cyheif_15HeifImageHandle_get_image_exif_metadata_id
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":231
+/* "heif/heif.pyx":242
  *         return metadata_item_id
  * 
  *     cdef HeifBuffer get_image_exif_data(self):             # <<<<<<<<<<<<<<
@@ -6149,7 +6782,7 @@ static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_ge
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_image_exif_data", 0);
 
-  /* "heif/heif.pyx":232
+  /* "heif/heif.pyx":243
  * 
  *     cdef HeifBuffer get_image_exif_data(self):
  *         cdef cheif.heif_item_id exif_id = self.get_image_exif_metadata_id()             # <<<<<<<<<<<<<<
@@ -6158,7 +6791,7 @@ static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_ge
  */
   __pyx_v_exif_id = ((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_self->__pyx_vtab)->get_image_exif_metadata_id(__pyx_v_self);
 
-  /* "heif/heif.pyx":233
+  /* "heif/heif.pyx":244
  *     cdef HeifBuffer get_image_exif_data(self):
  *         cdef cheif.heif_item_id exif_id = self.get_image_exif_metadata_id()
  *         if exif_id == 0:             # <<<<<<<<<<<<<<
@@ -6168,7 +6801,7 @@ static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_ge
   __pyx_t_1 = ((__pyx_v_exif_id == 0) != 0);
   if (__pyx_t_1) {
 
-    /* "heif/heif.pyx":234
+    /* "heif/heif.pyx":245
  *         cdef cheif.heif_item_id exif_id = self.get_image_exif_metadata_id()
  *         if exif_id == 0:
  *             return None             # <<<<<<<<<<<<<<
@@ -6179,7 +6812,7 @@ static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_ge
     __pyx_r = ((struct __pyx_obj_6cyheif_HeifBuffer *)Py_None); __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "heif/heif.pyx":233
+    /* "heif/heif.pyx":244
  *     cdef HeifBuffer get_image_exif_data(self):
  *         cdef cheif.heif_item_id exif_id = self.get_image_exif_metadata_id()
  *         if exif_id == 0:             # <<<<<<<<<<<<<<
@@ -6188,7 +6821,7 @@ static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_ge
  */
   }
 
-  /* "heif/heif.pyx":235
+  /* "heif/heif.pyx":246
  *         if exif_id == 0:
  *             return None
  *         cdef size_t sz = cheif.heif_image_handle_get_metadata_size(self._handle, exif_id)             # <<<<<<<<<<<<<<
@@ -6197,7 +6830,7 @@ static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_ge
  */
   __pyx_v_sz = heif_image_handle_get_metadata_size(__pyx_v_self->_handle, __pyx_v_exif_id);
 
-  /* "heif/heif.pyx":237
+  /* "heif/heif.pyx":248
  *         cdef size_t sz = cheif.heif_image_handle_get_metadata_size(self._handle, exif_id)
  *         # TODO: Arbitrary sanity check - needs to be fixed
  *         if sz < 4 or sz > 512*1024:             # <<<<<<<<<<<<<<
@@ -6215,20 +6848,20 @@ static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_ge
   __pyx_L5_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "heif/heif.pyx":238
+    /* "heif/heif.pyx":249
  *         # TODO: Arbitrary sanity check - needs to be fixed
  *         if sz < 4 or sz > 512*1024:
  *             raise Exception('Invalid EXIF Data')             # <<<<<<<<<<<<<<
  *         cdef HeifBuffer buf = HeifBuffer(sz)
  *         res = cheif.heif_image_handle_get_metadata(self._handle, exif_id, buf._data)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 238, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 249, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 238, __pyx_L1_error)
+    __PYX_ERR(0, 249, __pyx_L1_error)
 
-    /* "heif/heif.pyx":237
+    /* "heif/heif.pyx":248
  *         cdef size_t sz = cheif.heif_image_handle_get_metadata_size(self._handle, exif_id)
  *         # TODO: Arbitrary sanity check - needs to be fixed
  *         if sz < 4 or sz > 512*1024:             # <<<<<<<<<<<<<<
@@ -6237,22 +6870,22 @@ static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_ge
  */
   }
 
-  /* "heif/heif.pyx":239
+  /* "heif/heif.pyx":250
  *         if sz < 4 or sz > 512*1024:
  *             raise Exception('Invalid EXIF Data')
  *         cdef HeifBuffer buf = HeifBuffer(sz)             # <<<<<<<<<<<<<<
  *         res = cheif.heif_image_handle_get_metadata(self._handle, exif_id, buf._data)
  *         HeifError(res)
  */
-  __pyx_t_3 = __Pyx_PyInt_FromSize_t(__pyx_v_sz); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_FromSize_t(__pyx_v_sz); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifBuffer), __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 239, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifBuffer), __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_buf = ((struct __pyx_obj_6cyheif_HeifBuffer *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "heif/heif.pyx":240
+  /* "heif/heif.pyx":251
  *             raise Exception('Invalid EXIF Data')
  *         cdef HeifBuffer buf = HeifBuffer(sz)
  *         res = cheif.heif_image_handle_get_metadata(self._handle, exif_id, buf._data)             # <<<<<<<<<<<<<<
@@ -6261,21 +6894,21 @@ static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_ge
  */
   __pyx_v_res = heif_image_handle_get_metadata(__pyx_v_self->_handle, __pyx_v_exif_id, __pyx_v_buf->_data);
 
-  /* "heif/heif.pyx":241
+  /* "heif/heif.pyx":252
  *         cdef HeifBuffer buf = HeifBuffer(sz)
  *         res = cheif.heif_image_handle_get_metadata(self._handle, exif_id, buf._data)
  *         HeifError(res)             # <<<<<<<<<<<<<<
  *         return buf
  * 
  */
-  __pyx_t_4 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 241, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "heif/heif.pyx":242
+  /* "heif/heif.pyx":253
  *         res = cheif.heif_image_handle_get_metadata(self._handle, exif_id, buf._data)
  *         HeifError(res)
  *         return buf             # <<<<<<<<<<<<<<
@@ -6287,7 +6920,7 @@ static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_ge
   __pyx_r = __pyx_v_buf;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":231
+  /* "heif/heif.pyx":242
  *         return metadata_item_id
  * 
  *     cdef HeifBuffer get_image_exif_data(self):             # <<<<<<<<<<<<<<
@@ -6308,16 +6941,15 @@ static struct __pyx_obj_6cyheif_HeifBuffer *__pyx_f_6cyheif_15HeifImageHandle_ge
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":244
+/* "heif/heif.pyx":255
  *         return buf
  * 
  *     cdef HeifImageHandle add_exif_data(self: HeifImageHandle, const unsigned char[:] exif_data, int sz):             # <<<<<<<<<<<<<<
  *         self.decode_image()
- *         cdef HeifContext out_context = HeifContext()
+ *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC)
  */
 
 static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHandle_add_exif_data(struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_self, __Pyx_memviewslice __pyx_v_exif_data, int __pyx_v_sz) {
-  struct __pyx_obj_6cyheif_HeifContext *__pyx_v_out_context = 0;
   struct __pyx_obj_6cyheif_HeifEncoder *__pyx_v_encoder = 0;
   struct heif_image_handle *__pyx_v_out_handle;
   struct heif_error __pyx_v_res;
@@ -6334,93 +6966,76 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_exif_data", 0);
 
-  /* "heif/heif.pyx":245
+  /* "heif/heif.pyx":256
  * 
  *     cdef HeifImageHandle add_exif_data(self: HeifImageHandle, const unsigned char[:] exif_data, int sz):
  *         self.decode_image()             # <<<<<<<<<<<<<<
- *         cdef HeifContext out_context = HeifContext()
- *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC, out_context)
+ *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC)
+ *         cdef cheif.heif_image_handle* out_handle
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_self->__pyx_vtab)->decode_image(__pyx_v_self, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_self->__pyx_vtab)->decode_image(__pyx_v_self, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":246
+  /* "heif/heif.pyx":257
  *     cdef HeifImageHandle add_exif_data(self: HeifImageHandle, const unsigned char[:] exif_data, int sz):
  *         self.decode_image()
- *         cdef HeifContext out_context = HeifContext()             # <<<<<<<<<<<<<<
- *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC, out_context)
+ *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC)             # <<<<<<<<<<<<<<
  *         cdef cheif.heif_image_handle* out_handle
+ *         res = cheif.heif_context_encode_image(encoder._ctx._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cyheif_HeifContext)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 246, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_enum__heif_compression_format(heif_compression_HEVC); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_out_context = ((struct __pyx_obj_6cyheif_HeifContext *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "heif/heif.pyx":247
- *         self.decode_image()
- *         cdef HeifContext out_context = HeifContext()
- *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC, out_context)             # <<<<<<<<<<<<<<
- *         cdef cheif.heif_image_handle* out_handle
- *         res = cheif.heif_context_encode_image(out_context._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
- */
-  __pyx_t_1 = __Pyx_PyInt_From_enum__heif_compression_format(heif_compression_HEVC); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 247, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 247, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
-  __Pyx_INCREF(((PyObject *)__pyx_v_out_context));
-  __Pyx_GIVEREF(((PyObject *)__pyx_v_out_context));
-  PyTuple_SET_ITEM(__pyx_t_2, 1, ((PyObject *)__pyx_v_out_context));
-  __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6cyheif_HeifEncoder), __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 247, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_encoder = ((struct __pyx_obj_6cyheif_HeifEncoder *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "heif/heif.pyx":249
- *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC, out_context)
- *         cdef cheif.heif_image_handle* out_handle
- *         res = cheif.heif_context_encode_image(out_context._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)             # <<<<<<<<<<<<<<
- *         HeifError(res)
- *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)
- */
-  __pyx_v_res = heif_context_encode_image(__pyx_v_out_context->_heif_ctx, __pyx_v_self->_img, __pyx_v_encoder->_encoder, NULL, (&__pyx_v_out_handle));
-
-  /* "heif/heif.pyx":250
- *         cdef cheif.heif_image_handle* out_handle
- *         res = cheif.heif_context_encode_image(out_context._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
- *         HeifError(res)             # <<<<<<<<<<<<<<
- *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)
- *         res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)
- */
-  __pyx_t_1 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 250, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifEncoder), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_encoder = ((struct __pyx_obj_6cyheif_HeifEncoder *)__pyx_t_2);
+  __pyx_t_2 = 0;
 
-  /* "heif/heif.pyx":251
- *         res = cheif.heif_context_encode_image(out_context._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
+  /* "heif/heif.pyx":259
+ *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC)
+ *         cdef cheif.heif_image_handle* out_handle
+ *         res = cheif.heif_context_encode_image(encoder._ctx._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)             # <<<<<<<<<<<<<<
  *         HeifError(res)
- *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)             # <<<<<<<<<<<<<<
- *         res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)
+ *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)
+ */
+  __pyx_v_res = heif_context_encode_image(__pyx_v_encoder->_ctx->_heif_ctx, __pyx_v_self->_img, __pyx_v_encoder->_encoder, NULL, (&__pyx_v_out_handle));
+
+  /* "heif/heif.pyx":260
+ *         cdef cheif.heif_image_handle* out_handle
+ *         res = cheif.heif_context_encode_image(encoder._ctx._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
+ *         HeifError(res)             # <<<<<<<<<<<<<<
+ *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)
+ *         res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], sz)
+ */
+  __pyx_t_2 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "heif/heif.pyx":261
+ *         res = cheif.heif_context_encode_image(encoder._ctx._heif_ctx, self._img, encoder._encoder, NULL, &out_handle)
+ *         HeifError(res)
+ *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)             # <<<<<<<<<<<<<<
+ *         res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], sz)
  *         HeifError(res)
  */
+  __pyx_t_1 = ((PyObject *)__pyx_v_encoder->_ctx);
+  __Pyx_INCREF(__pyx_t_1);
   __pyx_t_3.__pyx_n = 1;
-  __pyx_t_3.ctx = __pyx_v_out_context;
-  __pyx_t_2 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->from_image_handle(__pyx_v_out_handle, &__pyx_t_3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 251, __pyx_L1_error)
+  __pyx_t_3.ctx = ((struct __pyx_obj_6cyheif_HeifContext *)__pyx_t_1);
+  __pyx_t_2 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->from_image_handle(__pyx_v_out_handle, &__pyx_t_3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_new_image_handle = ((struct __pyx_obj_6cyheif_HeifImageHandle *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "heif/heif.pyx":252
+  /* "heif/heif.pyx":262
  *         HeifError(res)
- *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)
- *         res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)             # <<<<<<<<<<<<<<
+ *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)
+ *         res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], sz)             # <<<<<<<<<<<<<<
  *         HeifError(res)
  *         return new_image_handle
  */
@@ -6432,42 +7047,42 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   } else if (unlikely(__pyx_t_4 >= __pyx_v_exif_data.shape[0])) __pyx_t_5 = 0;
   if (unlikely(__pyx_t_5 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_5);
-    __PYX_ERR(0, 252, __pyx_L1_error)
+    __PYX_ERR(0, 262, __pyx_L1_error)
   }
-  __pyx_v_res = heif_context_add_exif_metadata(__pyx_v_out_context->_heif_ctx, __pyx_v_out_handle, (&(*((unsigned char const  *) ( /* dim=0 */ (__pyx_v_exif_data.data + __pyx_t_4 * __pyx_v_exif_data.strides[0]) )))), __pyx_v_sz);
+  __pyx_v_res = heif_context_add_exif_metadata(__pyx_v_encoder->_ctx->_heif_ctx, __pyx_v_out_handle, (&(*((unsigned char const  *) ( /* dim=0 */ (__pyx_v_exif_data.data + __pyx_t_4 * __pyx_v_exif_data.strides[0]) )))), __pyx_v_sz);
 
-  /* "heif/heif.pyx":253
- *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, out_context)
- *         res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)
+  /* "heif/heif.pyx":263
+ *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)
+ *         res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], sz)
  *         HeifError(res)             # <<<<<<<<<<<<<<
  *         return new_image_handle
  * 
  */
-  __pyx_t_2 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 253, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":254
- *         res = cheif.heif_context_add_exif_metadata(out_context._heif_ctx, out_handle, &exif_data[0], sz)
+  /* "heif/heif.pyx":264
+ *         res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], sz)
  *         HeifError(res)
  *         return new_image_handle             # <<<<<<<<<<<<<<
  * 
- *     cdef write_to_file(self: HeifImageHandle, const char* file_name):
+ *     @staticmethod
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
   __Pyx_INCREF(((PyObject *)__pyx_v_new_image_handle));
   __pyx_r = __pyx_v_new_image_handle;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":244
+  /* "heif/heif.pyx":255
  *         return buf
  * 
  *     cdef HeifImageHandle add_exif_data(self: HeifImageHandle, const unsigned char[:] exif_data, int sz):             # <<<<<<<<<<<<<<
  *         self.decode_image()
- *         cdef HeifContext out_context = HeifContext()
+ *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC)
  */
 
   /* function exit code */
@@ -6477,7 +7092,6 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   __Pyx_AddTraceback("cyheif.HeifImageHandle.add_exif_data", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_out_context);
   __Pyx_XDECREF((PyObject *)__pyx_v_encoder);
   __Pyx_XDECREF((PyObject *)__pyx_v_new_image_handle);
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
@@ -6485,12 +7099,341 @@ static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHand
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":256
+/* "heif/heif.pyx":267
+ * 
+ *     @staticmethod
+ *     cdef HeifImageHandle get_image_from_rgb_bytes(             # <<<<<<<<<<<<<<
+ *         const unsigned char[:] image_data,
+ *         int sz,
+ */
+
+static struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_f_6cyheif_15HeifImageHandle_get_image_from_rgb_bytes(__Pyx_memviewslice __pyx_v_image_data, int __pyx_v_sz, int __pyx_v_width, int __pyx_v_height, struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_image_from_rgb_bytes *__pyx_optional_args) {
+  __Pyx_memviewslice __pyx_v_exif_data = __pyx_k__16;
+  int __pyx_v_exif_sz = ((int)0);
+  struct __pyx_obj_6cyheif_HeifImage *__pyx_v_img = 0;
+  struct heif_error __pyx_v_res;
+  int __pyx_v_stride;
+  unsigned char *__pyx_v_img_buffer;
+  struct __pyx_array_obj *__pyx_v_img_buffer_view = NULL;
+  struct __pyx_obj_6cyheif_HeifEncoder *__pyx_v_encoder = 0;
+  struct heif_image_handle *__pyx_v_out_handle;
+  struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_new_image_handle = 0;
+  struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  struct __pyx_array_obj *__pyx_t_3 = NULL;
+  __Pyx_memviewslice __pyx_t_4 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_t_5;
+  struct __pyx_opt_args_6cyheif_15HeifImageHandle_from_image_handle __pyx_t_6;
+  int __pyx_t_7;
+  Py_ssize_t __pyx_t_8;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("get_image_from_rgb_bytes", 0);
+  if (__pyx_optional_args) {
+    if (__pyx_optional_args->__pyx_n > 0) {
+      __pyx_v_exif_data = __pyx_optional_args->exif_data;
+      if (__pyx_optional_args->__pyx_n > 1) {
+        __pyx_v_exif_sz = __pyx_optional_args->exif_sz;
+      }
+    }
+  }
+
+  /* "heif/heif.pyx":274
+ *         const unsigned char[:] exif_data = None,
+ *         int exif_sz = 0):
+ *         cdef HeifImage img = HeifImage()             # <<<<<<<<<<<<<<
+ *         res = cheif.heif_image_create(
+ *             width,
+ */
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cyheif_HeifImage)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_img = ((struct __pyx_obj_6cyheif_HeifImage *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "heif/heif.pyx":275
+ *         int exif_sz = 0):
+ *         cdef HeifImage img = HeifImage()
+ *         res = cheif.heif_image_create(             # <<<<<<<<<<<<<<
+ *             width,
+ *             height,
+ */
+  __pyx_v_res = heif_image_create(__pyx_v_width, __pyx_v_height, heif_colorspace_RGB, heif_chroma_interleaved_RGB, (&__pyx_v_img->_img));
+
+  /* "heif/heif.pyx":281
+ *             cheif.heif_chroma.heif_chroma_interleaved_RGB,
+ *             &img._img)
+ *         HeifError(res)             # <<<<<<<<<<<<<<
+ * 
+ *         res = cheif.heif_image_add_plane(
+ */
+  __pyx_t_1 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":283
+ *         HeifError(res)
+ * 
+ *         res = cheif.heif_image_add_plane(             # <<<<<<<<<<<<<<
+ *             img._img,
+ *             cheif.heif_channel.heif_channel_interleaved,
+ */
+  __pyx_v_res = heif_image_add_plane(__pyx_v_img->_img, heif_channel_interleaved, __pyx_v_width, __pyx_v_height, 24);
+
+  /* "heif/heif.pyx":289
+ *             height,
+ *             24)
+ *         HeifError(res)             # <<<<<<<<<<<<<<
+ * 
+ *         cdef int stride
+ */
+  __pyx_t_2 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 289, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 289, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "heif/heif.pyx":293
+ *         cdef int stride
+ *         cdef unsigned char* img_buffer
+ *         img_buffer = cheif.heif_image_get_plane(img._img, cheif.heif_channel.heif_channel_interleaved, &stride)             # <<<<<<<<<<<<<<
+ *         img_buffer_view = <unsigned char[:height*stride]>img_buffer
+ * 
+ */
+  __pyx_v_img_buffer = heif_image_get_plane(__pyx_v_img->_img, heif_channel_interleaved, (&__pyx_v_stride));
+
+  /* "heif/heif.pyx":294
+ *         cdef unsigned char* img_buffer
+ *         img_buffer = cheif.heif_image_get_plane(img._img, cheif.heif_channel.heif_channel_interleaved, &stride)
+ *         img_buffer_view = <unsigned char[:height*stride]>img_buffer             # <<<<<<<<<<<<<<
+ * 
+ *         assert(height*stride >= sz)
+ */
+  if (!__pyx_v_img_buffer) {
+    PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
+    __PYX_ERR(0, 294, __pyx_L1_error)
+  }
+  __pyx_t_2 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_unsigned_char); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 294, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)(__pyx_v_height * __pyx_v_stride))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 294, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = __pyx_array_new(__pyx_t_1, sizeof(unsigned char), PyBytes_AS_STRING(__pyx_t_2), (char *) "c", (char *) __pyx_v_img_buffer);
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 294, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_img_buffer_view = ((struct __pyx_array_obj *)__pyx_t_3);
+  __pyx_t_3 = 0;
+
+  /* "heif/heif.pyx":296
+ *         img_buffer_view = <unsigned char[:height*stride]>img_buffer
+ * 
+ *         assert(height*stride >= sz)             # <<<<<<<<<<<<<<
+ *         img_buffer_view[:sz] = image_data[:sz]
+ * 
+ */
+  #ifndef CYTHON_WITHOUT_ASSERTIONS
+  if (unlikely(!Py_OptimizeFlag)) {
+    if (unlikely(!(((__pyx_v_height * __pyx_v_stride) >= __pyx_v_sz) != 0))) {
+      PyErr_SetNone(PyExc_AssertionError);
+      __PYX_ERR(0, 296, __pyx_L1_error)
+    }
+  }
+  #endif
+
+  /* "heif/heif.pyx":297
+ * 
+ *         assert(height*stride >= sz)
+ *         img_buffer_view[:sz] = image_data[:sz]             # <<<<<<<<<<<<<<
+ * 
+ *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC)
+ */
+  __pyx_t_4.data = __pyx_v_image_data.data;
+  __pyx_t_4.memview = __pyx_v_image_data.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_4, 0);
+  __pyx_t_5 = -1;
+  if (unlikely(__pyx_memoryview_slice_memviewslice(
+    &__pyx_t_4,
+    __pyx_v_image_data.shape[0], __pyx_v_image_data.strides[0], __pyx_v_image_data.suboffsets[0],
+    0,
+    0,
+    &__pyx_t_5,
+    0,
+    __pyx_v_sz,
+    0,
+    0,
+    1,
+    0,
+    1) < 0))
+{
+    __PYX_ERR(0, 297, __pyx_L1_error)
+}
+
+__pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_4, 1, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_4, 1);
+  __pyx_t_4.memview = NULL;
+  __pyx_t_4.data = NULL;
+  if (__Pyx_PyObject_SetSlice(((PyObject *)__pyx_v_img_buffer_view), __pyx_t_2, 0, __pyx_v_sz, NULL, NULL, NULL, 0, 1, 1) < 0) __PYX_ERR(0, 297, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":299
+ *         img_buffer_view[:sz] = image_data[:sz]
+ * 
+ *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC)             # <<<<<<<<<<<<<<
+ *         cdef cheif.heif_image_handle* out_handle
+ *         res = cheif.heif_context_encode_image(encoder._ctx._heif_ctx, img._img, encoder._encoder, NULL, &out_handle)
+ */
+  __pyx_t_2 = __Pyx_PyInt_From_enum__heif_compression_format(heif_compression_HEVC); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 299, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifEncoder), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 299, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_encoder = ((struct __pyx_obj_6cyheif_HeifEncoder *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "heif/heif.pyx":301
+ *         cdef HeifEncoder encoder = HeifEncoder(cheif.heif_compression_format.heif_compression_HEVC)
+ *         cdef cheif.heif_image_handle* out_handle
+ *         res = cheif.heif_context_encode_image(encoder._ctx._heif_ctx, img._img, encoder._encoder, NULL, &out_handle)             # <<<<<<<<<<<<<<
+ *         HeifError(res)
+ * 
+ */
+  __pyx_v_res = heif_context_encode_image(__pyx_v_encoder->_ctx->_heif_ctx, __pyx_v_img->_img, __pyx_v_encoder->_encoder, NULL, (&__pyx_v_out_handle));
+
+  /* "heif/heif.pyx":302
+ *         cdef cheif.heif_image_handle* out_handle
+ *         res = cheif.heif_context_encode_image(encoder._ctx._heif_ctx, img._img, encoder._encoder, NULL, &out_handle)
+ *         HeifError(res)             # <<<<<<<<<<<<<<
+ * 
+ *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)
+ */
+  __pyx_t_1 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 302, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 302, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":304
+ *         HeifError(res)
+ * 
+ *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)             # <<<<<<<<<<<<<<
+ *         if exif_sz > 0:
+ *             res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], exif_sz)
+ */
+  __pyx_t_2 = ((PyObject *)__pyx_v_encoder->_ctx);
+  __Pyx_INCREF(__pyx_t_2);
+  __pyx_t_6.__pyx_n = 1;
+  __pyx_t_6.ctx = ((struct __pyx_obj_6cyheif_HeifContext *)__pyx_t_2);
+  __pyx_t_1 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->from_image_handle(__pyx_v_out_handle, &__pyx_t_6)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 304, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_new_image_handle = ((struct __pyx_obj_6cyheif_HeifImageHandle *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "heif/heif.pyx":305
+ * 
+ *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)
+ *         if exif_sz > 0:             # <<<<<<<<<<<<<<
+ *             res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], exif_sz)
+ *             HeifError(res)
+ */
+  __pyx_t_7 = ((__pyx_v_exif_sz > 0) != 0);
+  if (__pyx_t_7) {
+
+    /* "heif/heif.pyx":306
+ *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)
+ *         if exif_sz > 0:
+ *             res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], exif_sz)             # <<<<<<<<<<<<<<
+ *             HeifError(res)
+ * 
+ */
+    __pyx_t_8 = 0;
+    __pyx_t_5 = -1;
+    if (__pyx_t_8 < 0) {
+      __pyx_t_8 += __pyx_v_exif_data.shape[0];
+      if (unlikely(__pyx_t_8 < 0)) __pyx_t_5 = 0;
+    } else if (unlikely(__pyx_t_8 >= __pyx_v_exif_data.shape[0])) __pyx_t_5 = 0;
+    if (unlikely(__pyx_t_5 != -1)) {
+      __Pyx_RaiseBufferIndexError(__pyx_t_5);
+      __PYX_ERR(0, 306, __pyx_L1_error)
+    }
+    __pyx_v_res = heif_context_add_exif_metadata(__pyx_v_encoder->_ctx->_heif_ctx, __pyx_v_out_handle, (&(*((unsigned char const  *) ( /* dim=0 */ (__pyx_v_exif_data.data + __pyx_t_8 * __pyx_v_exif_data.strides[0]) )))), __pyx_v_exif_sz);
+
+    /* "heif/heif.pyx":307
+ *         if exif_sz > 0:
+ *             res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], exif_sz)
+ *             HeifError(res)             # <<<<<<<<<<<<<<
+ * 
+ *         return new_image_handle
+ */
+    __pyx_t_1 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 307, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 307, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+    /* "heif/heif.pyx":305
+ * 
+ *         cdef HeifImageHandle new_image_handle = HeifImageHandle.from_image_handle(out_handle, encoder._ctx)
+ *         if exif_sz > 0:             # <<<<<<<<<<<<<<
+ *             res = cheif.heif_context_add_exif_metadata(encoder._ctx._heif_ctx, out_handle, &exif_data[0], exif_sz)
+ *             HeifError(res)
+ */
+  }
+
+  /* "heif/heif.pyx":309
+ *             HeifError(res)
+ * 
+ *         return new_image_handle             # <<<<<<<<<<<<<<
+ * 
+ *     cdef write_to_file(self: HeifImageHandle, const char* file_name):
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_new_image_handle));
+  __pyx_r = __pyx_v_new_image_handle;
+  goto __pyx_L0;
+
+  /* "heif/heif.pyx":267
+ * 
+ *     @staticmethod
+ *     cdef HeifImageHandle get_image_from_rgb_bytes(             # <<<<<<<<<<<<<<
+ *         const unsigned char[:] image_data,
+ *         int sz,
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(((PyObject *)__pyx_t_3));
+  __PYX_XDEC_MEMVIEW(&__pyx_t_4, 1);
+  __Pyx_AddTraceback("cyheif.HeifImageHandle.get_image_from_rgb_bytes", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_img);
+  __Pyx_XDECREF((PyObject *)__pyx_v_img_buffer_view);
+  __Pyx_XDECREF((PyObject *)__pyx_v_encoder);
+  __Pyx_XDECREF((PyObject *)__pyx_v_new_image_handle);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "heif/heif.pyx":311
  *         return new_image_handle
  * 
  *     cdef write_to_file(self: HeifImageHandle, const char* file_name):             # <<<<<<<<<<<<<<
- *         #res = cheif.heif_context_set_primary_image(self._ctx._heif_ctx, self._handle)
- *         #HeifError(res)
+ *         res = cheif.heif_context_write_to_file(self._ctx._heif_ctx, file_name)
+ *         HeifError(res)
  */
 
 static PyObject *__pyx_f_6cyheif_15HeifImageHandle_write_to_file(struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_self, char const *__pyx_v_file_name) {
@@ -6504,35 +7447,35 @@ static PyObject *__pyx_f_6cyheif_15HeifImageHandle_write_to_file(struct __pyx_ob
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("write_to_file", 0);
 
-  /* "heif/heif.pyx":259
- *         #res = cheif.heif_context_set_primary_image(self._ctx._heif_ctx, self._handle)
- *         #HeifError(res)
+  /* "heif/heif.pyx":312
+ * 
+ *     cdef write_to_file(self: HeifImageHandle, const char* file_name):
  *         res = cheif.heif_context_write_to_file(self._ctx._heif_ctx, file_name)             # <<<<<<<<<<<<<<
  *         HeifError(res)
  * 
  */
   __pyx_v_res = heif_context_write_to_file(__pyx_v_self->_ctx->_heif_ctx, __pyx_v_file_name);
 
-  /* "heif/heif.pyx":260
- *         #HeifError(res)
+  /* "heif/heif.pyx":313
+ *     cdef write_to_file(self: HeifImageHandle, const char* file_name):
  *         res = cheif.heif_context_write_to_file(self._ctx._heif_ctx, file_name)
  *         HeifError(res)             # <<<<<<<<<<<<<<
  * 
- * 
+ * def get_pil_image(
  */
-  __pyx_t_1 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert__to_py_struct__heif_error(__pyx_v_res); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6cyheif_HeifError), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "heif/heif.pyx":256
+  /* "heif/heif.pyx":311
  *         return new_image_handle
  * 
  *     cdef write_to_file(self: HeifImageHandle, const char* file_name):             # <<<<<<<<<<<<<<
- *         #res = cheif.heif_context_set_primary_image(self._ctx._heif_ctx, self._handle)
- *         #HeifError(res)
+ *         res = cheif.heif_context_write_to_file(self._ctx._heif_ctx, file_name)
+ *         HeifError(res)
  */
 
   /* function exit code */
@@ -6583,7 +7526,7 @@ static PyObject *__pyx_pf_6cyheif_15HeifImageHandle_2__reduce_cython__(CYTHON_UN
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._handle,self._img cannot be converted to a Python object for pickling")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__17, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -6639,7 +7582,7 @@ static PyObject *__pyx_pf_6cyheif_15HeifImageHandle_4__setstate_cython__(CYTHON_
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._handle,self._img cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__17, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -6662,17 +7605,18 @@ static PyObject *__pyx_pf_6cyheif_15HeifImageHandle_4__setstate_cython__(CYTHON_
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":264
+/* "heif/heif.pyx":315
+ *         HeifError(res)
  * 
- * cdef class HeifImage:
- *     def get_pil_image(             # <<<<<<<<<<<<<<
- *         self: HeifImage,
- *         const char* file_name,
+ * def get_pil_image(             # <<<<<<<<<<<<<<
+ *     const char* file_name,
+ *     bint apply_transformations=True,
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6cyheif_9HeifImage_1get_pil_image(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_6cyheif_9HeifImage_1get_pil_image(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6cyheif_1get_pil_image(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6cyheif_1get_pil_image = {"get_pil_image", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cyheif_1get_pil_image, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6cyheif_1get_pil_image(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   char const *__pyx_v_file_name;
   int __pyx_v_apply_transformations;
   int __pyx_v_retain_exif;
@@ -6717,7 +7661,7 @@ static PyObject *__pyx_pw_6cyheif_9HeifImage_1get_pil_image(PyObject *__pyx_v_se
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_pil_image") < 0)) __PYX_ERR(0, 264, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_pil_image") < 0)) __PYX_ERR(0, 315, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6730,50 +7674,50 @@ static PyObject *__pyx_pw_6cyheif_9HeifImage_1get_pil_image(PyObject *__pyx_v_se
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_file_name = __Pyx_PyObject_AsString(values[0]); if (unlikely((!__pyx_v_file_name) && PyErr_Occurred())) __PYX_ERR(0, 266, __pyx_L3_error)
+    __pyx_v_file_name = __Pyx_PyObject_AsString(values[0]); if (unlikely((!__pyx_v_file_name) && PyErr_Occurred())) __PYX_ERR(0, 316, __pyx_L3_error)
     if (values[1]) {
-      __pyx_v_apply_transformations = __Pyx_PyObject_IsTrue(values[1]); if (unlikely((__pyx_v_apply_transformations == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 267, __pyx_L3_error)
+      __pyx_v_apply_transformations = __Pyx_PyObject_IsTrue(values[1]); if (unlikely((__pyx_v_apply_transformations == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 317, __pyx_L3_error)
     } else {
 
-      /* "heif/heif.pyx":267
- *         self: HeifImage,
- *         const char* file_name,
- *         bint apply_transformations=True,             # <<<<<<<<<<<<<<
- *         bint retain_exif=True) -> Image:
+      /* "heif/heif.pyx":317
+ * def get_pil_image(
+ *     const char* file_name,
+ *     bint apply_transformations=True,             # <<<<<<<<<<<<<<
+ *     bint retain_exif=True) -> Image:
  * 
  */
       __pyx_v_apply_transformations = ((int)1);
     }
     if (values[2]) {
-      __pyx_v_retain_exif = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_retain_exif == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
+      __pyx_v_retain_exif = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_retain_exif == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 318, __pyx_L3_error)
     } else {
 
-      /* "heif/heif.pyx":268
- *         const char* file_name,
- *         bint apply_transformations=True,
- *         bint retain_exif=True) -> Image:             # <<<<<<<<<<<<<<
+      /* "heif/heif.pyx":318
+ *     const char* file_name,
+ *     bint apply_transformations=True,
+ *     bint retain_exif=True) -> Image:             # <<<<<<<<<<<<<<
  * 
- *         heifImageHandle = HeifImageHandle.from_file(file_name)
+ *     heifImageHandle = HeifImageHandle.from_file(file_name)
  */
       __pyx_v_retain_exif = ((int)1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_pil_image", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 264, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_pil_image", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 315, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cyheif.HeifImage.get_pil_image", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.get_pil_image", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6cyheif_9HeifImage_get_pil_image(((struct __pyx_obj_6cyheif_HeifImage *)__pyx_v_self), __pyx_v_file_name, __pyx_v_apply_transformations, __pyx_v_retain_exif);
+  __pyx_r = __pyx_pf_6cyheif_get_pil_image(__pyx_self, __pyx_v_file_name, __pyx_v_apply_transformations, __pyx_v_retain_exif);
 
-  /* "heif/heif.pyx":264
+  /* "heif/heif.pyx":315
+ *         HeifError(res)
  * 
- * cdef class HeifImage:
- *     def get_pil_image(             # <<<<<<<<<<<<<<
- *         self: HeifImage,
- *         const char* file_name,
+ * def get_pil_image(             # <<<<<<<<<<<<<<
+ *     const char* file_name,
+ *     bint apply_transformations=True,
  */
 
   /* function exit code */
@@ -6781,7 +7725,7 @@ static PyObject *__pyx_pw_6cyheif_9HeifImage_1get_pil_image(PyObject *__pyx_v_se
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, char const *__pyx_v_file_name, int __pyx_v_apply_transformations, int __pyx_v_retain_exif) {
+static PyObject *__pyx_pf_6cyheif_get_pil_image(CYTHON_UNUSED PyObject *__pyx_self, char const *__pyx_v_file_name, int __pyx_v_apply_transformations, int __pyx_v_retain_exif) {
   struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_heifImageHandle = NULL;
   int __pyx_v_num_bytes;
   unsigned char const *__pyx_v_data;
@@ -6811,107 +7755,107 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_pil_image", 0);
 
-  /* "heif/heif.pyx":270
- *         bint retain_exif=True) -> Image:
+  /* "heif/heif.pyx":320
+ *     bint retain_exif=True) -> Image:
  * 
- *         heifImageHandle = HeifImageHandle.from_file(file_name)             # <<<<<<<<<<<<<<
- *         cdef int num_bytes
- *         cdef const unsigned char* data
+ *     heifImageHandle = HeifImageHandle.from_file(file_name)             # <<<<<<<<<<<<<<
+ *     cdef int num_bytes
+ *     cdef const unsigned char* data
  */
-  __pyx_t_1 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->from_file(__pyx_v_file_name, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 270, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->from_file(__pyx_v_file_name, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 320, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_heifImageHandle = ((struct __pyx_obj_6cyheif_HeifImageHandle *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":273
- *         cdef int num_bytes
- *         cdef const unsigned char* data
- *         cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)             # <<<<<<<<<<<<<<
- *         cdef int stride = <int>(num_bytes / img_attr.height)
- *         cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
+  /* "heif/heif.pyx":323
+ *     cdef int num_bytes
+ *     cdef const unsigned char* data
+ *     cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)             # <<<<<<<<<<<<<<
+ *     cdef int stride = <int>(num_bytes / img_attr.height)
+ *     cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
  */
   __pyx_t_2.__pyx_n = 2;
   __pyx_t_2.convert_hdr_to_8bit = 1;
   __pyx_t_2.apply_transformations = __pyx_v_apply_transformations;
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_heifImageHandle->__pyx_vtab)->get_image_bytes(__pyx_v_heifImageHandle, (&__pyx_v_data), (&__pyx_v_num_bytes), &__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 273, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_heifImageHandle->__pyx_vtab)->get_image_bytes(__pyx_v_heifImageHandle, (&__pyx_v_data), (&__pyx_v_num_bytes), &__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_img_attr = ((struct __pyx_obj_6cyheif_HeifImageAttributes *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":274
- *         cdef const unsigned char* data
- *         cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)
- *         cdef int stride = <int>(num_bytes / img_attr.height)             # <<<<<<<<<<<<<<
- *         cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
- *         pil_image = Image.frombuffer(
+  /* "heif/heif.pyx":324
+ *     cdef const unsigned char* data
+ *     cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)
+ *     cdef int stride = <int>(num_bytes / img_attr.height)             # <<<<<<<<<<<<<<
+ *     cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
+ *     pil_image = Image.frombuffer(
  */
   if (unlikely(__pyx_v_img_attr->height == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 274, __pyx_L1_error)
+    __PYX_ERR(0, 324, __pyx_L1_error)
   }
   __pyx_v_stride = ((int)(((double)__pyx_v_num_bytes) / ((double)__pyx_v_img_attr->height)));
 
-  /* "heif/heif.pyx":275
- *         cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)
- *         cdef int stride = <int>(num_bytes / img_attr.height)
- *         cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data             # <<<<<<<<<<<<<<
- *         pil_image = Image.frombuffer(
- *             img_attr.get_pillow_raw_format(),
+  /* "heif/heif.pyx":325
+ *     cdef HeifImageAttributes img_attr = heifImageHandle.get_image_bytes(&data, &num_bytes, True, apply_transformations)
+ *     cdef int stride = <int>(num_bytes / img_attr.height)
+ *     cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data             # <<<<<<<<<<<<<<
+ *     pil_image = Image.frombuffer(
+ *         img_attr.get_pillow_raw_format(),
  */
   if (!__pyx_v_data) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    __PYX_ERR(0, 275, __pyx_L1_error)
+    __PYX_ERR(0, 325, __pyx_L1_error)
   }
-  __pyx_t_4 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_unsigned_char__const__); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 275, __pyx_L1_error)
+  __pyx_t_4 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_unsigned_char__const__); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_num_bytes)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
+  __pyx_t_1 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_num_bytes)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = __pyx_array_new(__pyx_t_1, sizeof(unsigned char const ), PyBytes_AS_STRING(__pyx_t_4), (char *) "c", (char *) __pyx_v_data);
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 275, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(((PyObject *)__pyx_t_3), 0); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 275, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(((PyObject *)__pyx_t_3), 0); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_DECREF(((PyObject *)__pyx_t_3)); __pyx_t_3 = 0;
   __pyx_v_data_view = __pyx_t_5;
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "heif/heif.pyx":276
- *         cdef int stride = <int>(num_bytes / img_attr.height)
- *         cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
- *         pil_image = Image.frombuffer(             # <<<<<<<<<<<<<<
- *             img_attr.get_pillow_raw_format(),
- *             (img_attr.width, img_attr.height),
+  /* "heif/heif.pyx":326
+ *     cdef int stride = <int>(num_bytes / img_attr.height)
+ *     cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
+ *     pil_image = Image.frombuffer(             # <<<<<<<<<<<<<<
+ *         img_attr.get_pillow_raw_format(),
+ *         (img_attr.width, img_attr.height),
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_Image); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_Image); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 326, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_frombuffer); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_frombuffer); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 326, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":277
- *         cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
- *         pil_image = Image.frombuffer(
- *             img_attr.get_pillow_raw_format(),             # <<<<<<<<<<<<<<
- *             (img_attr.width, img_attr.height),
- *             data_view,
+  /* "heif/heif.pyx":327
+ *     cdef const unsigned char[:] data_view = <const unsigned char[:num_bytes]>data
+ *     pil_image = Image.frombuffer(
+ *         img_attr.get_pillow_raw_format(),             # <<<<<<<<<<<<<<
+ *         (img_attr.width, img_attr.height),
+ *         data_view,
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_6cyheif_HeifImageAttributes *)__pyx_v_img_attr->__pyx_vtab)->get_pillow_raw_format(__pyx_v_img_attr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_6cyheif_HeifImageAttributes *)__pyx_v_img_attr->__pyx_vtab)->get_pillow_raw_format(__pyx_v_img_attr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 327, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "heif/heif.pyx":278
- *         pil_image = Image.frombuffer(
- *             img_attr.get_pillow_raw_format(),
- *             (img_attr.width, img_attr.height),             # <<<<<<<<<<<<<<
- *             data_view,
- *             'raw',
+  /* "heif/heif.pyx":328
+ *     pil_image = Image.frombuffer(
+ *         img_attr.get_pillow_raw_format(),
+ *         (img_attr.width, img_attr.height),             # <<<<<<<<<<<<<<
+ *         data_view,
+ *         'raw',
  */
-  __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_img_attr->width); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_img_attr->width); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 328, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_img_attr->height); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_img_attr->height); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 328, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 328, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_GIVEREF(__pyx_t_7);
   PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7);
@@ -6920,34 +7864,34 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
 
-  /* "heif/heif.pyx":279
- *             img_attr.get_pillow_raw_format(),
- *             (img_attr.width, img_attr.height),
- *             data_view,             # <<<<<<<<<<<<<<
- *             'raw',
- *             img_attr.get_pillow_raw_format(),
+  /* "heif/heif.pyx":329
+ *         img_attr.get_pillow_raw_format(),
+ *         (img_attr.width, img_attr.height),
+ *         data_view,             # <<<<<<<<<<<<<<
+ *         'raw',
+ *         img_attr.get_pillow_raw_format(),
  */
-  __pyx_t_8 = __pyx_memoryview_fromslice(__pyx_v_data_view, 1, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_8 = __pyx_memoryview_fromslice(__pyx_v_data_view, 1, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 329, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
 
-  /* "heif/heif.pyx":281
- *             data_view,
- *             'raw',
- *             img_attr.get_pillow_raw_format(),             # <<<<<<<<<<<<<<
- *             stride,
- *             1
+  /* "heif/heif.pyx":331
+ *         data_view,
+ *         'raw',
+ *         img_attr.get_pillow_raw_format(),             # <<<<<<<<<<<<<<
+ *         stride,
+ *         1
  */
-  __pyx_t_7 = ((struct __pyx_vtabstruct_6cyheif_HeifImageAttributes *)__pyx_v_img_attr->__pyx_vtab)->get_pillow_raw_format(__pyx_v_img_attr); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __pyx_t_7 = ((struct __pyx_vtabstruct_6cyheif_HeifImageAttributes *)__pyx_v_img_attr->__pyx_vtab)->get_pillow_raw_format(__pyx_v_img_attr); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 331, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
 
-  /* "heif/heif.pyx":282
- *             'raw',
- *             img_attr.get_pillow_raw_format(),
- *             stride,             # <<<<<<<<<<<<<<
- *             1
- *         )
+  /* "heif/heif.pyx":332
+ *         'raw',
+ *         img_attr.get_pillow_raw_format(),
+ *         stride,             # <<<<<<<<<<<<<<
+ *         1
+ *     )
  */
-  __pyx_t_10 = __Pyx_PyInt_From_int(__pyx_v_stride); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 282, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyInt_From_int(__pyx_v_stride); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 332, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __pyx_t_11 = NULL;
   __pyx_t_12 = 0;
@@ -6964,7 +7908,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[8] = {__pyx_t_11, __pyx_t_1, __pyx_t_9, __pyx_t_8, __pyx_n_u_raw, __pyx_t_7, __pyx_t_10, __pyx_int_1};
-    __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_12, 7+__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 276, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_12, 7+__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 326, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -6977,7 +7921,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[8] = {__pyx_t_11, __pyx_t_1, __pyx_t_9, __pyx_t_8, __pyx_n_u_raw, __pyx_t_7, __pyx_t_10, __pyx_int_1};
-    __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_12, 7+__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 276, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_12, 7+__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 326, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -6988,7 +7932,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
   } else
   #endif
   {
-    __pyx_t_13 = PyTuple_New(7+__pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 276, __pyx_L1_error)
+    __pyx_t_13 = PyTuple_New(7+__pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 326, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     if (__pyx_t_11) {
       __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_11); __pyx_t_11 = NULL;
@@ -7014,7 +7958,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
     __pyx_t_8 = 0;
     __pyx_t_7 = 0;
     __pyx_t_10 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_13, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 276, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_13, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 326, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   }
@@ -7022,73 +7966,73 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
   __pyx_v_pil_image = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "heif/heif.pyx":285
- *             1
- *         )
- *         if retain_exif:             # <<<<<<<<<<<<<<
- *             heif_buffer = heifImageHandle.get_image_exif_data()
- *             # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
+  /* "heif/heif.pyx":335
+ *         1
+ *     )
+ *     if retain_exif:             # <<<<<<<<<<<<<<
+ *         heif_buffer = heifImageHandle.get_image_exif_data()
+ *         # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
  */
   __pyx_t_14 = (__pyx_v_retain_exif != 0);
   if (__pyx_t_14) {
 
-    /* "heif/heif.pyx":286
- *         )
- *         if retain_exif:
- *             heif_buffer = heifImageHandle.get_image_exif_data()             # <<<<<<<<<<<<<<
- *             # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
- *             # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
+    /* "heif/heif.pyx":336
+ *     )
+ *     if retain_exif:
+ *         heif_buffer = heifImageHandle.get_image_exif_data()             # <<<<<<<<<<<<<<
+ *         # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
+ *         # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
  */
-    __pyx_t_4 = ((PyObject *)((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_heifImageHandle->__pyx_vtab)->get_image_exif_data(__pyx_v_heifImageHandle)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 286, __pyx_L1_error)
+    __pyx_t_4 = ((PyObject *)((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_heifImageHandle->__pyx_vtab)->get_image_exif_data(__pyx_v_heifImageHandle)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 336, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_v_heif_buffer = ((struct __pyx_obj_6cyheif_HeifBuffer *)__pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "heif/heif.pyx":289
- *             # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
- *             # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
- *             pil_image.info['exif'] = bytes(heif_buffer._data[4:heif_buffer._sz])             # <<<<<<<<<<<<<<
- *         return pil_image
+    /* "heif/heif.pyx":339
+ *         # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
+ *         # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
+ *         pil_image.info['exif'] = bytes(heif_buffer._data[4:heif_buffer._sz])             # <<<<<<<<<<<<<<
+ *     return pil_image
  * 
  */
-    __pyx_t_4 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_heif_buffer->_data) + 4, __pyx_v_heif_buffer->_sz - 4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 289, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_heif_buffer->_data) + 4, __pyx_v_heif_buffer->_sz - 4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 339, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 289, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 339, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_pil_image, __pyx_n_s_info); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 289, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_pil_image, __pyx_n_s_info); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 339, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (unlikely(PyObject_SetItem(__pyx_t_4, __pyx_n_u_exif, __pyx_t_6) < 0)) __PYX_ERR(0, 289, __pyx_L1_error)
+    if (unlikely(PyObject_SetItem(__pyx_t_4, __pyx_n_u_exif, __pyx_t_6) < 0)) __PYX_ERR(0, 339, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "heif/heif.pyx":285
- *             1
- *         )
- *         if retain_exif:             # <<<<<<<<<<<<<<
- *             heif_buffer = heifImageHandle.get_image_exif_data()
- *             # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
+    /* "heif/heif.pyx":335
+ *         1
+ *     )
+ *     if retain_exif:             # <<<<<<<<<<<<<<
+ *         heif_buffer = heifImageHandle.get_image_exif_data()
+ *         # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
  */
   }
 
-  /* "heif/heif.pyx":290
- *             # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
- *             pil_image.info['exif'] = bytes(heif_buffer._data[4:heif_buffer._sz])
- *         return pil_image             # <<<<<<<<<<<<<<
+  /* "heif/heif.pyx":340
+ *         # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
+ *         pil_image.info['exif'] = bytes(heif_buffer._data[4:heif_buffer._sz])
+ *     return pil_image             # <<<<<<<<<<<<<<
  * 
- *     def get_exif_data(self: HeifImage, const char* file_name) -> Image.Exif:
+ * def write_pil_image(
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_pil_image);
   __pyx_r = __pyx_v_pil_image;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":264
+  /* "heif/heif.pyx":315
+ *         HeifError(res)
  * 
- * cdef class HeifImage:
- *     def get_pil_image(             # <<<<<<<<<<<<<<
- *         self: HeifImage,
- *         const char* file_name,
+ * def get_pil_image(             # <<<<<<<<<<<<<<
+ *     const char* file_name,
+ *     bint apply_transformations=True,
  */
 
   /* function exit code */
@@ -7104,7 +8048,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_13);
-  __Pyx_AddTraceback("cyheif.HeifImage.get_pil_image", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.get_pil_image", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_heifImageHandle);
@@ -7117,17 +8061,454 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_get_pil_image(CYTHON_UNUSED struct 
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":292
- *         return pil_image
+/* "heif/heif.pyx":342
+ *     return pil_image
  * 
- *     def get_exif_data(self: HeifImage, const char* file_name) -> Image.Exif:             # <<<<<<<<<<<<<<
- *         cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
- *         heif_buffer = heifImageHandle.get_image_exif_data()
+ * def write_pil_image(             # <<<<<<<<<<<<<<
+ *     input_img: Image,
+ *     const char* output_file_name,
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6cyheif_9HeifImage_3get_exif_data(PyObject *__pyx_v_self, PyObject *__pyx_arg_file_name); /*proto*/
-static PyObject *__pyx_pw_6cyheif_9HeifImage_3get_exif_data(PyObject *__pyx_v_self, PyObject *__pyx_arg_file_name) {
+static PyObject *__pyx_pw_6cyheif_3write_pil_image(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6cyheif_3write_pil_image = {"write_pil_image", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cyheif_3write_pil_image, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6cyheif_3write_pil_image(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_input_img = 0;
+  char const *__pyx_v_output_file_name;
+  int __pyx_v_retain_exif;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("write_pil_image (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_input_img,&__pyx_n_s_output_file_name,&__pyx_n_s_retain_exif,0};
+    PyObject* values[3] = {0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_input_img)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output_file_name)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("write_pil_image", 0, 2, 3, 1); __PYX_ERR(0, 342, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_retain_exif);
+          if (value) { values[2] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "write_pil_image") < 0)) __PYX_ERR(0, 342, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_input_img = values[0];
+    __pyx_v_output_file_name = __Pyx_PyObject_AsString(values[1]); if (unlikely((!__pyx_v_output_file_name) && PyErr_Occurred())) __PYX_ERR(0, 344, __pyx_L3_error)
+    if (values[2]) {
+      __pyx_v_retain_exif = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_retain_exif == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 345, __pyx_L3_error)
+    } else {
+
+      /* "heif/heif.pyx":345
+ *     input_img: Image,
+ *     const char* output_file_name,
+ *     bint retain_exif=True) -> None:             # <<<<<<<<<<<<<<
+ * 
+ *     # TODO: libheif seems to have a bug where images that have width that are not multiple of 8
+ */
+      __pyx_v_retain_exif = ((int)1);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("write_pil_image", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 342, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("cyheif.write_pil_image", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6cyheif_2write_pil_image(__pyx_self, __pyx_v_input_img, __pyx_v_output_file_name, __pyx_v_retain_exif);
+
+  /* "heif/heif.pyx":342
+ *     return pil_image
+ * 
+ * def write_pil_image(             # <<<<<<<<<<<<<<
+ *     input_img: Image,
+ *     const char* output_file_name,
+ */
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cyheif_2write_pil_image(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_input_img, char const *__pyx_v_output_file_name, int __pyx_v_retain_exif) {
+  PyObject *__pyx_v_width = NULL;
+  PyObject *__pyx_v_img_bytes = 0;
+  PyObject *__pyx_v_exif_bytes = 0;
+  struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_output_image = 0;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  int __pyx_t_3;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  __Pyx_memviewslice __pyx_t_10 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_11;
+  struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_image_from_rgb_bytes __pyx_t_12;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("write_pil_image", 0);
+  __Pyx_INCREF(__pyx_v_input_img);
+
+  /* "heif/heif.pyx":350
+ *     # will not be handled properly (bytes in plane will not match bytes in raw image). Round up
+ *     # and resize the input image to work around this bug.
+ *     if input_img.width % 8 != 0:             # <<<<<<<<<<<<<<
+ *         width = input_img.width + (8 - (input_img.width % 8))
+ *         input_img = input_img.resize((width, input_img.height))
+ */
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_input_img, __pyx_n_s_width); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 350, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyInt_RemainderObjC(__pyx_t_1, __pyx_int_8, 8, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 350, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyInt_NeObjC(__pyx_t_2, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 350, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 350, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__pyx_t_3) {
+
+    /* "heif/heif.pyx":351
+ *     # and resize the input image to work around this bug.
+ *     if input_img.width % 8 != 0:
+ *         width = input_img.width + (8 - (input_img.width % 8))             # <<<<<<<<<<<<<<
+ *         input_img = input_img.resize((width, input_img.height))
+ * 
+ */
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_input_img, __pyx_n_s_width); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 351, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_input_img, __pyx_n_s_width); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 351, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_4 = __Pyx_PyInt_RemainderObjC(__pyx_t_2, __pyx_int_8, 8, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 351, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyInt_SubtractCObj(__pyx_int_8, __pyx_t_4, 8, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 351, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = PyNumber_Add(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 351, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_v_width = __pyx_t_4;
+    __pyx_t_4 = 0;
+
+    /* "heif/heif.pyx":352
+ *     if input_img.width % 8 != 0:
+ *         width = input_img.width + (8 - (input_img.width % 8))
+ *         input_img = input_img.resize((width, input_img.height))             # <<<<<<<<<<<<<<
+ * 
+ *     cdef bytes img_bytes = input_img.tobytes('raw', 'RGB')
+ */
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_input_img, __pyx_n_s_resize); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 352, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_input_img, __pyx_n_s_height); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 352, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 352, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_INCREF(__pyx_v_width);
+    __Pyx_GIVEREF(__pyx_v_width);
+    PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_v_width);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_1);
+    __pyx_t_1 = 0;
+    __pyx_t_1 = NULL;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_2);
+      if (likely(__pyx_t_1)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+        __Pyx_INCREF(__pyx_t_1);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_2, function);
+      }
+    }
+    __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_1, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_5);
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 352, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF_SET(__pyx_v_input_img, __pyx_t_4);
+    __pyx_t_4 = 0;
+
+    /* "heif/heif.pyx":350
+ *     # will not be handled properly (bytes in plane will not match bytes in raw image). Round up
+ *     # and resize the input image to work around this bug.
+ *     if input_img.width % 8 != 0:             # <<<<<<<<<<<<<<
+ *         width = input_img.width + (8 - (input_img.width % 8))
+ *         input_img = input_img.resize((width, input_img.height))
+ */
+  }
+
+  /* "heif/heif.pyx":354
+ *         input_img = input_img.resize((width, input_img.height))
+ * 
+ *     cdef bytes img_bytes = input_img.tobytes('raw', 'RGB')             # <<<<<<<<<<<<<<
+ *     cdef bytes exif_bytes
+ *     if retain_exif:
+ */
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_input_img, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 354, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 354, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (!(likely(PyBytes_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 354, __pyx_L1_error)
+  __pyx_v_img_bytes = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":356
+ *     cdef bytes img_bytes = input_img.tobytes('raw', 'RGB')
+ *     cdef bytes exif_bytes
+ *     if retain_exif:             # <<<<<<<<<<<<<<
+ *         exif_bytes = input_img.getexif().tobytes()
+ *     cdef HeifImageHandle output_image = HeifImageHandle.get_image_from_rgb_bytes(
+ */
+  __pyx_t_3 = (__pyx_v_retain_exif != 0);
+  if (__pyx_t_3) {
+
+    /* "heif/heif.pyx":357
+ *     cdef bytes exif_bytes
+ *     if retain_exif:
+ *         exif_bytes = input_img.getexif().tobytes()             # <<<<<<<<<<<<<<
+ *     cdef HeifImageHandle output_image = HeifImageHandle.get_image_from_rgb_bytes(
+ *         img_bytes,
+ */
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_input_img, __pyx_n_s_getexif); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 357, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_1 = NULL;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_5);
+      if (likely(__pyx_t_1)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+        __Pyx_INCREF(__pyx_t_1);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_5, function);
+      }
+    }
+    __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 357, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 357, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = NULL;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
+      if (likely(__pyx_t_4)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+        __Pyx_INCREF(__pyx_t_4);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_5, function);
+      }
+    }
+    __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 357, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (!(likely(PyBytes_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 357, __pyx_L1_error)
+    __pyx_v_exif_bytes = ((PyObject*)__pyx_t_2);
+    __pyx_t_2 = 0;
+
+    /* "heif/heif.pyx":356
+ *     cdef bytes img_bytes = input_img.tobytes('raw', 'RGB')
+ *     cdef bytes exif_bytes
+ *     if retain_exif:             # <<<<<<<<<<<<<<
+ *         exif_bytes = input_img.getexif().tobytes()
+ *     cdef HeifImageHandle output_image = HeifImageHandle.get_image_from_rgb_bytes(
+ */
+  }
+
+  /* "heif/heif.pyx":359
+ *         exif_bytes = input_img.getexif().tobytes()
+ *     cdef HeifImageHandle output_image = HeifImageHandle.get_image_from_rgb_bytes(
+ *         img_bytes,             # <<<<<<<<<<<<<<
+ *         int(len(img_bytes)),
+ *         input_img.width,
+ */
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(__pyx_v_img_bytes, 0); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 359, __pyx_L1_error)
+
+  /* "heif/heif.pyx":360
+ *     cdef HeifImageHandle output_image = HeifImageHandle.get_image_from_rgb_bytes(
+ *         img_bytes,
+ *         int(len(img_bytes)),             # <<<<<<<<<<<<<<
+ *         input_img.width,
+ *         input_img.height,
+ */
+  if (unlikely(__pyx_v_img_bytes == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    __PYX_ERR(0, 360, __pyx_L1_error)
+  }
+  __pyx_t_7 = PyBytes_GET_SIZE(__pyx_v_img_bytes); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 360, __pyx_L1_error)
+
+  /* "heif/heif.pyx":361
+ *         img_bytes,
+ *         int(len(img_bytes)),
+ *         input_img.width,             # <<<<<<<<<<<<<<
+ *         input_img.height,
+ *         exif_bytes,
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_input_img, __pyx_n_s_width); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 361, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 361, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":362
+ *         int(len(img_bytes)),
+ *         input_img.width,
+ *         input_img.height,             # <<<<<<<<<<<<<<
+ *         exif_bytes,
+ *         int(len(exif_bytes)))
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_input_img, __pyx_n_s_height); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 362, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 362, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":363
+ *         input_img.width,
+ *         input_img.height,
+ *         exif_bytes,             # <<<<<<<<<<<<<<
+ *         int(len(exif_bytes)))
+ *     output_image.write_to_file(output_file_name)
+ */
+  if (unlikely(!__pyx_v_exif_bytes)) { __Pyx_RaiseUnboundLocalError("exif_bytes"); __PYX_ERR(0, 363, __pyx_L1_error) }
+  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(__pyx_v_exif_bytes, 0); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 363, __pyx_L1_error)
+
+  /* "heif/heif.pyx":364
+ *         input_img.height,
+ *         exif_bytes,
+ *         int(len(exif_bytes)))             # <<<<<<<<<<<<<<
+ *     output_image.write_to_file(output_file_name)
+ * 
+ */
+  if (unlikely(!__pyx_v_exif_bytes)) { __Pyx_RaiseUnboundLocalError("exif_bytes"); __PYX_ERR(0, 364, __pyx_L1_error) }
+  if (unlikely(__pyx_v_exif_bytes == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    __PYX_ERR(0, 364, __pyx_L1_error)
+  }
+  __pyx_t_11 = PyBytes_GET_SIZE(__pyx_v_exif_bytes); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 364, __pyx_L1_error)
+
+  /* "heif/heif.pyx":358
+ *     if retain_exif:
+ *         exif_bytes = input_img.getexif().tobytes()
+ *     cdef HeifImageHandle output_image = HeifImageHandle.get_image_from_rgb_bytes(             # <<<<<<<<<<<<<<
+ *         img_bytes,
+ *         int(len(img_bytes)),
+ */
+  __pyx_t_12.__pyx_n = 2;
+  __pyx_t_12.exif_data = __pyx_t_10;
+  __pyx_t_12.exif_sz = ((int)__pyx_t_11);
+  __pyx_t_2 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->get_image_from_rgb_bytes(__pyx_t_6, ((int)__pyx_t_7), __pyx_t_8, __pyx_t_9, &__pyx_t_12)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 358, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
+  __pyx_t_6.memview = NULL;
+  __pyx_t_6.data = NULL;
+  __PYX_XDEC_MEMVIEW(&__pyx_t_10, 1);
+  __pyx_t_10.memview = NULL;
+  __pyx_t_10.data = NULL;
+  __pyx_v_output_image = ((struct __pyx_obj_6cyheif_HeifImageHandle *)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":365
+ *         exif_bytes,
+ *         int(len(exif_bytes)))
+ *     output_image.write_to_file(output_file_name)             # <<<<<<<<<<<<<<
+ * 
+ * def get_exif_data(const char* file_name) -> Image.Exif:
+ */
+  __pyx_t_2 = ((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_output_image->__pyx_vtab)->write_to_file(__pyx_v_output_image, __pyx_v_output_file_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 365, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":342
+ *     return pil_image
+ * 
+ * def write_pil_image(             # <<<<<<<<<<<<<<
+ *     input_img: Image,
+ *     const char* output_file_name,
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_10, 1);
+  __Pyx_AddTraceback("cyheif.write_pil_image", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_width);
+  __Pyx_XDECREF(__pyx_v_img_bytes);
+  __Pyx_XDECREF(__pyx_v_exif_bytes);
+  __Pyx_XDECREF((PyObject *)__pyx_v_output_image);
+  __Pyx_XDECREF(__pyx_v_input_img);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "heif/heif.pyx":367
+ *     output_image.write_to_file(output_file_name)
+ * 
+ * def get_exif_data(const char* file_name) -> Image.Exif:             # <<<<<<<<<<<<<<
+ *     cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
+ *     heif_buffer = heifImageHandle.get_image_exif_data()
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cyheif_5get_exif_data(PyObject *__pyx_self, PyObject *__pyx_arg_file_name); /*proto*/
+static PyMethodDef __pyx_mdef_6cyheif_5get_exif_data = {"get_exif_data", (PyCFunction)__pyx_pw_6cyheif_5get_exif_data, METH_O, 0};
+static PyObject *__pyx_pw_6cyheif_5get_exif_data(PyObject *__pyx_self, PyObject *__pyx_arg_file_name) {
   char const *__pyx_v_file_name;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -7136,22 +8517,22 @@ static PyObject *__pyx_pw_6cyheif_9HeifImage_3get_exif_data(PyObject *__pyx_v_se
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_exif_data (wrapper)", 0);
   assert(__pyx_arg_file_name); {
-    __pyx_v_file_name = __Pyx_PyObject_AsString(__pyx_arg_file_name); if (unlikely((!__pyx_v_file_name) && PyErr_Occurred())) __PYX_ERR(0, 292, __pyx_L3_error)
+    __pyx_v_file_name = __Pyx_PyObject_AsString(__pyx_arg_file_name); if (unlikely((!__pyx_v_file_name) && PyErr_Occurred())) __PYX_ERR(0, 367, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cyheif.HeifImage.get_exif_data", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.get_exif_data", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6cyheif_9HeifImage_2get_exif_data(((struct __pyx_obj_6cyheif_HeifImage *)__pyx_v_self), ((char const *)__pyx_v_file_name));
+  __pyx_r = __pyx_pf_6cyheif_4get_exif_data(__pyx_self, ((char const *)__pyx_v_file_name));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6cyheif_9HeifImage_2get_exif_data(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, char const *__pyx_v_file_name) {
+static PyObject *__pyx_pf_6cyheif_4get_exif_data(CYTHON_UNUSED PyObject *__pyx_self, char const *__pyx_v_file_name) {
   struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_heifImageHandle = 0;
   struct __pyx_obj_6cyheif_HeifBuffer *__pyx_v_heif_buffer = NULL;
   PyObject *__pyx_v_exif = NULL;
@@ -7171,40 +8552,40 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_2get_exif_data(CYTHON_UNUSED struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_exif_data", 0);
 
-  /* "heif/heif.pyx":293
+  /* "heif/heif.pyx":368
  * 
- *     def get_exif_data(self: HeifImage, const char* file_name) -> Image.Exif:
- *         cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)             # <<<<<<<<<<<<<<
- *         heif_buffer = heifImageHandle.get_image_exif_data()
- *         exif = Image.Exif()
+ * def get_exif_data(const char* file_name) -> Image.Exif:
+ *     cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)             # <<<<<<<<<<<<<<
+ *     heif_buffer = heifImageHandle.get_image_exif_data()
+ *     exif = Image.Exif()
  */
-  __pyx_t_1 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->from_file(__pyx_v_file_name, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 293, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->from_file(__pyx_v_file_name, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 368, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_heifImageHandle = ((struct __pyx_obj_6cyheif_HeifImageHandle *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":294
- *     def get_exif_data(self: HeifImage, const char* file_name) -> Image.Exif:
- *         cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
- *         heif_buffer = heifImageHandle.get_image_exif_data()             # <<<<<<<<<<<<<<
- *         exif = Image.Exif()
- *         cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data
+  /* "heif/heif.pyx":369
+ * def get_exif_data(const char* file_name) -> Image.Exif:
+ *     cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
+ *     heif_buffer = heifImageHandle.get_image_exif_data()             # <<<<<<<<<<<<<<
+ *     exif = Image.Exif()
+ *     cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data
  */
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_heifImageHandle->__pyx_vtab)->get_image_exif_data(__pyx_v_heifImageHandle)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 294, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_heifImageHandle->__pyx_vtab)->get_image_exif_data(__pyx_v_heifImageHandle)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 369, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_heif_buffer = ((struct __pyx_obj_6cyheif_HeifBuffer *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":295
- *         cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
- *         heif_buffer = heifImageHandle.get_image_exif_data()
- *         exif = Image.Exif()             # <<<<<<<<<<<<<<
- *         cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data
- *         # HACK - Reading PIL.Image.Exif sources shows passing a byte array to Exif.load will work
+  /* "heif/heif.pyx":370
+ *     cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
+ *     heif_buffer = heifImageHandle.get_image_exif_data()
+ *     exif = Image.Exif()             # <<<<<<<<<<<<<<
+ *     cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data
+ *     # HACK - Reading PIL.Image.Exif sources shows passing a byte array to Exif.load will work
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Image); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 295, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Image); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 370, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Exif); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 295, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Exif); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 370, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -7219,48 +8600,48 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_2get_exif_data(CYTHON_UNUSED struct
   }
   __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 295, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 370, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_exif = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":296
- *         heif_buffer = heifImageHandle.get_image_exif_data()
- *         exif = Image.Exif()
- *         cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data             # <<<<<<<<<<<<<<
- *         # HACK - Reading PIL.Image.Exif sources shows passing a byte array to Exif.load will work
- *         # HACK - Unfortunately, it needs to be a byte array as load calls starts_with on it
+  /* "heif/heif.pyx":371
+ *     heif_buffer = heifImageHandle.get_image_exif_data()
+ *     exif = Image.Exif()
+ *     cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data             # <<<<<<<<<<<<<<
+ *     # HACK - Reading PIL.Image.Exif sources shows passing a byte array to Exif.load will work
+ *     # HACK - Unfortunately, it needs to be a byte array as load calls starts_with on it
  */
   __pyx_t_4 = __pyx_v_heif_buffer->_data;
-  if (unlikely(!__pyx_v_heif_buffer)) { __Pyx_RaiseUnboundLocalError("heif_buffer"); __PYX_ERR(0, 296, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_heif_buffer)) { __Pyx_RaiseUnboundLocalError("heif_buffer"); __PYX_ERR(0, 371, __pyx_L1_error) }
   if (!__pyx_t_4) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    __PYX_ERR(0, 296, __pyx_L1_error)
+    __PYX_ERR(0, 371, __pyx_L1_error)
   }
-  __pyx_t_3 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_unsigned_char__const__); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_t_3 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_unsigned_char__const__); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 371, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_heif_buffer->_sz)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_t_1 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_heif_buffer->_sz)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 371, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_5 = __pyx_array_new(__pyx_t_1, sizeof(unsigned char const ), PyBytes_AS_STRING(__pyx_t_3), (char *) "c", (char *) __pyx_t_4);
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 296, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 371, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(((PyObject *)__pyx_t_5), 0); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(((PyObject *)__pyx_t_5), 0); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 371, __pyx_L1_error)
   __Pyx_DECREF(((PyObject *)__pyx_t_5)); __pyx_t_5 = 0;
   __pyx_v_data_view = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "heif/heif.pyx":300
- *         # HACK - Unfortunately, it needs to be a byte array as load calls starts_with on it
- *         # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
- *         exif.load(bytes(data_view[4:]))             # <<<<<<<<<<<<<<
- *         return exif
+  /* "heif/heif.pyx":375
+ *     # HACK - Unfortunately, it needs to be a byte array as load calls starts_with on it
+ *     # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
+ *     exif.load(bytes(data_view[4:]))             # <<<<<<<<<<<<<<
+ *     return exif
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_exif, __pyx_n_s_load); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 300, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_exif, __pyx_n_s_load); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 375, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_6.data = __pyx_v_data_view.data;
   __pyx_t_6.memview = __pyx_v_data_view.memview;
@@ -7280,15 +8661,15 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_2get_exif_data(CYTHON_UNUSED struct
     0,
     1) < 0))
 {
-    __PYX_ERR(0, 300, __pyx_L1_error)
+    __PYX_ERR(0, 375, __pyx_L1_error)
 }
 
-__pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_6, 1, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 300, __pyx_L1_error)
+__pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_6, 1, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 375, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
-  __pyx_t_8 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 300, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 375, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -7304,29 +8685,29 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_6, 1, (PyObject *(*)(char *)) __p
   __pyx_t_3 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_2, __pyx_t_8) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_8);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 300, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 375, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "heif/heif.pyx":301
- *         # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
- *         exif.load(bytes(data_view[4:]))
- *         return exif             # <<<<<<<<<<<<<<
+  /* "heif/heif.pyx":376
+ *     # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
+ *     exif.load(bytes(data_view[4:]))
+ *     return exif             # <<<<<<<<<<<<<<
  * 
- *     def write_exif_data_from_bytes(
+ * def write_exif_data_from_bytes(
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_exif);
   __pyx_r = __pyx_v_exif;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":292
- *         return pil_image
+  /* "heif/heif.pyx":367
+ *     output_image.write_to_file(output_file_name)
  * 
- *     def get_exif_data(self: HeifImage, const char* file_name) -> Image.Exif:             # <<<<<<<<<<<<<<
- *         cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
- *         heif_buffer = heifImageHandle.get_image_exif_data()
+ * def get_exif_data(const char* file_name) -> Image.Exif:             # <<<<<<<<<<<<<<
+ *     cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
+ *     heif_buffer = heifImageHandle.get_image_exif_data()
  */
 
   /* function exit code */
@@ -7337,7 +8718,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_6, 1, (PyObject *(*)(char *)) __p
   __Pyx_XDECREF(((PyObject *)__pyx_t_5));
   __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("cyheif.HeifImage.get_exif_data", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.get_exif_data", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_heifImageHandle);
@@ -7349,17 +8730,18 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_6, 1, (PyObject *(*)(char *)) __p
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":303
- *         return exif
+/* "heif/heif.pyx":378
+ *     return exif
  * 
- *     def write_exif_data_from_bytes(             # <<<<<<<<<<<<<<
- *         self: HeifImage,
- *         const char* input_file_name,
+ * def write_exif_data_from_bytes(             # <<<<<<<<<<<<<<
+ *     const char* input_file_name,
+ *     const char* output_file_name,
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6cyheif_9HeifImage_5write_exif_data_from_bytes(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_6cyheif_9HeifImage_5write_exif_data_from_bytes(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6cyheif_7write_exif_data_from_bytes(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6cyheif_7write_exif_data_from_bytes = {"write_exif_data_from_bytes", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cyheif_7write_exif_data_from_bytes, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6cyheif_7write_exif_data_from_bytes(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   char const *__pyx_v_input_file_name;
   char const *__pyx_v_output_file_name;
   PyObject *__pyx_v_exif_data = 0;
@@ -7394,17 +8776,17 @@ static PyObject *__pyx_pw_6cyheif_9HeifImage_5write_exif_data_from_bytes(PyObjec
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output_file_name)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("write_exif_data_from_bytes", 1, 3, 3, 1); __PYX_ERR(0, 303, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("write_exif_data_from_bytes", 1, 3, 3, 1); __PYX_ERR(0, 378, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_exif_data)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("write_exif_data_from_bytes", 1, 3, 3, 2); __PYX_ERR(0, 303, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("write_exif_data_from_bytes", 1, 3, 3, 2); __PYX_ERR(0, 378, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "write_exif_data_from_bytes") < 0)) __PYX_ERR(0, 303, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "write_exif_data_from_bytes") < 0)) __PYX_ERR(0, 378, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -7413,20 +8795,20 @@ static PyObject *__pyx_pw_6cyheif_9HeifImage_5write_exif_data_from_bytes(PyObjec
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_input_file_name = __Pyx_PyObject_AsString(values[0]); if (unlikely((!__pyx_v_input_file_name) && PyErr_Occurred())) __PYX_ERR(0, 305, __pyx_L3_error)
-    __pyx_v_output_file_name = __Pyx_PyObject_AsString(values[1]); if (unlikely((!__pyx_v_output_file_name) && PyErr_Occurred())) __PYX_ERR(0, 306, __pyx_L3_error)
+    __pyx_v_input_file_name = __Pyx_PyObject_AsString(values[0]); if (unlikely((!__pyx_v_input_file_name) && PyErr_Occurred())) __PYX_ERR(0, 379, __pyx_L3_error)
+    __pyx_v_output_file_name = __Pyx_PyObject_AsString(values[1]); if (unlikely((!__pyx_v_output_file_name) && PyErr_Occurred())) __PYX_ERR(0, 380, __pyx_L3_error)
     __pyx_v_exif_data = ((PyObject*)values[2]);
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("write_exif_data_from_bytes", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 303, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("write_exif_data_from_bytes", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 378, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cyheif.HeifImage.write_exif_data_from_bytes", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.write_exif_data_from_bytes", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_exif_data), (&PyBytes_Type), 1, "exif_data", 1))) __PYX_ERR(0, 307, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6cyheif_9HeifImage_4write_exif_data_from_bytes(((struct __pyx_obj_6cyheif_HeifImage *)__pyx_v_self), __pyx_v_input_file_name, __pyx_v_output_file_name, __pyx_v_exif_data);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_exif_data), (&PyBytes_Type), 1, "exif_data", 1))) __PYX_ERR(0, 381, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6cyheif_6write_exif_data_from_bytes(__pyx_self, __pyx_v_input_file_name, __pyx_v_output_file_name, __pyx_v_exif_data);
 
   /* function exit code */
   goto __pyx_L0;
@@ -7437,7 +8819,7 @@ static PyObject *__pyx_pw_6cyheif_9HeifImage_5write_exif_data_from_bytes(PyObjec
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6cyheif_9HeifImage_4write_exif_data_from_bytes(CYTHON_UNUSED struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, char const *__pyx_v_input_file_name, char const *__pyx_v_output_file_name, PyObject *__pyx_v_exif_data) {
+static PyObject *__pyx_pf_6cyheif_6write_exif_data_from_bytes(CYTHON_UNUSED PyObject *__pyx_self, char const *__pyx_v_input_file_name, char const *__pyx_v_output_file_name, PyObject *__pyx_v_exif_data) {
   struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_input_image = 0;
   struct __pyx_obj_6cyheif_HeifImageHandle *__pyx_v_output_image = 0;
   PyObject *__pyx_r = NULL;
@@ -7450,32 +8832,32 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_4write_exif_data_from_bytes(CYTHON_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("write_exif_data_from_bytes", 0);
 
-  /* "heif/heif.pyx":308
- *         const char* output_file_name,
- *         exif_data: bytes) -> None:
- *         cdef HeifImageHandle input_image = HeifImageHandle.from_file(input_file_name)             # <<<<<<<<<<<<<<
- *         cdef HeifImageHandle output_image = input_image.add_exif_data(exif_data, len(exif_data))
- *         output_image.write_to_file(output_file_name)
+  /* "heif/heif.pyx":382
+ *     const char* output_file_name,
+ *     exif_data: bytes) -> None:
+ *     cdef HeifImageHandle input_image = HeifImageHandle.from_file(input_file_name)             # <<<<<<<<<<<<<<
+ *     cdef HeifImageHandle output_image = input_image.add_exif_data(exif_data, int(len(exif_data)))
+ *     output_image.write_to_file(output_file_name)
  */
-  __pyx_t_1 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->from_file(__pyx_v_input_file_name, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 308, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_vtabptr_6cyheif_HeifImageHandle->from_file(__pyx_v_input_file_name, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 382, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_input_image = ((struct __pyx_obj_6cyheif_HeifImageHandle *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":309
- *         exif_data: bytes) -> None:
- *         cdef HeifImageHandle input_image = HeifImageHandle.from_file(input_file_name)
- *         cdef HeifImageHandle output_image = input_image.add_exif_data(exif_data, len(exif_data))             # <<<<<<<<<<<<<<
- *         output_image.write_to_file(output_file_name)
+  /* "heif/heif.pyx":383
+ *     exif_data: bytes) -> None:
+ *     cdef HeifImageHandle input_image = HeifImageHandle.from_file(input_file_name)
+ *     cdef HeifImageHandle output_image = input_image.add_exif_data(exif_data, int(len(exif_data)))             # <<<<<<<<<<<<<<
+ *     output_image.write_to_file(output_file_name)
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(__pyx_v_exif_data, 0); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 309, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(__pyx_v_exif_data, 0); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 383, __pyx_L1_error)
   if (unlikely(__pyx_v_exif_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 309, __pyx_L1_error)
+    __PYX_ERR(0, 383, __pyx_L1_error)
   }
-  __pyx_t_3 = PyBytes_GET_SIZE(__pyx_v_exif_data); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 309, __pyx_L1_error)
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_input_image->__pyx_vtab)->add_exif_data(__pyx_v_input_image, __pyx_t_2, __pyx_t_3)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 309, __pyx_L1_error)
+  __pyx_t_3 = PyBytes_GET_SIZE(__pyx_v_exif_data); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 383, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_input_image->__pyx_vtab)->add_exif_data(__pyx_v_input_image, __pyx_t_2, ((int)__pyx_t_3))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 383, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __PYX_XDEC_MEMVIEW(&__pyx_t_2, 1);
   __pyx_t_2.memview = NULL;
@@ -7483,23 +8865,23 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_4write_exif_data_from_bytes(CYTHON_
   __pyx_v_output_image = ((struct __pyx_obj_6cyheif_HeifImageHandle *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":310
- *         cdef HeifImageHandle input_image = HeifImageHandle.from_file(input_file_name)
- *         cdef HeifImageHandle output_image = input_image.add_exif_data(exif_data, len(exif_data))
- *         output_image.write_to_file(output_file_name)             # <<<<<<<<<<<<<<
+  /* "heif/heif.pyx":384
+ *     cdef HeifImageHandle input_image = HeifImageHandle.from_file(input_file_name)
+ *     cdef HeifImageHandle output_image = input_image.add_exif_data(exif_data, int(len(exif_data)))
+ *     output_image.write_to_file(output_file_name)             # <<<<<<<<<<<<<<
  * 
- *     def write_exif_data(
+ * def write_exif_data(
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_output_image->__pyx_vtab)->write_to_file(__pyx_v_output_image, __pyx_v_output_file_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 310, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_6cyheif_HeifImageHandle *)__pyx_v_output_image->__pyx_vtab)->write_to_file(__pyx_v_output_image, __pyx_v_output_file_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 384, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":303
- *         return exif
+  /* "heif/heif.pyx":378
+ *     return exif
  * 
- *     def write_exif_data_from_bytes(             # <<<<<<<<<<<<<<
- *         self: HeifImage,
- *         const char* input_file_name,
+ * def write_exif_data_from_bytes(             # <<<<<<<<<<<<<<
+ *     const char* input_file_name,
+ *     const char* output_file_name,
  */
 
   /* function exit code */
@@ -7508,7 +8890,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_4write_exif_data_from_bytes(CYTHON_
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __PYX_XDEC_MEMVIEW(&__pyx_t_2, 1);
-  __Pyx_AddTraceback("cyheif.HeifImage.write_exif_data_from_bytes", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.write_exif_data_from_bytes", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_input_image);
@@ -7518,17 +8900,18 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_4write_exif_data_from_bytes(CYTHON_
   return __pyx_r;
 }
 
-/* "heif/heif.pyx":312
- *         output_image.write_to_file(output_file_name)
+/* "heif/heif.pyx":386
+ *     output_image.write_to_file(output_file_name)
  * 
- *     def write_exif_data(             # <<<<<<<<<<<<<<
- *         self: HeifImage,
- *         const char* input_file_name,
+ * def write_exif_data(             # <<<<<<<<<<<<<<
+ *     const char* input_file_name,
+ *     const char* output_file_name,
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6cyheif_9HeifImage_7write_exif_data(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_6cyheif_9HeifImage_7write_exif_data(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6cyheif_9write_exif_data(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6cyheif_9write_exif_data = {"write_exif_data", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cyheif_9write_exif_data, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6cyheif_9write_exif_data(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   char const *__pyx_v_input_file_name;
   char const *__pyx_v_output_file_name;
   PyObject *__pyx_v_exif_data = 0;
@@ -7563,17 +8946,17 @@ static PyObject *__pyx_pw_6cyheif_9HeifImage_7write_exif_data(PyObject *__pyx_v_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output_file_name)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("write_exif_data", 1, 3, 3, 1); __PYX_ERR(0, 312, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("write_exif_data", 1, 3, 3, 1); __PYX_ERR(0, 386, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_exif_data)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("write_exif_data", 1, 3, 3, 2); __PYX_ERR(0, 312, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("write_exif_data", 1, 3, 3, 2); __PYX_ERR(0, 386, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "write_exif_data") < 0)) __PYX_ERR(0, 312, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "write_exif_data") < 0)) __PYX_ERR(0, 386, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -7582,26 +8965,26 @@ static PyObject *__pyx_pw_6cyheif_9HeifImage_7write_exif_data(PyObject *__pyx_v_
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_input_file_name = __Pyx_PyObject_AsString(values[0]); if (unlikely((!__pyx_v_input_file_name) && PyErr_Occurred())) __PYX_ERR(0, 314, __pyx_L3_error)
-    __pyx_v_output_file_name = __Pyx_PyObject_AsString(values[1]); if (unlikely((!__pyx_v_output_file_name) && PyErr_Occurred())) __PYX_ERR(0, 315, __pyx_L3_error)
+    __pyx_v_input_file_name = __Pyx_PyObject_AsString(values[0]); if (unlikely((!__pyx_v_input_file_name) && PyErr_Occurred())) __PYX_ERR(0, 387, __pyx_L3_error)
+    __pyx_v_output_file_name = __Pyx_PyObject_AsString(values[1]); if (unlikely((!__pyx_v_output_file_name) && PyErr_Occurred())) __PYX_ERR(0, 388, __pyx_L3_error)
     __pyx_v_exif_data = values[2];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("write_exif_data", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 312, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("write_exif_data", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 386, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cyheif.HeifImage.write_exif_data", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.write_exif_data", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6cyheif_9HeifImage_6write_exif_data(((struct __pyx_obj_6cyheif_HeifImage *)__pyx_v_self), __pyx_v_input_file_name, __pyx_v_output_file_name, __pyx_v_exif_data);
+  __pyx_r = __pyx_pf_6cyheif_8write_exif_data(__pyx_self, __pyx_v_input_file_name, __pyx_v_output_file_name, __pyx_v_exif_data);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6cyheif_9HeifImage_6write_exif_data(struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, char const *__pyx_v_input_file_name, char const *__pyx_v_output_file_name, PyObject *__pyx_v_exif_data) {
+static PyObject *__pyx_pf_6cyheif_8write_exif_data(CYTHON_UNUSED PyObject *__pyx_self, char const *__pyx_v_input_file_name, char const *__pyx_v_output_file_name, PyObject *__pyx_v_exif_data) {
   PyObject *__pyx_v_exif_bytes = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -7617,14 +9000,14 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_6write_exif_data(struct __pyx_obj_6
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("write_exif_data", 0);
 
-  /* "heif/heif.pyx":317
- *         const char* output_file_name,
- *         exif_data: Image.Exif) -> None:
- *         exif_bytes = exif_data.tobytes()             # <<<<<<<<<<<<<<
- *         self.write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
+  /* "heif/heif.pyx":390
+ *     const char* output_file_name,
+ *     exif_data: Image.Exif) -> None:
+ *     exif_bytes = exif_data.tobytes()             # <<<<<<<<<<<<<<
+ *     write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_exif_data, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 317, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_exif_data, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 390, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -7638,28 +9021,28 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_6write_exif_data(struct __pyx_obj_6
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 317, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 390, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_exif_bytes = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":318
- *         exif_data: Image.Exif) -> None:
- *         exif_bytes = exif_data.tobytes()
- *         self.write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)             # <<<<<<<<<<<<<<
+  /* "heif/heif.pyx":391
+ *     exif_data: Image.Exif) -> None:
+ *     exif_bytes = exif_data.tobytes()
+ *     write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)             # <<<<<<<<<<<<<<
  * 
  * def get_heif_version():
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write_exif_data_from_bytes); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_write_exif_data_from_bytes); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 391, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyBytes_FromString(__pyx_v_input_file_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromString(__pyx_v_input_file_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 391, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyBytes_FromString(__pyx_v_output_file_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyBytes_FromString(__pyx_v_output_file_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 391, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
     __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
     if (likely(__pyx_t_5)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
@@ -7672,7 +9055,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_6write_exif_data(struct __pyx_obj_6
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[4] = {__pyx_t_5, __pyx_t_3, __pyx_t_4, __pyx_v_exif_bytes};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 318, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 391, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -7682,7 +9065,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_6write_exif_data(struct __pyx_obj_6
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[4] = {__pyx_t_5, __pyx_t_3, __pyx_t_4, __pyx_v_exif_bytes};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 318, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 391, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -7690,7 +9073,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_6write_exif_data(struct __pyx_obj_6
   } else
   #endif
   {
-    __pyx_t_7 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 318, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 391, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_5) {
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -7704,19 +9087,19 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_6write_exif_data(struct __pyx_obj_6
     PyTuple_SET_ITEM(__pyx_t_7, 2+__pyx_t_6, __pyx_v_exif_bytes);
     __pyx_t_3 = 0;
     __pyx_t_4 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 318, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 391, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "heif/heif.pyx":312
- *         output_image.write_to_file(output_file_name)
+  /* "heif/heif.pyx":386
+ *     output_image.write_to_file(output_file_name)
  * 
- *     def write_exif_data(             # <<<<<<<<<<<<<<
- *         self: HeifImage,
- *         const char* input_file_name,
+ * def write_exif_data(             # <<<<<<<<<<<<<<
+ *     const char* input_file_name,
+ *     const char* output_file_name,
  */
 
   /* function exit code */
@@ -7729,7 +9112,7 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_6write_exif_data(struct __pyx_obj_6
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("cyheif.HeifImage.write_exif_data", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.write_exif_data", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_exif_bytes);
@@ -7738,315 +9121,28 @@ static PyObject *__pyx_pf_6cyheif_9HeifImage_6write_exif_data(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "(tree fragment)":1
- * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
- *     cdef tuple state
- *     cdef object _dict
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_6cyheif_9HeifImage_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6cyheif_9HeifImage_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6cyheif_9HeifImage_8__reduce_cython__(((struct __pyx_obj_6cyheif_HeifImage *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_6cyheif_9HeifImage_8__reduce_cython__(struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self) {
-  PyObject *__pyx_v_state = 0;
-  PyObject *__pyx_v__dict = 0;
-  int __pyx_v_use_setstate;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__reduce_cython__", 0);
-
-  /* "(tree fragment)":5
- *     cdef object _dict
- *     cdef bint use_setstate
- *     state = ()             # <<<<<<<<<<<<<<
- *     _dict = getattr(self, '__dict__', None)
- *     if _dict is not None:
- */
-  __Pyx_INCREF(__pyx_empty_tuple);
-  __pyx_v_state = __pyx_empty_tuple;
-
-  /* "(tree fragment)":6
- *     cdef bint use_setstate
- *     state = ()
- *     _dict = getattr(self, '__dict__', None)             # <<<<<<<<<<<<<<
- *     if _dict is not None:
- *         state += (_dict,)
- */
-  __pyx_t_1 = __Pyx_GetAttr3(((PyObject *)__pyx_v_self), __pyx_n_s_dict, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 6, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v__dict = __pyx_t_1;
-  __pyx_t_1 = 0;
-
-  /* "(tree fragment)":7
- *     state = ()
- *     _dict = getattr(self, '__dict__', None)
- *     if _dict is not None:             # <<<<<<<<<<<<<<
- *         state += (_dict,)
- *         use_setstate = True
- */
-  __pyx_t_2 = (__pyx_v__dict != Py_None);
-  __pyx_t_3 = (__pyx_t_2 != 0);
-  if (__pyx_t_3) {
-
-    /* "(tree fragment)":8
- *     _dict = getattr(self, '__dict__', None)
- *     if _dict is not None:
- *         state += (_dict,)             # <<<<<<<<<<<<<<
- *         use_setstate = True
- *     else:
- */
-    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 8, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_INCREF(__pyx_v__dict);
-    __Pyx_GIVEREF(__pyx_v__dict);
-    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v__dict);
-    __pyx_t_4 = PyNumber_InPlaceAdd(__pyx_v_state, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 8, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF_SET(__pyx_v_state, ((PyObject*)__pyx_t_4));
-    __pyx_t_4 = 0;
-
-    /* "(tree fragment)":9
- *     if _dict is not None:
- *         state += (_dict,)
- *         use_setstate = True             # <<<<<<<<<<<<<<
- *     else:
- *         use_setstate = False
- */
-    __pyx_v_use_setstate = 1;
-
-    /* "(tree fragment)":7
- *     state = ()
- *     _dict = getattr(self, '__dict__', None)
- *     if _dict is not None:             # <<<<<<<<<<<<<<
- *         state += (_dict,)
- *         use_setstate = True
- */
-    goto __pyx_L3;
-  }
-
-  /* "(tree fragment)":11
- *         use_setstate = True
- *     else:
- *         use_setstate = False             # <<<<<<<<<<<<<<
- *     if use_setstate:
- *         return __pyx_unpickle_HeifImage, (type(self), 0xd41d8cd, None), state
- */
-  /*else*/ {
-    __pyx_v_use_setstate = 0;
-  }
-  __pyx_L3:;
-
-  /* "(tree fragment)":12
- *     else:
- *         use_setstate = False
- *     if use_setstate:             # <<<<<<<<<<<<<<
- *         return __pyx_unpickle_HeifImage, (type(self), 0xd41d8cd, None), state
- *     else:
- */
-  __pyx_t_3 = (__pyx_v_use_setstate != 0);
-  if (__pyx_t_3) {
-
-    /* "(tree fragment)":13
- *         use_setstate = False
- *     if use_setstate:
- *         return __pyx_unpickle_HeifImage, (type(self), 0xd41d8cd, None), state             # <<<<<<<<<<<<<<
- *     else:
- *         return __pyx_unpickle_HeifImage, (type(self), 0xd41d8cd, state)
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_pyx_unpickle_HeifImage); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 13, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 13, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_INCREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    __Pyx_GIVEREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    __Pyx_INCREF(__pyx_int_222419149);
-    __Pyx_GIVEREF(__pyx_int_222419149);
-    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_int_222419149);
-    __Pyx_INCREF(Py_None);
-    __Pyx_GIVEREF(Py_None);
-    PyTuple_SET_ITEM(__pyx_t_1, 2, Py_None);
-    __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 13, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_GIVEREF(__pyx_t_4);
-    PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_1);
-    PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_1);
-    __Pyx_INCREF(__pyx_v_state);
-    __Pyx_GIVEREF(__pyx_v_state);
-    PyTuple_SET_ITEM(__pyx_t_5, 2, __pyx_v_state);
-    __pyx_t_4 = 0;
-    __pyx_t_1 = 0;
-    __pyx_r = __pyx_t_5;
-    __pyx_t_5 = 0;
-    goto __pyx_L0;
-
-    /* "(tree fragment)":12
- *     else:
- *         use_setstate = False
- *     if use_setstate:             # <<<<<<<<<<<<<<
- *         return __pyx_unpickle_HeifImage, (type(self), 0xd41d8cd, None), state
- *     else:
- */
-  }
-
-  /* "(tree fragment)":15
- *         return __pyx_unpickle_HeifImage, (type(self), 0xd41d8cd, None), state
- *     else:
- *         return __pyx_unpickle_HeifImage, (type(self), 0xd41d8cd, state)             # <<<<<<<<<<<<<<
- * def __setstate_cython__(self, __pyx_state):
- *     __pyx_unpickle_HeifImage__set_state(self, __pyx_state)
- */
-  /*else*/ {
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_pyx_unpickle_HeifImage); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 15, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 15, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_INCREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    __Pyx_GIVEREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    __Pyx_INCREF(__pyx_int_222419149);
-    __Pyx_GIVEREF(__pyx_int_222419149);
-    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_int_222419149);
-    __Pyx_INCREF(__pyx_v_state);
-    __Pyx_GIVEREF(__pyx_v_state);
-    PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_v_state);
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 15, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
-    __Pyx_GIVEREF(__pyx_t_1);
-    PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_1);
-    __pyx_t_5 = 0;
-    __pyx_t_1 = 0;
-    __pyx_r = __pyx_t_4;
-    __pyx_t_4 = 0;
-    goto __pyx_L0;
-  }
-
-  /* "(tree fragment)":1
- * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
- *     cdef tuple state
- *     cdef object _dict
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("cyheif.HeifImage.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_state);
-  __Pyx_XDECREF(__pyx_v__dict);
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "(tree fragment)":16
- *     else:
- *         return __pyx_unpickle_HeifImage, (type(self), 0xd41d8cd, state)
- * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
- *     __pyx_unpickle_HeifImage__set_state(self, __pyx_state)
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_6cyheif_9HeifImage_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_6cyheif_9HeifImage_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6cyheif_9HeifImage_10__setstate_cython__(((struct __pyx_obj_6cyheif_HeifImage *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_6cyheif_9HeifImage_10__setstate_cython__(struct __pyx_obj_6cyheif_HeifImage *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__setstate_cython__", 0);
-
-  /* "(tree fragment)":17
- *         return __pyx_unpickle_HeifImage, (type(self), 0xd41d8cd, state)
- * def __setstate_cython__(self, __pyx_state):
- *     __pyx_unpickle_HeifImage__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
- */
-  if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 17, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_6cyheif___pyx_unpickle_HeifImage__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "(tree fragment)":16
- *     else:
- *         return __pyx_unpickle_HeifImage, (type(self), 0xd41d8cd, state)
- * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
- *     __pyx_unpickle_HeifImage__set_state(self, __pyx_state)
- */
-
-  /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cyheif.HeifImage.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "heif/heif.pyx":320
- *         self.write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
+/* "heif/heif.pyx":393
+ *     write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
  * 
  * def get_heif_version():             # <<<<<<<<<<<<<<
  *     return cheif.heif_get_version()
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6cyheif_1get_heif_version(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyMethodDef __pyx_mdef_6cyheif_1get_heif_version = {"get_heif_version", (PyCFunction)__pyx_pw_6cyheif_1get_heif_version, METH_NOARGS, 0};
-static PyObject *__pyx_pw_6cyheif_1get_heif_version(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6cyheif_11get_heif_version(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyMethodDef __pyx_mdef_6cyheif_11get_heif_version = {"get_heif_version", (PyCFunction)__pyx_pw_6cyheif_11get_heif_version, METH_NOARGS, 0};
+static PyObject *__pyx_pw_6cyheif_11get_heif_version(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_heif_version (wrapper)", 0);
-  __pyx_r = __pyx_pf_6cyheif_get_heif_version(__pyx_self);
+  __pyx_r = __pyx_pf_6cyheif_10get_heif_version(__pyx_self);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6cyheif_get_heif_version(CYTHON_UNUSED PyObject *__pyx_self) {
+static PyObject *__pyx_pf_6cyheif_10get_heif_version(CYTHON_UNUSED PyObject *__pyx_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8055,20 +9151,20 @@ static PyObject *__pyx_pf_6cyheif_get_heif_version(CYTHON_UNUSED PyObject *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_heif_version", 0);
 
-  /* "heif/heif.pyx":321
+  /* "heif/heif.pyx":394
  * 
  * def get_heif_version():
  *     return cheif.heif_get_version()             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBytes_FromString(heif_get_version()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 321, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBytes_FromString(heif_get_version()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 394, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "heif/heif.pyx":320
- *         self.write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
+  /* "heif/heif.pyx":393
+ *     write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
  * 
  * def get_heif_version():             # <<<<<<<<<<<<<<
  *     return cheif.heif_get_version()
@@ -8086,15 +9182,15 @@ static PyObject *__pyx_pf_6cyheif_get_heif_version(CYTHON_UNUSED PyObject *__pyx
 }
 
 /* "(tree fragment)":1
- * def __pyx_unpickle_HeifImage(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
+ * def __pyx_unpickle_HeifImageAttributes(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6cyheif_3__pyx_unpickle_HeifImage(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_6cyheif_3__pyx_unpickle_HeifImage = {"__pyx_unpickle_HeifImage", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cyheif_3__pyx_unpickle_HeifImage, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_6cyheif_3__pyx_unpickle_HeifImage(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6cyheif_13__pyx_unpickle_HeifImageAttributes(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6cyheif_13__pyx_unpickle_HeifImageAttributes = {"__pyx_unpickle_HeifImageAttributes", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cyheif_13__pyx_unpickle_HeifImageAttributes, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6cyheif_13__pyx_unpickle_HeifImageAttributes(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v___pyx_type = 0;
   long __pyx_v___pyx_checksum;
   PyObject *__pyx_v___pyx_state = 0;
@@ -8103,7 +9199,7 @@ static PyObject *__pyx_pw_6cyheif_3__pyx_unpickle_HeifImage(PyObject *__pyx_self
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__pyx_unpickle_HeifImage (wrapper)", 0);
+  __Pyx_RefNannySetupContext("__pyx_unpickle_HeifImageAttributes (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_pyx_type,&__pyx_n_s_pyx_checksum,&__pyx_n_s_pyx_state,0};
     PyObject* values[3] = {0,0,0};
@@ -8129,17 +9225,17 @@ static PyObject *__pyx_pw_6cyheif_3__pyx_unpickle_HeifImage(PyObject *__pyx_self
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_pyx_checksum)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_HeifImage", 1, 3, 3, 1); __PYX_ERR(1, 1, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_HeifImageAttributes", 1, 3, 3, 1); __PYX_ERR(1, 1, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_pyx_state)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_HeifImage", 1, 3, 3, 2); __PYX_ERR(1, 1, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_HeifImageAttributes", 1, 3, 3, 2); __PYX_ERR(1, 1, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__pyx_unpickle_HeifImage") < 0)) __PYX_ERR(1, 1, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__pyx_unpickle_HeifImageAttributes") < 0)) __PYX_ERR(1, 1, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -8154,20 +9250,20 @@ static PyObject *__pyx_pw_6cyheif_3__pyx_unpickle_HeifImage(PyObject *__pyx_self
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_HeifImage", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_HeifImageAttributes", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cyheif.__pyx_unpickle_HeifImage", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.__pyx_unpickle_HeifImageAttributes", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6cyheif_2__pyx_unpickle_HeifImage(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_6cyheif_12__pyx_unpickle_HeifImageAttributes(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6cyheif_2__pyx_unpickle_HeifImage(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6cyheif_12__pyx_unpickle_HeifImageAttributes(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = 0;
   PyObject *__pyx_v___pyx_result = 0;
   PyObject *__pyx_r = NULL;
@@ -8181,24 +9277,24 @@ static PyObject *__pyx_pf_6cyheif_2__pyx_unpickle_HeifImage(CYTHON_UNUSED PyObje
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__pyx_unpickle_HeifImage", 0);
+  __Pyx_RefNannySetupContext("__pyx_unpickle_HeifImageAttributes", 0);
 
   /* "(tree fragment)":4
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
- *     if __pyx_checksum != 0xd41d8cd:             # <<<<<<<<<<<<<<
+ *     if __pyx_checksum != 0x6eaffd9:             # <<<<<<<<<<<<<<
  *         from pickle import PickleError as __pyx_PickleError
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd41d8cd = ())" % __pyx_checksum)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x6eaffd9 = (bits_per_pixel, chroma, colorspace, height, width))" % __pyx_checksum)
  */
-  __pyx_t_1 = ((__pyx_v___pyx_checksum != 0xd41d8cd) != 0);
+  __pyx_t_1 = ((__pyx_v___pyx_checksum != 0x6eaffd9) != 0);
   if (__pyx_t_1) {
 
     /* "(tree fragment)":5
  *     cdef object __pyx_result
- *     if __pyx_checksum != 0xd41d8cd:
+ *     if __pyx_checksum != 0x6eaffd9:
  *         from pickle import PickleError as __pyx_PickleError             # <<<<<<<<<<<<<<
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd41d8cd = ())" % __pyx_checksum)
- *     __pyx_result = HeifImage.__new__(__pyx_type)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x6eaffd9 = (bits_per_pixel, chroma, colorspace, height, width))" % __pyx_checksum)
+ *     __pyx_result = HeifImageAttributes.__new__(__pyx_type)
  */
     __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
@@ -8216,15 +9312,15 @@ static PyObject *__pyx_pf_6cyheif_2__pyx_unpickle_HeifImage(CYTHON_UNUSED PyObje
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
     /* "(tree fragment)":6
- *     if __pyx_checksum != 0xd41d8cd:
+ *     if __pyx_checksum != 0x6eaffd9:
  *         from pickle import PickleError as __pyx_PickleError
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd41d8cd = ())" % __pyx_checksum)             # <<<<<<<<<<<<<<
- *     __pyx_result = HeifImage.__new__(__pyx_type)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x6eaffd9 = (bits_per_pixel, chroma, colorspace, height, width))" % __pyx_checksum)             # <<<<<<<<<<<<<<
+ *     __pyx_result = HeifImageAttributes.__new__(__pyx_type)
  *     if __pyx_state is not None:
  */
     __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v___pyx_checksum); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 6, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_Incompatible_checksums_s_vs_0xd4, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 6, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_Incompatible_checksums_s_vs_0x6e, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 6, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_v___pyx_PickleError);
@@ -8251,20 +9347,20 @@ static PyObject *__pyx_pf_6cyheif_2__pyx_unpickle_HeifImage(CYTHON_UNUSED PyObje
     /* "(tree fragment)":4
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
- *     if __pyx_checksum != 0xd41d8cd:             # <<<<<<<<<<<<<<
+ *     if __pyx_checksum != 0x6eaffd9:             # <<<<<<<<<<<<<<
  *         from pickle import PickleError as __pyx_PickleError
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd41d8cd = ())" % __pyx_checksum)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x6eaffd9 = (bits_per_pixel, chroma, colorspace, height, width))" % __pyx_checksum)
  */
   }
 
   /* "(tree fragment)":7
  *         from pickle import PickleError as __pyx_PickleError
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd41d8cd = ())" % __pyx_checksum)
- *     __pyx_result = HeifImage.__new__(__pyx_type)             # <<<<<<<<<<<<<<
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x6eaffd9 = (bits_per_pixel, chroma, colorspace, height, width))" % __pyx_checksum)
+ *     __pyx_result = HeifImageAttributes.__new__(__pyx_type)             # <<<<<<<<<<<<<<
  *     if __pyx_state is not None:
- *         __pyx_unpickle_HeifImage__set_state(<HeifImage> __pyx_result, __pyx_state)
+ *         __pyx_unpickle_HeifImageAttributes__set_state(<HeifImageAttributes> __pyx_result, __pyx_state)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_6cyheif_HeifImage), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_6cyheif_HeifImageAttributes), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -8285,10 +9381,10 @@ static PyObject *__pyx_pf_6cyheif_2__pyx_unpickle_HeifImage(CYTHON_UNUSED PyObje
   __pyx_t_3 = 0;
 
   /* "(tree fragment)":8
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd41d8cd = ())" % __pyx_checksum)
- *     __pyx_result = HeifImage.__new__(__pyx_type)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x6eaffd9 = (bits_per_pixel, chroma, colorspace, height, width))" % __pyx_checksum)
+ *     __pyx_result = HeifImageAttributes.__new__(__pyx_type)
  *     if __pyx_state is not None:             # <<<<<<<<<<<<<<
- *         __pyx_unpickle_HeifImage__set_state(<HeifImage> __pyx_result, __pyx_state)
+ *         __pyx_unpickle_HeifImageAttributes__set_state(<HeifImageAttributes> __pyx_result, __pyx_state)
  *     return __pyx_result
  */
   __pyx_t_1 = (__pyx_v___pyx_state != Py_None);
@@ -8296,32 +9392,32 @@ static PyObject *__pyx_pf_6cyheif_2__pyx_unpickle_HeifImage(CYTHON_UNUSED PyObje
   if (__pyx_t_6) {
 
     /* "(tree fragment)":9
- *     __pyx_result = HeifImage.__new__(__pyx_type)
+ *     __pyx_result = HeifImageAttributes.__new__(__pyx_type)
  *     if __pyx_state is not None:
- *         __pyx_unpickle_HeifImage__set_state(<HeifImage> __pyx_result, __pyx_state)             # <<<<<<<<<<<<<<
+ *         __pyx_unpickle_HeifImageAttributes__set_state(<HeifImageAttributes> __pyx_result, __pyx_state)             # <<<<<<<<<<<<<<
  *     return __pyx_result
- * cdef __pyx_unpickle_HeifImage__set_state(HeifImage __pyx_result, tuple __pyx_state):
+ * cdef __pyx_unpickle_HeifImageAttributes__set_state(HeifImageAttributes __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 9, __pyx_L1_error)
-    __pyx_t_3 = __pyx_f_6cyheif___pyx_unpickle_HeifImage__set_state(((struct __pyx_obj_6cyheif_HeifImage *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6cyheif___pyx_unpickle_HeifImageAttributes__set_state(((struct __pyx_obj_6cyheif_HeifImageAttributes *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
     /* "(tree fragment)":8
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd41d8cd = ())" % __pyx_checksum)
- *     __pyx_result = HeifImage.__new__(__pyx_type)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x6eaffd9 = (bits_per_pixel, chroma, colorspace, height, width))" % __pyx_checksum)
+ *     __pyx_result = HeifImageAttributes.__new__(__pyx_type)
  *     if __pyx_state is not None:             # <<<<<<<<<<<<<<
- *         __pyx_unpickle_HeifImage__set_state(<HeifImage> __pyx_result, __pyx_state)
+ *         __pyx_unpickle_HeifImageAttributes__set_state(<HeifImageAttributes> __pyx_result, __pyx_state)
  *     return __pyx_result
  */
   }
 
   /* "(tree fragment)":10
  *     if __pyx_state is not None:
- *         __pyx_unpickle_HeifImage__set_state(<HeifImage> __pyx_result, __pyx_state)
+ *         __pyx_unpickle_HeifImageAttributes__set_state(<HeifImageAttributes> __pyx_result, __pyx_state)
  *     return __pyx_result             # <<<<<<<<<<<<<<
- * cdef __pyx_unpickle_HeifImage__set_state(HeifImage __pyx_result, tuple __pyx_state):
- *     if len(__pyx_state) > 0 and hasattr(__pyx_result, '__dict__'):
+ * cdef __pyx_unpickle_HeifImageAttributes__set_state(HeifImageAttributes __pyx_result, tuple __pyx_state):
+ *     __pyx_result.bits_per_pixel = __pyx_state[0]; __pyx_result.chroma = __pyx_state[1]; __pyx_result.colorspace = __pyx_state[2]; __pyx_result.height = __pyx_state[3]; __pyx_result.width = __pyx_state[4]
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v___pyx_result);
@@ -8329,7 +9425,7 @@ static PyObject *__pyx_pf_6cyheif_2__pyx_unpickle_HeifImage(CYTHON_UNUSED PyObje
   goto __pyx_L0;
 
   /* "(tree fragment)":1
- * def __pyx_unpickle_HeifImage(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
+ * def __pyx_unpickle_HeifImageAttributes(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
@@ -8340,7 +9436,7 @@ static PyObject *__pyx_pf_6cyheif_2__pyx_unpickle_HeifImage(CYTHON_UNUSED PyObje
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("cyheif.__pyx_unpickle_HeifImage", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cyheif.__pyx_unpickle_HeifImageAttributes", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -8351,111 +9447,167 @@ static PyObject *__pyx_pf_6cyheif_2__pyx_unpickle_HeifImage(CYTHON_UNUSED PyObje
 }
 
 /* "(tree fragment)":11
- *         __pyx_unpickle_HeifImage__set_state(<HeifImage> __pyx_result, __pyx_state)
+ *         __pyx_unpickle_HeifImageAttributes__set_state(<HeifImageAttributes> __pyx_result, __pyx_state)
  *     return __pyx_result
- * cdef __pyx_unpickle_HeifImage__set_state(HeifImage __pyx_result, tuple __pyx_state):             # <<<<<<<<<<<<<<
- *     if len(__pyx_state) > 0 and hasattr(__pyx_result, '__dict__'):
- *         __pyx_result.__dict__.update(__pyx_state[0])
+ * cdef __pyx_unpickle_HeifImageAttributes__set_state(HeifImageAttributes __pyx_result, tuple __pyx_state):             # <<<<<<<<<<<<<<
+ *     __pyx_result.bits_per_pixel = __pyx_state[0]; __pyx_result.chroma = __pyx_state[1]; __pyx_result.colorspace = __pyx_state[2]; __pyx_result.height = __pyx_state[3]; __pyx_result.width = __pyx_state[4]
+ *     if len(__pyx_state) > 5 and hasattr(__pyx_result, '__dict__'):
  */
 
-static PyObject *__pyx_f_6cyheif___pyx_unpickle_HeifImage__set_state(struct __pyx_obj_6cyheif_HeifImage *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_6cyheif___pyx_unpickle_HeifImageAttributes__set_state(struct __pyx_obj_6cyheif_HeifImageAttributes *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  Py_ssize_t __pyx_t_2;
-  int __pyx_t_3;
-  int __pyx_t_4;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  enum heif_chroma __pyx_t_3;
+  enum heif_colorspace __pyx_t_4;
+  int __pyx_t_5;
+  Py_ssize_t __pyx_t_6;
+  int __pyx_t_7;
+  int __pyx_t_8;
+  PyObject *__pyx_t_9 = NULL;
+  PyObject *__pyx_t_10 = NULL;
+  PyObject *__pyx_t_11 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__pyx_unpickle_HeifImage__set_state", 0);
+  __Pyx_RefNannySetupContext("__pyx_unpickle_HeifImageAttributes__set_state", 0);
 
   /* "(tree fragment)":12
  *     return __pyx_result
- * cdef __pyx_unpickle_HeifImage__set_state(HeifImage __pyx_result, tuple __pyx_state):
- *     if len(__pyx_state) > 0 and hasattr(__pyx_result, '__dict__'):             # <<<<<<<<<<<<<<
- *         __pyx_result.__dict__.update(__pyx_state[0])
+ * cdef __pyx_unpickle_HeifImageAttributes__set_state(HeifImageAttributes __pyx_result, tuple __pyx_state):
+ *     __pyx_result.bits_per_pixel = __pyx_state[0]; __pyx_result.chroma = __pyx_state[1]; __pyx_result.colorspace = __pyx_state[2]; __pyx_result.height = __pyx_state[3]; __pyx_result.width = __pyx_state[4]             # <<<<<<<<<<<<<<
+ *     if len(__pyx_state) > 5 and hasattr(__pyx_result, '__dict__'):
+ *         __pyx_result.__dict__.update(__pyx_state[5])
+ */
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v___pyx_result->bits_per_pixel = __pyx_t_2;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = ((enum heif_chroma)__Pyx_PyInt_As_enum__heif_chroma(__pyx_t_1)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v___pyx_result->chroma = __pyx_t_3;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_4 = ((enum heif_colorspace)__Pyx_PyInt_As_enum__heif_colorspace(__pyx_t_1)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v___pyx_result->colorspace = __pyx_t_4;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v___pyx_result->height = __pyx_t_2;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v___pyx_result->width = __pyx_t_2;
+
+  /* "(tree fragment)":13
+ * cdef __pyx_unpickle_HeifImageAttributes__set_state(HeifImageAttributes __pyx_result, tuple __pyx_state):
+ *     __pyx_result.bits_per_pixel = __pyx_state[0]; __pyx_result.chroma = __pyx_state[1]; __pyx_result.colorspace = __pyx_state[2]; __pyx_result.height = __pyx_state[3]; __pyx_result.width = __pyx_state[4]
+ *     if len(__pyx_state) > 5 and hasattr(__pyx_result, '__dict__'):             # <<<<<<<<<<<<<<
+ *         __pyx_result.__dict__.update(__pyx_state[5])
  */
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 12, __pyx_L1_error)
+    __PYX_ERR(1, 13, __pyx_L1_error)
   }
-  __pyx_t_2 = PyTuple_GET_SIZE(__pyx_v___pyx_state); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(1, 12, __pyx_L1_error)
-  __pyx_t_3 = ((__pyx_t_2 > 0) != 0);
-  if (__pyx_t_3) {
+  __pyx_t_6 = PyTuple_GET_SIZE(__pyx_v___pyx_state); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
+  __pyx_t_7 = ((__pyx_t_6 > 5) != 0);
+  if (__pyx_t_7) {
   } else {
-    __pyx_t_1 = __pyx_t_3;
+    __pyx_t_5 = __pyx_t_7;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_3 = __Pyx_HasAttr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(1, 12, __pyx_L1_error)
-  __pyx_t_4 = (__pyx_t_3 != 0);
-  __pyx_t_1 = __pyx_t_4;
+  __pyx_t_7 = __Pyx_HasAttr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
+  __pyx_t_8 = (__pyx_t_7 != 0);
+  __pyx_t_5 = __pyx_t_8;
   __pyx_L4_bool_binop_done:;
-  if (__pyx_t_1) {
+  if (__pyx_t_5) {
 
-    /* "(tree fragment)":13
- * cdef __pyx_unpickle_HeifImage__set_state(HeifImage __pyx_result, tuple __pyx_state):
- *     if len(__pyx_state) > 0 and hasattr(__pyx_result, '__dict__'):
- *         __pyx_result.__dict__.update(__pyx_state[0])             # <<<<<<<<<<<<<<
+    /* "(tree fragment)":14
+ *     __pyx_result.bits_per_pixel = __pyx_state[0]; __pyx_result.chroma = __pyx_state[1]; __pyx_result.colorspace = __pyx_state[2]; __pyx_result.height = __pyx_state[3]; __pyx_result.width = __pyx_state[4]
+ *     if len(__pyx_state) > 5 and hasattr(__pyx_result, '__dict__'):
+ *         __pyx_result.__dict__.update(__pyx_state[5])             # <<<<<<<<<<<<<<
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 13, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_update); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 13, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_update); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     if (unlikely(__pyx_v___pyx_state == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(1, 13, __pyx_L1_error)
+      __PYX_ERR(1, 14, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 13, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
-      if (likely(__pyx_t_8)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-        __Pyx_INCREF(__pyx_t_8);
+    __pyx_t_9 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 5, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_11 = NULL;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_10))) {
+      __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_10);
+      if (likely(__pyx_t_11)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+        __Pyx_INCREF(__pyx_t_11);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_7, function);
+        __Pyx_DECREF_SET(__pyx_t_10, function);
       }
     }
-    __pyx_t_5 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_8, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_6);
-    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 13, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_1 = (__pyx_t_11) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_11, __pyx_t_9) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_9);
+    __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "(tree fragment)":12
- *     return __pyx_result
- * cdef __pyx_unpickle_HeifImage__set_state(HeifImage __pyx_result, tuple __pyx_state):
- *     if len(__pyx_state) > 0 and hasattr(__pyx_result, '__dict__'):             # <<<<<<<<<<<<<<
- *         __pyx_result.__dict__.update(__pyx_state[0])
+    /* "(tree fragment)":13
+ * cdef __pyx_unpickle_HeifImageAttributes__set_state(HeifImageAttributes __pyx_result, tuple __pyx_state):
+ *     __pyx_result.bits_per_pixel = __pyx_state[0]; __pyx_result.chroma = __pyx_state[1]; __pyx_result.colorspace = __pyx_state[2]; __pyx_result.height = __pyx_state[3]; __pyx_result.width = __pyx_state[4]
+ *     if len(__pyx_state) > 5 and hasattr(__pyx_result, '__dict__'):             # <<<<<<<<<<<<<<
+ *         __pyx_result.__dict__.update(__pyx_state[5])
  */
   }
 
   /* "(tree fragment)":11
- *         __pyx_unpickle_HeifImage__set_state(<HeifImage> __pyx_result, __pyx_state)
+ *         __pyx_unpickle_HeifImageAttributes__set_state(<HeifImageAttributes> __pyx_result, __pyx_state)
  *     return __pyx_result
- * cdef __pyx_unpickle_HeifImage__set_state(HeifImage __pyx_result, tuple __pyx_state):             # <<<<<<<<<<<<<<
- *     if len(__pyx_state) > 0 and hasattr(__pyx_result, '__dict__'):
- *         __pyx_result.__dict__.update(__pyx_state[0])
+ * cdef __pyx_unpickle_HeifImageAttributes__set_state(HeifImageAttributes __pyx_result, tuple __pyx_state):             # <<<<<<<<<<<<<<
+ *     __pyx_result.bits_per_pixel = __pyx_state[0]; __pyx_result.chroma = __pyx_state[1]; __pyx_result.colorspace = __pyx_state[2]; __pyx_result.height = __pyx_state[3]; __pyx_result.width = __pyx_state[4]
+ *     if len(__pyx_state) > 5 and hasattr(__pyx_result, '__dict__'):
  */
 
   /* function exit code */
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("cyheif.__pyx_unpickle_HeifImage__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_XDECREF(__pyx_t_11);
+  __Pyx_AddTraceback("cyheif.__pyx_unpickle_HeifImageAttributes__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -8587,7 +9739,7 @@ static struct heif_error __pyx_convert__from_py_struct__heif_error(PyObject *__p
  *     result.code = value
  *     try:
  */
-      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 19, __pyx_L6_except_error)
+      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__20, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 19, __pyx_L6_except_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_Raise(__pyx_t_9, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
@@ -8689,7 +9841,7 @@ static struct heif_error __pyx_convert__from_py_struct__heif_error(PyObject *__p
  *     result.subcode = value
  *     try:
  */
-      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 24, __pyx_L14_except_error)
+      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__21, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 24, __pyx_L14_except_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_Raise(__pyx_t_9, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
@@ -8791,7 +9943,7 @@ static struct heif_error __pyx_convert__from_py_struct__heif_error(PyObject *__p
  *     result.message = value
  *     return result
  */
-      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__20, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 29, __pyx_L22_except_error)
+      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__22, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 29, __pyx_L22_except_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_Raise(__pyx_t_9, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
@@ -9060,7 +10212,7 @@ static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __
  * 
  *         if itemsize <= 0:
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__21, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 133, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__23, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 133, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -9092,7 +10244,7 @@ static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __
  * 
  *         if not isinstance(format, bytes):
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__22, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 136, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 136, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -9219,7 +10371,7 @@ static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __
  * 
  * 
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__23, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 148, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__25, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -9493,7 +10645,7 @@ static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __
  * 
  *             if self.dtype_is_object:
  */
-      __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 176, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 176, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_Raise(__pyx_t_10, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
@@ -9737,7 +10889,7 @@ static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(stru
  *         info.buf = self.data
  *         info.len = self.len
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__25, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 192, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 192, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -10471,7 +11623,7 @@ static PyObject *__pyx_pf___pyx_array___reduce_cython__(CYTHON_UNUSED struct __p
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__28, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10527,7 +11679,7 @@ static PyObject *__pyx_pf___pyx_array_2__setstate_cython__(CYTHON_UNUSED struct 
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__29, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -12237,7 +13389,7 @@ static int __pyx_memoryview___pyx_pf_15View_dot_MemoryView_10memoryview_6__setit
  * 
  *         have_slices, index = _unellipsify(index, self.view.ndim)
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__28, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 418, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__30, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 418, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -13285,7 +14437,7 @@ static PyObject *__pyx_memoryview_convert_item_to_object(struct __pyx_memoryview
  *         else:
  *             if len(self.view.format) == 1:
  */
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__29, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 495, __pyx_L5_except_error)
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__31, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 495, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_Raise(__pyx_t_6, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -13647,7 +14799,7 @@ static int __pyx_memoryview___pyx_pf_15View_dot_MemoryView_10memoryview_8__getbu
  * 
  *         if flags & PyBUF_ND:
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__30, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 520, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__32, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 520, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -14196,7 +15348,7 @@ static PyObject *__pyx_pf_15View_dot_MemoryView_10memoryview_7strides___get__(st
  * 
  *         return tuple([stride for stride in self.view.strides[:self.view.ndim]])
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__31, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 570, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__33, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 570, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -14313,7 +15465,7 @@ static PyObject *__pyx_pf_15View_dot_MemoryView_10memoryview_10suboffsets___get_
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->view.ndim); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 577, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyNumber_Multiply(__pyx_tuple__32, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 577, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Multiply(__pyx_tuple__34, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 577, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_r = __pyx_t_3;
@@ -15351,7 +16503,7 @@ static PyObject *__pyx_pf___pyx_memoryview___reduce_cython__(CYTHON_UNUSED struc
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__33, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__35, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -15407,7 +16559,7 @@ static PyObject *__pyx_pf___pyx_memoryview_2__setstate_cython__(CYTHON_UNUSED st
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__34, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__36, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -15764,9 +16916,9 @@ static PyObject *_unellipsify(PyObject *__pyx_v_index, int __pyx_v_ndim) {
         __Pyx_GOTREF(__pyx_t_7);
         { Py_ssize_t __pyx_temp;
           for (__pyx_temp=0; __pyx_temp < ((__pyx_v_ndim - __pyx_t_8) + 1); __pyx_temp++) {
-            __Pyx_INCREF(__pyx_slice__35);
-            __Pyx_GIVEREF(__pyx_slice__35);
-            PyList_SET_ITEM(__pyx_t_7, __pyx_temp, __pyx_slice__35);
+            __Pyx_INCREF(__pyx_slice__37);
+            __Pyx_GIVEREF(__pyx_slice__37);
+            PyList_SET_ITEM(__pyx_t_7, __pyx_temp, __pyx_slice__37);
           }
         }
         __pyx_t_9 = __Pyx_PyList_Extend(__pyx_v_result, __pyx_t_7); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 682, __pyx_L1_error)
@@ -15799,7 +16951,7 @@ static PyObject *_unellipsify(PyObject *__pyx_v_index, int __pyx_v_ndim) {
  *         else:
  */
       /*else*/ {
-        __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_result, __pyx_slice__35); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 685, __pyx_L1_error)
+        __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_result, __pyx_slice__37); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 685, __pyx_L1_error)
       }
       __pyx_L7:;
 
@@ -15939,9 +17091,9 @@ static PyObject *_unellipsify(PyObject *__pyx_v_index, int __pyx_v_ndim) {
     __Pyx_GOTREF(__pyx_t_3);
     { Py_ssize_t __pyx_temp;
       for (__pyx_temp=0; __pyx_temp < __pyx_v_nslices; __pyx_temp++) {
-        __Pyx_INCREF(__pyx_slice__35);
-        __Pyx_GIVEREF(__pyx_slice__35);
-        PyList_SET_ITEM(__pyx_t_3, __pyx_temp, __pyx_slice__35);
+        __Pyx_INCREF(__pyx_slice__37);
+        __Pyx_GIVEREF(__pyx_slice__37);
+        PyList_SET_ITEM(__pyx_t_3, __pyx_temp, __pyx_slice__37);
       }
     }
     __pyx_t_9 = __Pyx_PyList_Extend(__pyx_v_result, __pyx_t_3); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 696, __pyx_L1_error)
@@ -16068,7 +17220,7 @@ static PyObject *assert_direct_dimensions(Py_ssize_t *__pyx_v_suboffsets, int __
  * 
  * 
  */
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__36, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 703, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__38, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 703, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_Raise(__pyx_t_5, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -18252,7 +19404,7 @@ static PyObject *__pyx_pf___pyx_memoryviewslice___reduce_cython__(CYTHON_UNUSED 
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__37, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__39, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -18308,7 +19460,7 @@ static PyObject *__pyx_pf___pyx_memoryviewslice_2__setstate_cython__(CYTHON_UNUS
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__38, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__40, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -21967,8 +23119,8 @@ static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo *__pyx_v_type) {
  *         else:
  *             alignment = b''
  */
-      __Pyx_INCREF(__pyx_kp_b__39);
-      __pyx_v_alignment = __pyx_kp_b__39;
+      __Pyx_INCREF(__pyx_kp_b__41);
+      __pyx_v_alignment = __pyx_kp_b__41;
 
       /* "BufferFormatFromTypeInfo":1472
  *         assert type.fields.type != NULL
@@ -21988,8 +23140,8 @@ static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo *__pyx_v_type) {
  *         parts = [b"T{"]
  */
     /*else*/ {
-      __Pyx_INCREF(__pyx_kp_b__40);
-      __pyx_v_alignment = __pyx_kp_b__40;
+      __Pyx_INCREF(__pyx_kp_b__42);
+      __pyx_v_alignment = __pyx_kp_b__42;
     }
     __pyx_L4:;
 
@@ -22048,7 +23200,7 @@ static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo *__pyx_v_type) {
  *             field += 1
  * 
  */
-      __pyx_t_2 = PyNumber_Add(__pyx_v_part, __pyx_kp_b__41); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1482, __pyx_L1_error)
+      __pyx_t_2 = PyNumber_Add(__pyx_v_part, __pyx_kp_b__43); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1482, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_t_4 = __Pyx_PyBytes_FromString(__pyx_v_field->name); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1482, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
@@ -22056,7 +23208,7 @@ static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo *__pyx_v_type) {
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = PyNumber_Add(__pyx_t_5, __pyx_kp_b__41); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1482, __pyx_L1_error)
+      __pyx_t_4 = PyNumber_Add(__pyx_t_5, __pyx_kp_b__43); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1482, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_6 = __Pyx_PyList_Append(__pyx_v_parts, __pyx_t_4); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(1, 1482, __pyx_L1_error)
@@ -22081,7 +23233,7 @@ static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo *__pyx_v_type) {
  */
     __pyx_t_4 = __Pyx_PyBytes_Join(__pyx_v_alignment, __pyx_v_parts); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1485, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = PyNumber_Add(__pyx_t_4, __pyx_kp_b__42); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1485, __pyx_L1_error)
+    __pyx_t_5 = PyNumber_Add(__pyx_t_4, __pyx_kp_b__44); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1485, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (!(likely(PyBytes_CheckExact(__pyx_t_5))||((__pyx_t_5) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_5)->tp_name), 0))) __PYX_ERR(1, 1485, __pyx_L1_error)
@@ -22149,7 +23301,7 @@ static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo *__pyx_v_type) {
  *         else:
  *             result = fmt.string
  */
-      __pyx_t_5 = PyUnicode_Join(__pyx_kp_u__43, __pyx_v_extents); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1490, __pyx_L1_error)
+      __pyx_t_5 = PyUnicode_Join(__pyx_kp_u__45, __pyx_v_extents); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1490, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_2 = PyUnicode_Format(__pyx_kp_u_s, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1490, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
@@ -22803,11 +23955,7 @@ static PyObject *__pyx_tp_new_6cyheif_HeifImageAttributes(PyTypeObject *t, CYTHO
   if (unlikely(!o)) return 0;
   p = ((struct __pyx_obj_6cyheif_HeifImageAttributes *)o);
   p->__pyx_vtab = __pyx_vtabptr_6cyheif_HeifImageAttributes;
-  if (unlikely(__pyx_pw_6cyheif_19HeifImageAttributes_1__cinit__(o, __pyx_empty_tuple, NULL) < 0)) goto bad;
   return o;
-  bad:
-  Py_DECREF(o); o = 0;
-  return NULL;
 }
 
 static void __pyx_tp_dealloc_6cyheif_HeifImageAttributes(PyObject *o) {
@@ -22820,8 +23968,8 @@ static void __pyx_tp_dealloc_6cyheif_HeifImageAttributes(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_6cyheif_HeifImageAttributes[] = {
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_6cyheif_19HeifImageAttributes_3__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_6cyheif_19HeifImageAttributes_5__setstate_cython__, METH_O, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_6cyheif_19HeifImageAttributes_1__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_6cyheif_19HeifImageAttributes_3__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -22874,6 +24022,113 @@ static PyTypeObject __pyx_type_6cyheif_HeifImageAttributes = {
   0, /*tp_init*/
   0, /*tp_alloc*/
   __pyx_tp_new_6cyheif_HeifImageAttributes, /*tp_new*/
+  0, /*tp_free*/
+  0, /*tp_is_gc*/
+  0, /*tp_bases*/
+  0, /*tp_mro*/
+  0, /*tp_cache*/
+  0, /*tp_subclasses*/
+  0, /*tp_weaklist*/
+  0, /*tp_del*/
+  0, /*tp_version_tag*/
+  #if PY_VERSION_HEX >= 0x030400a1
+  0, /*tp_finalize*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b1
+  0, /*tp_vectorcall*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4 && PY_VERSION_HEX < 0x03090000
+  0, /*tp_print*/
+  #endif
+};
+static struct __pyx_vtabstruct_6cyheif_HeifImage __pyx_vtable_6cyheif_HeifImage;
+
+static PyObject *__pyx_tp_new_6cyheif_HeifImage(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_6cyheif_HeifImage *p;
+  PyObject *o;
+  if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
+    o = (*t->tp_alloc)(t, 0);
+  } else {
+    o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
+  }
+  if (unlikely(!o)) return 0;
+  p = ((struct __pyx_obj_6cyheif_HeifImage *)o);
+  p->__pyx_vtab = __pyx_vtabptr_6cyheif_HeifImage;
+  return o;
+}
+
+static void __pyx_tp_dealloc_6cyheif_HeifImage(PyObject *o) {
+  #if CYTHON_USE_TP_FINALIZE
+  if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
+    if (PyObject_CallFinalizerFromDealloc(o)) return;
+  }
+  #endif
+  {
+    PyObject *etype, *eval, *etb;
+    PyErr_Fetch(&etype, &eval, &etb);
+    __Pyx_SET_REFCNT(o, Py_REFCNT(o) + 1);
+    __pyx_pw_6cyheif_9HeifImage_1__dealloc__(o);
+    __Pyx_SET_REFCNT(o, Py_REFCNT(o) - 1);
+    PyErr_Restore(etype, eval, etb);
+  }
+  (*Py_TYPE(o)->tp_free)(o);
+}
+
+static PyMethodDef __pyx_methods_6cyheif_HeifImage[] = {
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_6cyheif_9HeifImage_3__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_6cyheif_9HeifImage_5__setstate_cython__, METH_O, 0},
+  {0, 0, 0, 0}
+};
+
+static PyTypeObject __pyx_type_6cyheif_HeifImage = {
+  PyVarObject_HEAD_INIT(0, 0)
+  "cyheif.HeifImage", /*tp_name*/
+  sizeof(struct __pyx_obj_6cyheif_HeifImage), /*tp_basicsize*/
+  0, /*tp_itemsize*/
+  __pyx_tp_dealloc_6cyheif_HeifImage, /*tp_dealloc*/
+  #if PY_VERSION_HEX < 0x030800b4
+  0, /*tp_print*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4
+  0, /*tp_vectorcall_offset*/
+  #endif
+  0, /*tp_getattr*/
+  0, /*tp_setattr*/
+  #if PY_MAJOR_VERSION < 3
+  0, /*tp_compare*/
+  #endif
+  #if PY_MAJOR_VERSION >= 3
+  0, /*tp_as_async*/
+  #endif
+  0, /*tp_repr*/
+  0, /*tp_as_number*/
+  0, /*tp_as_sequence*/
+  0, /*tp_as_mapping*/
+  0, /*tp_hash*/
+  0, /*tp_call*/
+  0, /*tp_str*/
+  0, /*tp_getattro*/
+  0, /*tp_setattro*/
+  0, /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE, /*tp_flags*/
+  0, /*tp_doc*/
+  0, /*tp_traverse*/
+  0, /*tp_clear*/
+  0, /*tp_richcompare*/
+  0, /*tp_weaklistoffset*/
+  0, /*tp_iter*/
+  0, /*tp_iternext*/
+  __pyx_methods_6cyheif_HeifImage, /*tp_methods*/
+  0, /*tp_members*/
+  0, /*tp_getset*/
+  0, /*tp_base*/
+  0, /*tp_dict*/
+  0, /*tp_descr_get*/
+  0, /*tp_descr_set*/
+  0, /*tp_dictoffset*/
+  0, /*tp_init*/
+  0, /*tp_alloc*/
+  __pyx_tp_new_6cyheif_HeifImage, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -23003,105 +24258,6 @@ static PyTypeObject __pyx_type_6cyheif_HeifImageHandle = {
   0, /*tp_init*/
   0, /*tp_alloc*/
   __pyx_tp_new_6cyheif_HeifImageHandle, /*tp_new*/
-  0, /*tp_free*/
-  0, /*tp_is_gc*/
-  0, /*tp_bases*/
-  0, /*tp_mro*/
-  0, /*tp_cache*/
-  0, /*tp_subclasses*/
-  0, /*tp_weaklist*/
-  0, /*tp_del*/
-  0, /*tp_version_tag*/
-  #if PY_VERSION_HEX >= 0x030400a1
-  0, /*tp_finalize*/
-  #endif
-  #if PY_VERSION_HEX >= 0x030800b1
-  0, /*tp_vectorcall*/
-  #endif
-  #if PY_VERSION_HEX >= 0x030800b4 && PY_VERSION_HEX < 0x03090000
-  0, /*tp_print*/
-  #endif
-};
-
-static PyObject *__pyx_tp_new_6cyheif_HeifImage(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  PyObject *o;
-  if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
-    o = (*t->tp_alloc)(t, 0);
-  } else {
-    o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
-  }
-  if (unlikely(!o)) return 0;
-  return o;
-}
-
-static void __pyx_tp_dealloc_6cyheif_HeifImage(PyObject *o) {
-  #if CYTHON_USE_TP_FINALIZE
-  if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
-    if (PyObject_CallFinalizerFromDealloc(o)) return;
-  }
-  #endif
-  (*Py_TYPE(o)->tp_free)(o);
-}
-
-static PyMethodDef __pyx_methods_6cyheif_HeifImage[] = {
-  {"get_pil_image", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cyheif_9HeifImage_1get_pil_image, METH_VARARGS|METH_KEYWORDS, 0},
-  {"get_exif_data", (PyCFunction)__pyx_pw_6cyheif_9HeifImage_3get_exif_data, METH_O, 0},
-  {"write_exif_data_from_bytes", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cyheif_9HeifImage_5write_exif_data_from_bytes, METH_VARARGS|METH_KEYWORDS, 0},
-  {"write_exif_data", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cyheif_9HeifImage_7write_exif_data, METH_VARARGS|METH_KEYWORDS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_6cyheif_9HeifImage_9__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_6cyheif_9HeifImage_11__setstate_cython__, METH_O, 0},
-  {0, 0, 0, 0}
-};
-
-static PyTypeObject __pyx_type_6cyheif_HeifImage = {
-  PyVarObject_HEAD_INIT(0, 0)
-  "cyheif.HeifImage", /*tp_name*/
-  sizeof(struct __pyx_obj_6cyheif_HeifImage), /*tp_basicsize*/
-  0, /*tp_itemsize*/
-  __pyx_tp_dealloc_6cyheif_HeifImage, /*tp_dealloc*/
-  #if PY_VERSION_HEX < 0x030800b4
-  0, /*tp_print*/
-  #endif
-  #if PY_VERSION_HEX >= 0x030800b4
-  0, /*tp_vectorcall_offset*/
-  #endif
-  0, /*tp_getattr*/
-  0, /*tp_setattr*/
-  #if PY_MAJOR_VERSION < 3
-  0, /*tp_compare*/
-  #endif
-  #if PY_MAJOR_VERSION >= 3
-  0, /*tp_as_async*/
-  #endif
-  0, /*tp_repr*/
-  0, /*tp_as_number*/
-  0, /*tp_as_sequence*/
-  0, /*tp_as_mapping*/
-  0, /*tp_hash*/
-  0, /*tp_call*/
-  0, /*tp_str*/
-  0, /*tp_getattro*/
-  0, /*tp_setattro*/
-  0, /*tp_as_buffer*/
-  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE, /*tp_flags*/
-  0, /*tp_doc*/
-  0, /*tp_traverse*/
-  0, /*tp_clear*/
-  0, /*tp_richcompare*/
-  0, /*tp_weaklistoffset*/
-  0, /*tp_iter*/
-  0, /*tp_iternext*/
-  __pyx_methods_6cyheif_HeifImage, /*tp_methods*/
-  0, /*tp_members*/
-  0, /*tp_getset*/
-  0, /*tp_base*/
-  0, /*tp_dict*/
-  0, /*tp_descr_get*/
-  0, /*tp_descr_set*/
-  0, /*tp_dictoffset*/
-  0, /*tp_init*/
-  0, /*tp_alloc*/
-  __pyx_tp_new_6cyheif_HeifImage, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -23903,8 +25059,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_HeifImageHandle, __pyx_k_HeifImageHandle, sizeof(__pyx_k_HeifImageHandle), 0, 0, 1, 1},
   {&__pyx_kp_u_Heif_Error_Message_0_Code_1_Sub, __pyx_k_Heif_Error_Message_0_Code_1_Sub, sizeof(__pyx_k_Heif_Error_Message_0_Code_1_Sub), 0, 1, 0, 0},
   {&__pyx_n_s_Image, __pyx_k_Image, sizeof(__pyx_k_Image), 0, 0, 1, 1},
+  {&__pyx_kp_s_Incompatible_checksums_s_vs_0x6e, __pyx_k_Incompatible_checksums_s_vs_0x6e, sizeof(__pyx_k_Incompatible_checksums_s_vs_0x6e), 0, 0, 1, 0},
   {&__pyx_kp_s_Incompatible_checksums_s_vs_0xb0, __pyx_k_Incompatible_checksums_s_vs_0xb0, sizeof(__pyx_k_Incompatible_checksums_s_vs_0xb0), 0, 0, 1, 0},
-  {&__pyx_kp_s_Incompatible_checksums_s_vs_0xd4, __pyx_k_Incompatible_checksums_s_vs_0xd4, sizeof(__pyx_k_Incompatible_checksums_s_vs_0xd4), 0, 0, 1, 0},
   {&__pyx_n_s_IndexError, __pyx_k_IndexError, sizeof(__pyx_k_IndexError), 0, 0, 1, 1},
   {&__pyx_kp_s_Indirect_dimensions_not_supporte, __pyx_k_Indirect_dimensions_not_supporte, sizeof(__pyx_k_Indirect_dimensions_not_supporte), 0, 0, 1, 0},
   {&__pyx_kp_u_Invalid_EXIF_Data, __pyx_k_Invalid_EXIF_Data, sizeof(__pyx_k_Invalid_EXIF_Data), 0, 1, 0, 0},
@@ -23930,11 +25086,12 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
   {&__pyx_n_s_View_MemoryView, __pyx_k_View_MemoryView, sizeof(__pyx_k_View_MemoryView), 0, 0, 1, 1},
   {&__pyx_kp_u_Width_Height_Bits_Per_Pixel_Chro, __pyx_k_Width_Height_Bits_Per_Pixel_Chro, sizeof(__pyx_k_Width_Height_Bits_Per_Pixel_Chro), 0, 1, 0, 0},
-  {&__pyx_kp_b__39, __pyx_k__39, sizeof(__pyx_k__39), 0, 0, 0, 0},
-  {&__pyx_kp_b__40, __pyx_k__40, sizeof(__pyx_k__40), 0, 0, 0, 0},
+  {&__pyx_kp_u_Width_Height_Stride, __pyx_k_Width_Height_Stride, sizeof(__pyx_k_Width_Height_Stride), 0, 1, 0, 0},
   {&__pyx_kp_b__41, __pyx_k__41, sizeof(__pyx_k__41), 0, 0, 0, 0},
   {&__pyx_kp_b__42, __pyx_k__42, sizeof(__pyx_k__42), 0, 0, 0, 0},
-  {&__pyx_kp_u__43, __pyx_k__43, sizeof(__pyx_k__43), 0, 1, 0, 0},
+  {&__pyx_kp_b__43, __pyx_k__43, sizeof(__pyx_k__43), 0, 0, 0, 0},
+  {&__pyx_kp_b__44, __pyx_k__44, sizeof(__pyx_k__44), 0, 0, 0, 0},
+  {&__pyx_kp_u__45, __pyx_k__45, sizeof(__pyx_k__45), 0, 1, 0, 0},
   {&__pyx_n_s_allocate_buffer, __pyx_k_allocate_buffer, sizeof(__pyx_k_allocate_buffer), 0, 0, 1, 1},
   {&__pyx_n_s_apply_transformations, __pyx_k_apply_transformations, sizeof(__pyx_k_apply_transformations), 0, 0, 1, 1},
   {&__pyx_n_s_base, __pyx_k_base, sizeof(__pyx_k_base), 0, 0, 1, 1},
@@ -23948,13 +25105,17 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_convert_hdr_to_8bit, __pyx_k_convert_hdr_to_8bit, sizeof(__pyx_k_convert_hdr_to_8bit), 0, 0, 1, 1},
   {&__pyx_n_s_ctx, __pyx_k_ctx, sizeof(__pyx_k_ctx), 0, 0, 1, 1},
   {&__pyx_n_s_cyheif, __pyx_k_cyheif, sizeof(__pyx_k_cyheif), 0, 0, 1, 1},
+  {&__pyx_n_s_data, __pyx_k_data, sizeof(__pyx_k_data), 0, 0, 1, 1},
+  {&__pyx_n_s_data_view, __pyx_k_data_view, sizeof(__pyx_k_data_view), 0, 0, 1, 1},
   {&__pyx_n_s_dict, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
   {&__pyx_n_s_dtype_is_object, __pyx_k_dtype_is_object, sizeof(__pyx_k_dtype_is_object), 0, 0, 1, 1},
   {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
   {&__pyx_n_s_err, __pyx_k_err, sizeof(__pyx_k_err), 0, 0, 1, 1},
   {&__pyx_n_s_error, __pyx_k_error, sizeof(__pyx_k_error), 0, 0, 1, 1},
+  {&__pyx_n_s_exif, __pyx_k_exif, sizeof(__pyx_k_exif), 0, 0, 1, 1},
   {&__pyx_n_u_exif, __pyx_k_exif, sizeof(__pyx_k_exif), 0, 1, 0, 1},
+  {&__pyx_n_s_exif_bytes, __pyx_k_exif_bytes, sizeof(__pyx_k_exif_bytes), 0, 0, 1, 1},
   {&__pyx_n_s_exif_data, __pyx_k_exif_data, sizeof(__pyx_k_exif_data), 0, 0, 1, 1},
   {&__pyx_n_s_file_name, __pyx_k_file_name, sizeof(__pyx_k_file_name), 0, 0, 1, 1},
   {&__pyx_n_s_flags, __pyx_k_flags, sizeof(__pyx_k_flags), 0, 0, 1, 1},
@@ -23963,14 +25124,24 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 0, 1, 1},
   {&__pyx_n_u_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 1, 0, 1},
   {&__pyx_n_s_frombuffer, __pyx_k_frombuffer, sizeof(__pyx_k_frombuffer), 0, 0, 1, 1},
+  {&__pyx_n_s_get_exif_data, __pyx_k_get_exif_data, sizeof(__pyx_k_get_exif_data), 0, 0, 1, 1},
   {&__pyx_n_s_get_heif_version, __pyx_k_get_heif_version, sizeof(__pyx_k_get_heif_version), 0, 0, 1, 1},
+  {&__pyx_n_s_get_pil_image, __pyx_k_get_pil_image, sizeof(__pyx_k_get_pil_image), 0, 0, 1, 1},
+  {&__pyx_n_s_getexif, __pyx_k_getexif, sizeof(__pyx_k_getexif), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_kp_s_got_differing_extents_in_dimensi, __pyx_k_got_differing_extents_in_dimensi, sizeof(__pyx_k_got_differing_extents_in_dimensi), 0, 0, 1, 0},
+  {&__pyx_n_s_heifImageHandle, __pyx_k_heifImageHandle, sizeof(__pyx_k_heifImageHandle), 0, 0, 1, 1},
+  {&__pyx_n_s_heif_buffer, __pyx_k_heif_buffer, sizeof(__pyx_k_heif_buffer), 0, 0, 1, 1},
   {&__pyx_kp_s_heif_heif_pyx, __pyx_k_heif_heif_pyx, sizeof(__pyx_k_heif_heif_pyx), 0, 0, 1, 0},
+  {&__pyx_n_s_height, __pyx_k_height, sizeof(__pyx_k_height), 0, 0, 1, 1},
   {&__pyx_n_s_id, __pyx_k_id, sizeof(__pyx_k_id), 0, 0, 1, 1},
+  {&__pyx_n_s_img_attr, __pyx_k_img_attr, sizeof(__pyx_k_img_attr), 0, 0, 1, 1},
+  {&__pyx_n_s_img_bytes, __pyx_k_img_bytes, sizeof(__pyx_k_img_bytes), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_info, __pyx_k_info, sizeof(__pyx_k_info), 0, 0, 1, 1},
   {&__pyx_n_s_input_file_name, __pyx_k_input_file_name, sizeof(__pyx_k_input_file_name), 0, 0, 1, 1},
+  {&__pyx_n_s_input_image, __pyx_k_input_image, sizeof(__pyx_k_input_image), 0, 0, 1, 1},
+  {&__pyx_n_s_input_img, __pyx_k_input_img, sizeof(__pyx_k_input_img), 0, 0, 1, 1},
   {&__pyx_n_s_itemsize, __pyx_k_itemsize, sizeof(__pyx_k_itemsize), 0, 0, 1, 1},
   {&__pyx_kp_s_itemsize_0_for_cython_array, __pyx_k_itemsize_0_for_cython_array, sizeof(__pyx_k_itemsize_0_for_cython_array), 0, 0, 1, 0},
   {&__pyx_n_s_join, __pyx_k_join, sizeof(__pyx_k_join), 0, 0, 1, 1},
@@ -23984,10 +25155,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ndim, __pyx_k_ndim, sizeof(__pyx_k_ndim), 0, 0, 1, 1},
   {&__pyx_n_s_new, __pyx_k_new, sizeof(__pyx_k_new), 0, 0, 1, 1},
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
+  {&__pyx_n_s_num_bytes, __pyx_k_num_bytes, sizeof(__pyx_k_num_bytes), 0, 0, 1, 1},
   {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
   {&__pyx_n_s_output_file_name, __pyx_k_output_file_name, sizeof(__pyx_k_output_file_name), 0, 0, 1, 1},
+  {&__pyx_n_s_output_image, __pyx_k_output_image, sizeof(__pyx_k_output_image), 0, 0, 1, 1},
   {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
+  {&__pyx_n_s_pil_image, __pyx_k_pil_image, sizeof(__pyx_k_pil_image), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_PickleError, __pyx_k_pyx_PickleError, sizeof(__pyx_k_pyx_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_checksum, __pyx_k_pyx_checksum, sizeof(__pyx_k_pyx_checksum), 0, 0, 1, 1},
@@ -23996,16 +25170,18 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_pyx_state, __pyx_k_pyx_state, sizeof(__pyx_k_pyx_state), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_type, __pyx_k_pyx_type, sizeof(__pyx_k_pyx_type), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_unpickle_Enum, __pyx_k_pyx_unpickle_Enum, sizeof(__pyx_k_pyx_unpickle_Enum), 0, 0, 1, 1},
-  {&__pyx_n_s_pyx_unpickle_HeifImage, __pyx_k_pyx_unpickle_HeifImage, sizeof(__pyx_k_pyx_unpickle_HeifImage), 0, 0, 1, 1},
+  {&__pyx_n_s_pyx_unpickle_HeifImageAttribut, __pyx_k_pyx_unpickle_HeifImageAttribut, sizeof(__pyx_k_pyx_unpickle_HeifImageAttribut), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_u_raw, __pyx_k_raw, sizeof(__pyx_k_raw), 0, 1, 0, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
+  {&__pyx_n_s_resize, __pyx_k_resize, sizeof(__pyx_k_resize), 0, 0, 1, 1},
   {&__pyx_n_s_retain_exif, __pyx_k_retain_exif, sizeof(__pyx_k_retain_exif), 0, 0, 1, 1},
   {&__pyx_kp_u_s, __pyx_k_s, sizeof(__pyx_k_s), 0, 1, 0, 0},
   {&__pyx_kp_s_self__handle_self__img_cannot_be, __pyx_k_self__handle_self__img_cannot_be, sizeof(__pyx_k_self__handle_self__img_cannot_be), 0, 0, 1, 0},
+  {&__pyx_kp_s_self__img_cannot_be_converted_to, __pyx_k_self__img_cannot_be_converted_to, sizeof(__pyx_k_self__img_cannot_be_converted_to), 0, 0, 1, 0},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_shape, __pyx_k_shape, sizeof(__pyx_k_shape), 0, 0, 1, 1},
@@ -24013,6 +25189,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_start, __pyx_k_start, sizeof(__pyx_k_start), 0, 0, 1, 1},
   {&__pyx_n_s_step, __pyx_k_step, sizeof(__pyx_k_step), 0, 0, 1, 1},
   {&__pyx_n_s_stop, __pyx_k_stop, sizeof(__pyx_k_stop), 0, 0, 1, 1},
+  {&__pyx_n_s_stride, __pyx_k_stride, sizeof(__pyx_k_stride), 0, 0, 1, 1},
   {&__pyx_kp_s_strided_and_direct, __pyx_k_strided_and_direct, sizeof(__pyx_k_strided_and_direct), 0, 0, 1, 0},
   {&__pyx_kp_s_strided_and_direct_or_indirect, __pyx_k_strided_and_direct_or_indirect, sizeof(__pyx_k_strided_and_direct_or_indirect), 0, 0, 1, 0},
   {&__pyx_kp_s_strided_and_indirect, __pyx_k_strided_and_indirect, sizeof(__pyx_k_strided_and_indirect), 0, 0, 1, 0},
@@ -24026,13 +25203,16 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_unable_to_allocate_shape_and_str, __pyx_k_unable_to_allocate_shape_and_str, sizeof(__pyx_k_unable_to_allocate_shape_and_str), 0, 0, 1, 0},
   {&__pyx_n_s_unpack, __pyx_k_unpack, sizeof(__pyx_k_unpack), 0, 0, 1, 1},
   {&__pyx_n_s_update, __pyx_k_update, sizeof(__pyx_k_update), 0, 0, 1, 1},
+  {&__pyx_n_s_width, __pyx_k_width, sizeof(__pyx_k_width), 0, 0, 1, 1},
+  {&__pyx_n_s_write_exif_data, __pyx_k_write_exif_data, sizeof(__pyx_k_write_exif_data), 0, 0, 1, 1},
   {&__pyx_n_s_write_exif_data_from_bytes, __pyx_k_write_exif_data_from_bytes, sizeof(__pyx_k_write_exif_data_from_bytes), 0, 0, 1, 1},
+  {&__pyx_n_s_write_pil_image, __pyx_k_write_pil_image, sizeof(__pyx_k_write_pil_image), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 16, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 116, __pyx_L1_error)
   __pyx_builtin_KeyError = __Pyx_GetBuiltinName(__pyx_n_s_KeyError); if (!__pyx_builtin_KeyError) __PYX_ERR(1, 18, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 19, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 151, __pyx_L1_error)
@@ -24157,42 +25337,42 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  * def __setstate_cython__(self, __pyx_state):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")
  */
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_self__img_cannot_be_converted_to); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
 
   /* "(tree fragment)":4
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")
  * def __setstate_cython__(self, __pyx_state):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ *     raise TypeError("self._img cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_self__img_cannot_be_converted_to); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
 
-  /* "heif/heif.pyx":215
- *         sz[0] = img_attr.height * stride
+  /* "heif/heif.pyx":226
+ *         print('Width: {}, Height: {}, Stride: {}'.format(img_attr.width, img_attr.height, stride))
  *         if data is NULL:
  *             raise Exception('Read failed')             # <<<<<<<<<<<<<<
  *         return img_attr
  * 
  */
-  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_u_Read_failed); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_u_Read_failed); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 226, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__14);
   __Pyx_GIVEREF(__pyx_tuple__14);
 
-  /* "heif/heif.pyx":238
+  /* "heif/heif.pyx":249
  *         # TODO: Arbitrary sanity check - needs to be fixed
  *         if sz < 4 or sz > 512*1024:
  *             raise Exception('Invalid EXIF Data')             # <<<<<<<<<<<<<<
  *         cdef HeifBuffer buf = HeifBuffer(sz)
  *         res = cheif.heif_image_handle_get_metadata(self._handle, exif_id, buf._data)
  */
-  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_kp_u_Invalid_EXIF_Data); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 238, __pyx_L1_error)
+  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_kp_u_Invalid_EXIF_Data); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 249, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__15);
   __Pyx_GIVEREF(__pyx_tuple__15);
 
@@ -24202,18 +25382,29 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._handle,self._img cannot be converted to a Python object for pickling")
  */
-  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_s_self__handle_self__img_cannot_be); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(1, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__16);
-  __Pyx_GIVEREF(__pyx_tuple__16);
+  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_kp_s_self__handle_self__img_cannot_be); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__17);
+  __Pyx_GIVEREF(__pyx_tuple__17);
 
   /* "(tree fragment)":4
  *     raise TypeError("self._handle,self._img cannot be converted to a Python object for pickling")
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self._handle,self._img cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_kp_s_self__handle_self__img_cannot_be); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(1, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__17);
-  __Pyx_GIVEREF(__pyx_tuple__17);
+  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_kp_s_self__handle_self__img_cannot_be); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__18);
+  __Pyx_GIVEREF(__pyx_tuple__18);
+
+  /* "heif/heif.pyx":354
+ *         input_img = input_img.resize((width, input_img.height))
+ * 
+ *     cdef bytes img_bytes = input_img.tobytes('raw', 'RGB')             # <<<<<<<<<<<<<<
+ *     cdef bytes exif_bytes
+ *     if retain_exif:
+ */
+  __pyx_tuple__19 = PyTuple_Pack(2, __pyx_n_u_raw, __pyx_n_u_RGB); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 354, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__19);
+  __Pyx_GIVEREF(__pyx_tuple__19);
 
   /* "FromPyStructUtility":19
  *         value = obj['code']
@@ -24222,9 +25413,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *     result.code = value
  *     try:
  */
-  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_kp_s_No_value_specified_for_struct_at); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(1, 19, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__18);
-  __Pyx_GIVEREF(__pyx_tuple__18);
+  __pyx_tuple__20 = PyTuple_Pack(1, __pyx_kp_s_No_value_specified_for_struct_at); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(1, 19, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__20);
+  __Pyx_GIVEREF(__pyx_tuple__20);
 
   /* "FromPyStructUtility":24
  *         value = obj['subcode']
@@ -24233,9 +25424,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *     result.subcode = value
  *     try:
  */
-  __pyx_tuple__19 = PyTuple_Pack(1, __pyx_kp_s_No_value_specified_for_struct_at_2); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(1, 24, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__19);
-  __Pyx_GIVEREF(__pyx_tuple__19);
+  __pyx_tuple__21 = PyTuple_Pack(1, __pyx_kp_s_No_value_specified_for_struct_at_2); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(1, 24, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__21);
+  __Pyx_GIVEREF(__pyx_tuple__21);
 
   /* "FromPyStructUtility":29
  *         value = obj['message']
@@ -24244,9 +25435,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *     result.message = value
  *     return result
  */
-  __pyx_tuple__20 = PyTuple_Pack(1, __pyx_kp_s_No_value_specified_for_struct_at_3); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(1, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__20);
-  __Pyx_GIVEREF(__pyx_tuple__20);
+  __pyx_tuple__22 = PyTuple_Pack(1, __pyx_kp_s_No_value_specified_for_struct_at_3); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(1, 29, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__22);
+  __Pyx_GIVEREF(__pyx_tuple__22);
 
   /* "View.MemoryView":133
  * 
@@ -24255,9 +25446,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *         if itemsize <= 0:
  */
-  __pyx_tuple__21 = PyTuple_Pack(1, __pyx_kp_s_Empty_shape_tuple_for_cython_arr); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(1, 133, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__21);
-  __Pyx_GIVEREF(__pyx_tuple__21);
+  __pyx_tuple__23 = PyTuple_Pack(1, __pyx_kp_s_Empty_shape_tuple_for_cython_arr); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(1, 133, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__23);
+  __Pyx_GIVEREF(__pyx_tuple__23);
 
   /* "View.MemoryView":136
  * 
@@ -24266,9 +25457,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *         if not isinstance(format, bytes):
  */
-  __pyx_tuple__22 = PyTuple_Pack(1, __pyx_kp_s_itemsize_0_for_cython_array); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(1, 136, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__22);
-  __Pyx_GIVEREF(__pyx_tuple__22);
+  __pyx_tuple__24 = PyTuple_Pack(1, __pyx_kp_s_itemsize_0_for_cython_array); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(1, 136, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__24);
+  __Pyx_GIVEREF(__pyx_tuple__24);
 
   /* "View.MemoryView":148
  * 
@@ -24277,9 +25468,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__23 = PyTuple_Pack(1, __pyx_kp_s_unable_to_allocate_shape_and_str); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(1, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__23);
-  __Pyx_GIVEREF(__pyx_tuple__23);
+  __pyx_tuple__25 = PyTuple_Pack(1, __pyx_kp_s_unable_to_allocate_shape_and_str); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(1, 148, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__25);
+  __Pyx_GIVEREF(__pyx_tuple__25);
 
   /* "View.MemoryView":176
  *             self.data = <char *>malloc(self.len)
@@ -24288,9 +25479,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *             if self.dtype_is_object:
  */
-  __pyx_tuple__24 = PyTuple_Pack(1, __pyx_kp_s_unable_to_allocate_array_data); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(1, 176, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__24);
-  __Pyx_GIVEREF(__pyx_tuple__24);
+  __pyx_tuple__26 = PyTuple_Pack(1, __pyx_kp_s_unable_to_allocate_array_data); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(1, 176, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__26);
+  __Pyx_GIVEREF(__pyx_tuple__26);
 
   /* "View.MemoryView":192
  *             bufmode = PyBUF_F_CONTIGUOUS | PyBUF_ANY_CONTIGUOUS
@@ -24299,9 +25490,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         info.buf = self.data
  *         info.len = self.len
  */
-  __pyx_tuple__25 = PyTuple_Pack(1, __pyx_kp_s_Can_only_create_a_buffer_that_is); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(1, 192, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__25);
-  __Pyx_GIVEREF(__pyx_tuple__25);
+  __pyx_tuple__27 = PyTuple_Pack(1, __pyx_kp_s_Can_only_create_a_buffer_that_is); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(1, 192, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__27);
+  __Pyx_GIVEREF(__pyx_tuple__27);
 
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
@@ -24309,18 +25500,18 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__26 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(1, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__26);
-  __Pyx_GIVEREF(__pyx_tuple__26);
+  __pyx_tuple__28 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__28);
+  __Pyx_GIVEREF(__pyx_tuple__28);
 
   /* "(tree fragment)":4
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__27 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(1, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__27);
-  __Pyx_GIVEREF(__pyx_tuple__27);
+  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__29);
+  __Pyx_GIVEREF(__pyx_tuple__29);
 
   /* "View.MemoryView":418
  *     def __setitem__(memoryview self, object index, object value):
@@ -24329,9 +25520,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *         have_slices, index = _unellipsify(index, self.view.ndim)
  */
-  __pyx_tuple__28 = PyTuple_Pack(1, __pyx_kp_s_Cannot_assign_to_read_only_memor); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(1, 418, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__28);
-  __Pyx_GIVEREF(__pyx_tuple__28);
+  __pyx_tuple__30 = PyTuple_Pack(1, __pyx_kp_s_Cannot_assign_to_read_only_memor); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(1, 418, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__30);
+  __Pyx_GIVEREF(__pyx_tuple__30);
 
   /* "View.MemoryView":495
  *             result = struct.unpack(self.view.format, bytesitem)
@@ -24340,9 +25531,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         else:
  *             if len(self.view.format) == 1:
  */
-  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_kp_s_Unable_to_convert_item_to_object); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(1, 495, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__29);
-  __Pyx_GIVEREF(__pyx_tuple__29);
+  __pyx_tuple__31 = PyTuple_Pack(1, __pyx_kp_s_Unable_to_convert_item_to_object); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(1, 495, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__31);
+  __Pyx_GIVEREF(__pyx_tuple__31);
 
   /* "View.MemoryView":520
  *     def __getbuffer__(self, Py_buffer *info, int flags):
@@ -24351,9 +25542,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *         if flags & PyBUF_ND:
  */
-  __pyx_tuple__30 = PyTuple_Pack(1, __pyx_kp_s_Cannot_create_writable_memory_vi); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(1, 520, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__30);
-  __Pyx_GIVEREF(__pyx_tuple__30);
+  __pyx_tuple__32 = PyTuple_Pack(1, __pyx_kp_s_Cannot_create_writable_memory_vi); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(1, 520, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__32);
+  __Pyx_GIVEREF(__pyx_tuple__32);
 
   /* "View.MemoryView":570
  *         if self.view.strides == NULL:
@@ -24362,9 +25553,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *         return tuple([stride for stride in self.view.strides[:self.view.ndim]])
  */
-  __pyx_tuple__31 = PyTuple_Pack(1, __pyx_kp_s_Buffer_view_does_not_expose_stri); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(1, 570, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__31);
-  __Pyx_GIVEREF(__pyx_tuple__31);
+  __pyx_tuple__33 = PyTuple_Pack(1, __pyx_kp_s_Buffer_view_does_not_expose_stri); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(1, 570, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__33);
+  __Pyx_GIVEREF(__pyx_tuple__33);
 
   /* "View.MemoryView":577
  *     def suboffsets(self):
@@ -24373,12 +25564,12 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *         return tuple([suboffset for suboffset in self.view.suboffsets[:self.view.ndim]])
  */
-  __pyx_tuple__32 = PyTuple_New(1); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(1, 577, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__32);
+  __pyx_tuple__34 = PyTuple_New(1); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(1, 577, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__34);
   __Pyx_INCREF(__pyx_int_neg_1);
   __Pyx_GIVEREF(__pyx_int_neg_1);
-  PyTuple_SET_ITEM(__pyx_tuple__32, 0, __pyx_int_neg_1);
-  __Pyx_GIVEREF(__pyx_tuple__32);
+  PyTuple_SET_ITEM(__pyx_tuple__34, 0, __pyx_int_neg_1);
+  __Pyx_GIVEREF(__pyx_tuple__34);
 
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
@@ -24386,18 +25577,18 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__33 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(1, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__33);
-  __Pyx_GIVEREF(__pyx_tuple__33);
+  __pyx_tuple__35 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__35)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__35);
+  __Pyx_GIVEREF(__pyx_tuple__35);
 
   /* "(tree fragment)":4
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__34 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(1, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__34);
-  __Pyx_GIVEREF(__pyx_tuple__34);
+  __pyx_tuple__36 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__36);
+  __Pyx_GIVEREF(__pyx_tuple__36);
 
   /* "View.MemoryView":682
  *         if item is Ellipsis:
@@ -24406,9 +25597,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *                 seen_ellipsis = True
  *             else:
  */
-  __pyx_slice__35 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__35)) __PYX_ERR(1, 682, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__35);
-  __Pyx_GIVEREF(__pyx_slice__35);
+  __pyx_slice__37 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__37)) __PYX_ERR(1, 682, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__37);
+  __Pyx_GIVEREF(__pyx_slice__37);
 
   /* "View.MemoryView":703
  *     for suboffset in suboffsets[:ndim]:
@@ -24417,9 +25608,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__36 = PyTuple_Pack(1, __pyx_kp_s_Indirect_dimensions_not_supporte); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(1, 703, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__36);
-  __Pyx_GIVEREF(__pyx_tuple__36);
+  __pyx_tuple__38 = PyTuple_Pack(1, __pyx_kp_s_Indirect_dimensions_not_supporte); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(1, 703, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__38);
+  __Pyx_GIVEREF(__pyx_tuple__38);
 
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
@@ -24427,36 +25618,96 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__37 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(1, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__37);
-  __Pyx_GIVEREF(__pyx_tuple__37);
+  __pyx_tuple__39 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__39);
+  __Pyx_GIVEREF(__pyx_tuple__39);
 
   /* "(tree fragment)":4
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__38 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(1, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__38);
-  __Pyx_GIVEREF(__pyx_tuple__38);
+  __pyx_tuple__40 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__40);
+  __Pyx_GIVEREF(__pyx_tuple__40);
 
-  /* "heif/heif.pyx":320
- *         self.write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
+  /* "heif/heif.pyx":315
+ *         HeifError(res)
+ * 
+ * def get_pil_image(             # <<<<<<<<<<<<<<
+ *     const char* file_name,
+ *     bint apply_transformations=True,
+ */
+  __pyx_tuple__46 = PyTuple_Pack(11, __pyx_n_s_file_name, __pyx_n_s_apply_transformations, __pyx_n_s_retain_exif, __pyx_n_s_heifImageHandle, __pyx_n_s_num_bytes, __pyx_n_s_data, __pyx_n_s_img_attr, __pyx_n_s_stride, __pyx_n_s_data_view, __pyx_n_s_pil_image, __pyx_n_s_heif_buffer); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__46);
+  __Pyx_GIVEREF(__pyx_tuple__46);
+  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(3, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__46, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_heif_heif_pyx, __pyx_n_s_get_pil_image, 315, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 315, __pyx_L1_error)
+
+  /* "heif/heif.pyx":342
+ *     return pil_image
+ * 
+ * def write_pil_image(             # <<<<<<<<<<<<<<
+ *     input_img: Image,
+ *     const char* output_file_name,
+ */
+  __pyx_tuple__48 = PyTuple_Pack(7, __pyx_n_s_input_img, __pyx_n_s_output_file_name, __pyx_n_s_retain_exif, __pyx_n_s_width, __pyx_n_s_img_bytes, __pyx_n_s_exif_bytes, __pyx_n_s_output_image); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(0, 342, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__48);
+  __Pyx_GIVEREF(__pyx_tuple__48);
+  __pyx_codeobj__49 = (PyObject*)__Pyx_PyCode_New(3, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__48, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_heif_heif_pyx, __pyx_n_s_write_pil_image, 342, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__49)) __PYX_ERR(0, 342, __pyx_L1_error)
+
+  /* "heif/heif.pyx":367
+ *     output_image.write_to_file(output_file_name)
+ * 
+ * def get_exif_data(const char* file_name) -> Image.Exif:             # <<<<<<<<<<<<<<
+ *     cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
+ *     heif_buffer = heifImageHandle.get_image_exif_data()
+ */
+  __pyx_tuple__50 = PyTuple_Pack(6, __pyx_n_s_file_name, __pyx_n_s_file_name, __pyx_n_s_heifImageHandle, __pyx_n_s_heif_buffer, __pyx_n_s_exif, __pyx_n_s_data_view); if (unlikely(!__pyx_tuple__50)) __PYX_ERR(0, 367, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__50);
+  __Pyx_GIVEREF(__pyx_tuple__50);
+  __pyx_codeobj__51 = (PyObject*)__Pyx_PyCode_New(1, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__50, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_heif_heif_pyx, __pyx_n_s_get_exif_data, 367, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__51)) __PYX_ERR(0, 367, __pyx_L1_error)
+
+  /* "heif/heif.pyx":378
+ *     return exif
+ * 
+ * def write_exif_data_from_bytes(             # <<<<<<<<<<<<<<
+ *     const char* input_file_name,
+ *     const char* output_file_name,
+ */
+  __pyx_tuple__52 = PyTuple_Pack(5, __pyx_n_s_input_file_name, __pyx_n_s_output_file_name, __pyx_n_s_exif_data, __pyx_n_s_input_image, __pyx_n_s_output_image); if (unlikely(!__pyx_tuple__52)) __PYX_ERR(0, 378, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__52);
+  __Pyx_GIVEREF(__pyx_tuple__52);
+  __pyx_codeobj__53 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__52, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_heif_heif_pyx, __pyx_n_s_write_exif_data_from_bytes, 378, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__53)) __PYX_ERR(0, 378, __pyx_L1_error)
+
+  /* "heif/heif.pyx":386
+ *     output_image.write_to_file(output_file_name)
+ * 
+ * def write_exif_data(             # <<<<<<<<<<<<<<
+ *     const char* input_file_name,
+ *     const char* output_file_name,
+ */
+  __pyx_tuple__54 = PyTuple_Pack(4, __pyx_n_s_input_file_name, __pyx_n_s_output_file_name, __pyx_n_s_exif_data, __pyx_n_s_exif_bytes); if (unlikely(!__pyx_tuple__54)) __PYX_ERR(0, 386, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__54);
+  __Pyx_GIVEREF(__pyx_tuple__54);
+  __pyx_codeobj__55 = (PyObject*)__Pyx_PyCode_New(3, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__54, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_heif_heif_pyx, __pyx_n_s_write_exif_data, 386, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__55)) __PYX_ERR(0, 386, __pyx_L1_error)
+
+  /* "heif/heif.pyx":393
+ *     write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
  * 
  * def get_heif_version():             # <<<<<<<<<<<<<<
  *     return cheif.heif_get_version()
  */
-  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_heif_heif_pyx, __pyx_n_s_get_heif_version, 320, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(0, 320, __pyx_L1_error)
+  __pyx_codeobj__56 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_heif_heif_pyx, __pyx_n_s_get_heif_version, 393, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__56)) __PYX_ERR(0, 393, __pyx_L1_error)
 
   /* "(tree fragment)":1
- * def __pyx_unpickle_HeifImage(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
+ * def __pyx_unpickle_HeifImageAttributes(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_tuple__45 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__45)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__45);
-  __Pyx_GIVEREF(__pyx_tuple__45);
-  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__45, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_HeifImage, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__57 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__57)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__57);
+  __Pyx_GIVEREF(__pyx_tuple__57);
+  __pyx_codeobj__58 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__57, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_HeifImageAttribut, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__58)) __PYX_ERR(1, 1, __pyx_L1_error)
 
   /* "View.MemoryView":286
  *         return self.name
@@ -24465,9 +25716,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * cdef strided = Enum("<strided and direct>") # default
  * cdef indirect = Enum("<strided and indirect>")
  */
-  __pyx_tuple__47 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct_or_indirect); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(1, 286, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__47);
-  __Pyx_GIVEREF(__pyx_tuple__47);
+  __pyx_tuple__59 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct_or_indirect); if (unlikely(!__pyx_tuple__59)) __PYX_ERR(1, 286, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__59);
+  __Pyx_GIVEREF(__pyx_tuple__59);
 
   /* "View.MemoryView":287
  * 
@@ -24476,9 +25727,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * cdef indirect = Enum("<strided and indirect>")
  * 
  */
-  __pyx_tuple__48 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(1, 287, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__48);
-  __Pyx_GIVEREF(__pyx_tuple__48);
+  __pyx_tuple__60 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct); if (unlikely(!__pyx_tuple__60)) __PYX_ERR(1, 287, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__60);
+  __Pyx_GIVEREF(__pyx_tuple__60);
 
   /* "View.MemoryView":288
  * cdef generic = Enum("<strided and direct or indirect>")
@@ -24487,9 +25738,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__49 = PyTuple_Pack(1, __pyx_kp_s_strided_and_indirect); if (unlikely(!__pyx_tuple__49)) __PYX_ERR(1, 288, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__49);
-  __Pyx_GIVEREF(__pyx_tuple__49);
+  __pyx_tuple__61 = PyTuple_Pack(1, __pyx_kp_s_strided_and_indirect); if (unlikely(!__pyx_tuple__61)) __PYX_ERR(1, 288, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__61);
+  __Pyx_GIVEREF(__pyx_tuple__61);
 
   /* "View.MemoryView":291
  * 
@@ -24498,9 +25749,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * cdef indirect_contiguous = Enum("<contiguous and indirect>")
  * 
  */
-  __pyx_tuple__50 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_direct); if (unlikely(!__pyx_tuple__50)) __PYX_ERR(1, 291, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__50);
-  __Pyx_GIVEREF(__pyx_tuple__50);
+  __pyx_tuple__62 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_direct); if (unlikely(!__pyx_tuple__62)) __PYX_ERR(1, 291, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__62);
+  __Pyx_GIVEREF(__pyx_tuple__62);
 
   /* "View.MemoryView":292
  * 
@@ -24509,19 +25760,19 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__51 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_indirect); if (unlikely(!__pyx_tuple__51)) __PYX_ERR(1, 292, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__51);
-  __Pyx_GIVEREF(__pyx_tuple__51);
+  __pyx_tuple__63 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_indirect); if (unlikely(!__pyx_tuple__63)) __PYX_ERR(1, 292, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__63);
+  __Pyx_GIVEREF(__pyx_tuple__63);
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_Enum(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_tuple__52 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__52)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__52);
-  __Pyx_GIVEREF(__pyx_tuple__52);
-  __pyx_codeobj__53 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__52, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__53)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__64 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__64)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__64);
+  __Pyx_GIVEREF(__pyx_tuple__64);
+  __pyx_codeobj__65 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__64, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__65)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -24533,8 +25784,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_8 = PyInt_FromLong(8); if (unlikely(!__pyx_int_8)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_116064217 = PyInt_FromLong(116064217L); if (unlikely(!__pyx_int_116064217)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_184977713 = PyInt_FromLong(184977713L); if (unlikely(!__pyx_int_184977713)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_222419149 = PyInt_FromLong(222419149L); if (unlikely(!__pyx_int_222419149)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_neg_1 = PyInt_FromLong(-1); if (unlikely(!__pyx_int_neg_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -24647,7 +25899,7 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtabptr_6cyheif_HeifImageAttributes = &__pyx_vtable_6cyheif_HeifImageAttributes;
   __pyx_vtable_6cyheif_HeifImageAttributes.from_image = (struct __pyx_obj_6cyheif_HeifImageAttributes *(*)(struct heif_image *))__pyx_f_6cyheif_19HeifImageAttributes_from_image;
   __pyx_vtable_6cyheif_HeifImageAttributes.get_pillow_raw_format = (PyObject *(*)(struct __pyx_obj_6cyheif_HeifImageAttributes *))__pyx_f_6cyheif_19HeifImageAttributes_get_pillow_raw_format;
-  __pyx_vtable_6cyheif_HeifImageAttributes.print = (PyObject *(*)(struct __pyx_obj_6cyheif_HeifImageAttributes *))__pyx_f_6cyheif_19HeifImageAttributes_print;
+  __pyx_vtable_6cyheif_HeifImageAttributes.print_image_attributes = (PyObject *(*)(struct __pyx_obj_6cyheif_HeifImageAttributes *))__pyx_f_6cyheif_19HeifImageAttributes_print_image_attributes;
   if (PyType_Ready(&__pyx_type_6cyheif_HeifImageAttributes) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6cyheif_HeifImageAttributes.tp_print = 0;
@@ -24659,6 +25911,19 @@ static int __Pyx_modinit_type_init_code(void) {
   if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HeifImageAttributes, (PyObject *)&__pyx_type_6cyheif_HeifImageAttributes) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
   if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cyheif_HeifImageAttributes) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
   __pyx_ptype_6cyheif_HeifImageAttributes = &__pyx_type_6cyheif_HeifImageAttributes;
+  __pyx_vtabptr_6cyheif_HeifImage = &__pyx_vtable_6cyheif_HeifImage;
+  __pyx_vtable_6cyheif_HeifImage.from_image = (struct __pyx_obj_6cyheif_HeifImage *(*)(struct heif_image *))__pyx_f_6cyheif_9HeifImage_from_image;
+  if (PyType_Ready(&__pyx_type_6cyheif_HeifImage) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
+  #if PY_VERSION_HEX < 0x030800B1
+  __pyx_type_6cyheif_HeifImage.tp_print = 0;
+  #endif
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6cyheif_HeifImage.tp_dictoffset && __pyx_type_6cyheif_HeifImage.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_6cyheif_HeifImage.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  }
+  if (__Pyx_SetVtable(__pyx_type_6cyheif_HeifImage.tp_dict, __pyx_vtabptr_6cyheif_HeifImage) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HeifImage, (PyObject *)&__pyx_type_6cyheif_HeifImage) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cyheif_HeifImage) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_ptype_6cyheif_HeifImage = &__pyx_type_6cyheif_HeifImage;
   __pyx_vtabptr_6cyheif_HeifImageHandle = &__pyx_vtable_6cyheif_HeifImageHandle;
   __pyx_vtable_6cyheif_HeifImageHandle.from_image_handle = (struct __pyx_obj_6cyheif_HeifImageHandle *(*)(struct heif_image_handle *, struct __pyx_opt_args_6cyheif_15HeifImageHandle_from_image_handle *__pyx_optional_args))__pyx_f_6cyheif_15HeifImageHandle_from_image_handle;
   __pyx_vtable_6cyheif_HeifImageHandle.from_file = (struct __pyx_obj_6cyheif_HeifImageHandle *(*)(char const *, struct __pyx_opt_args_6cyheif_15HeifImageHandle_from_file *__pyx_optional_args))__pyx_f_6cyheif_15HeifImageHandle_from_file;
@@ -24675,28 +25940,19 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_6cyheif_HeifImageHandle.get_image_exif_metadata_id = (heif_item_id (*)(struct __pyx_obj_6cyheif_HeifImageHandle *))__pyx_f_6cyheif_15HeifImageHandle_get_image_exif_metadata_id;
   __pyx_vtable_6cyheif_HeifImageHandle.get_image_exif_data = (struct __pyx_obj_6cyheif_HeifBuffer *(*)(struct __pyx_obj_6cyheif_HeifImageHandle *))__pyx_f_6cyheif_15HeifImageHandle_get_image_exif_data;
   __pyx_vtable_6cyheif_HeifImageHandle.add_exif_data = (struct __pyx_obj_6cyheif_HeifImageHandle *(*)(struct __pyx_obj_6cyheif_HeifImageHandle *, __Pyx_memviewslice, int))__pyx_f_6cyheif_15HeifImageHandle_add_exif_data;
+  __pyx_vtable_6cyheif_HeifImageHandle.get_image_from_rgb_bytes = (struct __pyx_obj_6cyheif_HeifImageHandle *(*)(__Pyx_memviewslice, int, int, int, struct __pyx_opt_args_6cyheif_15HeifImageHandle_get_image_from_rgb_bytes *__pyx_optional_args))__pyx_f_6cyheif_15HeifImageHandle_get_image_from_rgb_bytes;
   __pyx_vtable_6cyheif_HeifImageHandle.write_to_file = (PyObject *(*)(struct __pyx_obj_6cyheif_HeifImageHandle *, char const *))__pyx_f_6cyheif_15HeifImageHandle_write_to_file;
-  if (PyType_Ready(&__pyx_type_6cyheif_HeifImageHandle) < 0) __PYX_ERR(0, 122, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6cyheif_HeifImageHandle) < 0) __PYX_ERR(0, 132, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6cyheif_HeifImageHandle.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6cyheif_HeifImageHandle.tp_dictoffset && __pyx_type_6cyheif_HeifImageHandle.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_6cyheif_HeifImageHandle.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_6cyheif_HeifImageHandle.tp_dict, __pyx_vtabptr_6cyheif_HeifImageHandle) < 0) __PYX_ERR(0, 122, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HeifImageHandle, (PyObject *)&__pyx_type_6cyheif_HeifImageHandle) < 0) __PYX_ERR(0, 122, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cyheif_HeifImageHandle) < 0) __PYX_ERR(0, 122, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_6cyheif_HeifImageHandle.tp_dict, __pyx_vtabptr_6cyheif_HeifImageHandle) < 0) __PYX_ERR(0, 132, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HeifImageHandle, (PyObject *)&__pyx_type_6cyheif_HeifImageHandle) < 0) __PYX_ERR(0, 132, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cyheif_HeifImageHandle) < 0) __PYX_ERR(0, 132, __pyx_L1_error)
   __pyx_ptype_6cyheif_HeifImageHandle = &__pyx_type_6cyheif_HeifImageHandle;
-  if (PyType_Ready(&__pyx_type_6cyheif_HeifImage) < 0) __PYX_ERR(0, 263, __pyx_L1_error)
-  #if PY_VERSION_HEX < 0x030800B1
-  __pyx_type_6cyheif_HeifImage.tp_print = 0;
-  #endif
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6cyheif_HeifImage.tp_dictoffset && __pyx_type_6cyheif_HeifImage.tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_type_6cyheif_HeifImage.tp_getattro = __Pyx_PyObject_GenericGetAttr;
-  }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HeifImage, (PyObject *)&__pyx_type_6cyheif_HeifImage) < 0) __PYX_ERR(0, 263, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cyheif_HeifImage) < 0) __PYX_ERR(0, 263, __pyx_L1_error)
-  __pyx_ptype_6cyheif_HeifImage = &__pyx_type_6cyheif_HeifImage;
   __pyx_vtabptr_array = &__pyx_vtable_array;
   __pyx_vtable_array.get_memview = (PyObject *(*)(struct __pyx_array_obj *))__pyx_array_get_memview;
   if (PyType_Ready(&__pyx_type___pyx_array) < 0) __PYX_ERR(1, 105, __pyx_L1_error)
@@ -24875,7 +26131,8 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_cyheif(PyObject *__pyx_pyinit_modu
 {
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  static PyThread_type_lock __pyx_t_3[8];
+  __Pyx_memviewslice __pyx_t_3 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  static PyThread_type_lock __pyx_t_4[8];
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -25002,25 +26259,97 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "heif/heif.pyx":320
- *         self.write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
+  /* "heif/heif.pyx":272
+ *         int width,
+ *         int height,
+ *         const unsigned char[:] exif_data = None,             # <<<<<<<<<<<<<<
+ *         int exif_sz = 0):
+ *         cdef HeifImage img = HeifImage()
+ */
+  __pyx_t_3 = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(Py_None, 0); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_k__16 = __pyx_t_3;
+  __pyx_t_3.memview = NULL;
+  __pyx_t_3.data = NULL;
+
+  /* "heif/heif.pyx":315
+ *         HeifError(res)
+ * 
+ * def get_pil_image(             # <<<<<<<<<<<<<<
+ *     const char* file_name,
+ *     bint apply_transformations=True,
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cyheif_1get_pil_image, NULL, __pyx_n_s_cyheif); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_pil_image, __pyx_t_2) < 0) __PYX_ERR(0, 315, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":342
+ *     return pil_image
+ * 
+ * def write_pil_image(             # <<<<<<<<<<<<<<
+ *     input_img: Image,
+ *     const char* output_file_name,
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cyheif_3write_pil_image, NULL, __pyx_n_s_cyheif); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 342, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_write_pil_image, __pyx_t_2) < 0) __PYX_ERR(0, 342, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":367
+ *     output_image.write_to_file(output_file_name)
+ * 
+ * def get_exif_data(const char* file_name) -> Image.Exif:             # <<<<<<<<<<<<<<
+ *     cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
+ *     heif_buffer = heifImageHandle.get_image_exif_data()
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cyheif_5get_exif_data, NULL, __pyx_n_s_cyheif); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 367, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_exif_data, __pyx_t_2) < 0) __PYX_ERR(0, 367, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":378
+ *     return exif
+ * 
+ * def write_exif_data_from_bytes(             # <<<<<<<<<<<<<<
+ *     const char* input_file_name,
+ *     const char* output_file_name,
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cyheif_7write_exif_data_from_bytes, NULL, __pyx_n_s_cyheif); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 378, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_write_exif_data_from_bytes, __pyx_t_2) < 0) __PYX_ERR(0, 378, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":386
+ *     output_image.write_to_file(output_file_name)
+ * 
+ * def write_exif_data(             # <<<<<<<<<<<<<<
+ *     const char* input_file_name,
+ *     const char* output_file_name,
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cyheif_9write_exif_data, NULL, __pyx_n_s_cyheif); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 386, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_write_exif_data, __pyx_t_2) < 0) __PYX_ERR(0, 386, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "heif/heif.pyx":393
+ *     write_exif_data_from_bytes(input_file_name, output_file_name, exif_bytes)
  * 
  * def get_heif_version():             # <<<<<<<<<<<<<<
  *     return cheif.heif_get_version()
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cyheif_1get_heif_version, NULL, __pyx_n_s_cyheif); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 320, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cyheif_11get_heif_version, NULL, __pyx_n_s_cyheif); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 393, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_heif_version, __pyx_t_2) < 0) __PYX_ERR(0, 320, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_heif_version, __pyx_t_2) < 0) __PYX_ERR(0, 393, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "(tree fragment)":1
- * def __pyx_unpickle_HeifImage(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
+ * def __pyx_unpickle_HeifImageAttributes(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cyheif_3__pyx_unpickle_HeifImage, NULL, __pyx_n_s_cyheif); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cyheif_13__pyx_unpickle_HeifImageAttributes, NULL, __pyx_n_s_cyheif); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_HeifImage, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_HeifImageAttribut, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "heif/heif.pyx":1
@@ -25053,7 +26382,7 @@ if (!__Pyx_RefNanny) {
  * cdef strided = Enum("<strided and direct>") # default
  * cdef indirect = Enum("<strided and indirect>")
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__47, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 286, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__59, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 286, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(generic);
   __Pyx_DECREF_SET(generic, __pyx_t_2);
@@ -25067,7 +26396,7 @@ if (!__Pyx_RefNanny) {
  * cdef indirect = Enum("<strided and indirect>")
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__48, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 287, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__60, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 287, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(strided);
   __Pyx_DECREF_SET(strided, __pyx_t_2);
@@ -25081,7 +26410,7 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__49, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 288, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__61, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 288, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(indirect);
   __Pyx_DECREF_SET(indirect, __pyx_t_2);
@@ -25095,7 +26424,7 @@ if (!__Pyx_RefNanny) {
  * cdef indirect_contiguous = Enum("<contiguous and indirect>")
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__50, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 291, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__62, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 291, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(contiguous);
   __Pyx_DECREF_SET(contiguous, __pyx_t_2);
@@ -25109,7 +26438,7 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__51, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 292, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__63, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 292, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(indirect_contiguous);
   __Pyx_DECREF_SET(indirect_contiguous, __pyx_t_2);
@@ -25132,15 +26461,15 @@ if (!__Pyx_RefNanny) {
  *     PyThread_allocate_lock(),
  *     PyThread_allocate_lock(),
  */
-  __pyx_t_3[0] = PyThread_allocate_lock();
-  __pyx_t_3[1] = PyThread_allocate_lock();
-  __pyx_t_3[2] = PyThread_allocate_lock();
-  __pyx_t_3[3] = PyThread_allocate_lock();
-  __pyx_t_3[4] = PyThread_allocate_lock();
-  __pyx_t_3[5] = PyThread_allocate_lock();
-  __pyx_t_3[6] = PyThread_allocate_lock();
-  __pyx_t_3[7] = PyThread_allocate_lock();
-  memcpy(&(__pyx_memoryview_thread_locks[0]), __pyx_t_3, sizeof(__pyx_memoryview_thread_locks[0]) * (8));
+  __pyx_t_4[0] = PyThread_allocate_lock();
+  __pyx_t_4[1] = PyThread_allocate_lock();
+  __pyx_t_4[2] = PyThread_allocate_lock();
+  __pyx_t_4[3] = PyThread_allocate_lock();
+  __pyx_t_4[4] = PyThread_allocate_lock();
+  __pyx_t_4[5] = PyThread_allocate_lock();
+  __pyx_t_4[6] = PyThread_allocate_lock();
+  __pyx_t_4[7] = PyThread_allocate_lock();
+  memcpy(&(__pyx_memoryview_thread_locks[0]), __pyx_t_4, sizeof(__pyx_memoryview_thread_locks[0]) * (8));
 
   /* "View.MemoryView":549
  *         info.obj = self
@@ -25192,6 +26521,7 @@ if (!__Pyx_RefNanny) {
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_3, 1);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init cyheif", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -25911,52 +27241,57 @@ static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
 }
 #endif
 
-/* WriteUnraisableException */
-static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
-                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
-                                  int full_traceback, CYTHON_UNUSED int nogil) {
-    PyObject *old_exc, *old_val, *old_tb;
-    PyObject *ctx;
-    __Pyx_PyThreadState_declare
-#ifdef WITH_THREAD
-    PyGILState_STATE state;
-    if (nogil)
-        state = PyGILState_Ensure();
-#ifdef _MSC_VER
-    else state = (PyGILState_STATE)-1;
-#endif
-#endif
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
-    if (full_traceback) {
-        Py_XINCREF(old_exc);
-        Py_XINCREF(old_val);
-        Py_XINCREF(old_tb);
-        __Pyx_ErrRestore(old_exc, old_val, old_tb);
-        PyErr_PrintEx(1);
+/* PyErrExceptionMatches */
+#if CYTHON_FAST_THREAD_STATE
+static int __Pyx_PyErr_ExceptionMatchesTuple(PyObject *exc_type, PyObject *tuple) {
+    Py_ssize_t i, n;
+    n = PyTuple_GET_SIZE(tuple);
+#if PY_MAJOR_VERSION >= 3
+    for (i=0; i<n; i++) {
+        if (exc_type == PyTuple_GET_ITEM(tuple, i)) return 1;
     }
-    #if PY_MAJOR_VERSION < 3
-    ctx = PyString_FromString(name);
-    #else
-    ctx = PyUnicode_FromString(name);
-    #endif
-    __Pyx_ErrRestore(old_exc, old_val, old_tb);
-    if (!ctx) {
-        PyErr_WriteUnraisable(Py_None);
-    } else {
-        PyErr_WriteUnraisable(ctx);
-        Py_DECREF(ctx);
-    }
-#ifdef WITH_THREAD
-    if (nogil)
-        PyGILState_Release(state);
 #endif
+    for (i=0; i<n; i++) {
+        if (__Pyx_PyErr_GivenExceptionMatches(exc_type, PyTuple_GET_ITEM(tuple, i))) return 1;
+    }
+    return 0;
+}
+static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err) {
+    PyObject *exc_type = tstate->curexc_type;
+    if (exc_type == err) return 1;
+    if (unlikely(!exc_type)) return 0;
+    if (unlikely(PyTuple_Check(err)))
+        return __Pyx_PyErr_ExceptionMatchesTuple(exc_type, err);
+    return __Pyx_PyErr_GivenExceptionMatches(exc_type, err);
+}
+#endif
+
+/* GetAttr */
+static CYTHON_INLINE PyObject *__Pyx_GetAttr(PyObject *o, PyObject *n) {
+#if CYTHON_USE_TYPE_SLOTS
+#if PY_MAJOR_VERSION >= 3
+    if (likely(PyUnicode_Check(n)))
+#else
+    if (likely(PyString_Check(n)))
+#endif
+        return __Pyx_PyObject_GetAttrStr(o, n);
+#endif
+    return PyObject_GetAttr(o, n);
 }
 
-/* BufferIndexError */
-static void __Pyx_RaiseBufferIndexError(int axis) {
-  PyErr_Format(PyExc_IndexError,
-     "Out of bounds on buffer access (axis %d)", axis);
+/* GetAttr3 */
+static PyObject *__Pyx_GetAttr3Default(PyObject *d) {
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    if (unlikely(!__Pyx_PyErr_ExceptionMatches(PyExc_AttributeError)))
+        return NULL;
+    __Pyx_PyErr_Clear();
+    Py_INCREF(d);
+    return d;
+}
+static CYTHON_INLINE PyObject *__Pyx_GetAttr3(PyObject *o, PyObject *n, PyObject *d) {
+    PyObject *r = __Pyx_GetAttr(o, n);
+    return (likely(r)) ? r : __Pyx_GetAttr3Default(d);
 }
 
 /* PyDictVersioning */
@@ -26018,6 +27353,54 @@ static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
     PyErr_Clear();
 #endif
     return __Pyx_GetBuiltinName(name);
+}
+
+/* WriteUnraisableException */
+static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
+                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
+                                  int full_traceback, CYTHON_UNUSED int nogil) {
+    PyObject *old_exc, *old_val, *old_tb;
+    PyObject *ctx;
+    __Pyx_PyThreadState_declare
+#ifdef WITH_THREAD
+    PyGILState_STATE state;
+    if (nogil)
+        state = PyGILState_Ensure();
+#ifdef _MSC_VER
+    else state = (PyGILState_STATE)-1;
+#endif
+#endif
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
+    if (full_traceback) {
+        Py_XINCREF(old_exc);
+        Py_XINCREF(old_val);
+        Py_XINCREF(old_tb);
+        __Pyx_ErrRestore(old_exc, old_val, old_tb);
+        PyErr_PrintEx(1);
+    }
+    #if PY_MAJOR_VERSION < 3
+    ctx = PyString_FromString(name);
+    #else
+    ctx = PyUnicode_FromString(name);
+    #endif
+    __Pyx_ErrRestore(old_exc, old_val, old_tb);
+    if (!ctx) {
+        PyErr_WriteUnraisable(Py_None);
+    } else {
+        PyErr_WriteUnraisable(ctx);
+        Py_DECREF(ctx);
+    }
+#ifdef WITH_THREAD
+    if (nogil)
+        PyGILState_Release(state);
+#endif
+}
+
+/* BufferIndexError */
+static void __Pyx_RaiseBufferIndexError(int axis) {
+  PyErr_Format(PyExc_IndexError,
+     "Out of bounds on buffer access (axis %d)", axis);
 }
 
 /* MemviewSliceInit */
@@ -26152,10 +27535,419 @@ static CYTHON_INLINE void __Pyx_XDEC_MEMVIEW(__Pyx_memviewslice *memslice,
     }
 }
 
-/* None */
-static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname) {
-    PyErr_Format(PyExc_UnboundLocalError, "local variable '%s' referenced before assignment", varname);
+/* SliceObject */
+static CYTHON_INLINE int __Pyx_PyObject_SetSlice(PyObject* obj, PyObject* value,
+        Py_ssize_t cstart, Py_ssize_t cstop,
+        PyObject** _py_start, PyObject** _py_stop, PyObject** _py_slice,
+        int has_cstart, int has_cstop, CYTHON_UNUSED int wraparound) {
+#if CYTHON_USE_TYPE_SLOTS
+    PyMappingMethods* mp;
+#if PY_MAJOR_VERSION < 3
+    PySequenceMethods* ms = Py_TYPE(obj)->tp_as_sequence;
+    if (likely(ms && ms->sq_ass_slice)) {
+        if (!has_cstart) {
+            if (_py_start && (*_py_start != Py_None)) {
+                cstart = __Pyx_PyIndex_AsSsize_t(*_py_start);
+                if ((cstart == (Py_ssize_t)-1) && PyErr_Occurred()) goto bad;
+            } else
+                cstart = 0;
+        }
+        if (!has_cstop) {
+            if (_py_stop && (*_py_stop != Py_None)) {
+                cstop = __Pyx_PyIndex_AsSsize_t(*_py_stop);
+                if ((cstop == (Py_ssize_t)-1) && PyErr_Occurred()) goto bad;
+            } else
+                cstop = PY_SSIZE_T_MAX;
+        }
+        if (wraparound && unlikely((cstart < 0) | (cstop < 0)) && likely(ms->sq_length)) {
+            Py_ssize_t l = ms->sq_length(obj);
+            if (likely(l >= 0)) {
+                if (cstop < 0) {
+                    cstop += l;
+                    if (cstop < 0) cstop = 0;
+                }
+                if (cstart < 0) {
+                    cstart += l;
+                    if (cstart < 0) cstart = 0;
+                }
+            } else {
+                if (!PyErr_ExceptionMatches(PyExc_OverflowError))
+                    goto bad;
+                PyErr_Clear();
+            }
+        }
+        return ms->sq_ass_slice(obj, cstart, cstop, value);
+    }
+#endif
+    mp = Py_TYPE(obj)->tp_as_mapping;
+    if (likely(mp && mp->mp_ass_subscript))
+#endif
+    {
+        int result;
+        PyObject *py_slice, *py_start, *py_stop;
+        if (_py_slice) {
+            py_slice = *_py_slice;
+        } else {
+            PyObject* owned_start = NULL;
+            PyObject* owned_stop = NULL;
+            if (_py_start) {
+                py_start = *_py_start;
+            } else {
+                if (has_cstart) {
+                    owned_start = py_start = PyInt_FromSsize_t(cstart);
+                    if (unlikely(!py_start)) goto bad;
+                } else
+                    py_start = Py_None;
+            }
+            if (_py_stop) {
+                py_stop = *_py_stop;
+            } else {
+                if (has_cstop) {
+                    owned_stop = py_stop = PyInt_FromSsize_t(cstop);
+                    if (unlikely(!py_stop)) {
+                        Py_XDECREF(owned_start);
+                        goto bad;
+                    }
+                } else
+                    py_stop = Py_None;
+            }
+            py_slice = PySlice_New(py_start, py_stop, Py_None);
+            Py_XDECREF(owned_start);
+            Py_XDECREF(owned_stop);
+            if (unlikely(!py_slice)) goto bad;
+        }
+#if CYTHON_USE_TYPE_SLOTS
+        result = mp->mp_ass_subscript(obj, py_slice, value);
+#else
+        result = value ? PyObject_SetItem(obj, py_slice, value) : PyObject_DelItem(obj, py_slice);
+#endif
+        if (!_py_slice) {
+            Py_DECREF(py_slice);
+        }
+        return result;
+    }
+    PyErr_Format(PyExc_TypeError,
+        "'%.200s' object does not support slice %.10s",
+        Py_TYPE(obj)->tp_name, value ? "assignment" : "deletion");
+bad:
+    return -1;
 }
+
+/* PyIntCompare */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_NeObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, CYTHON_UNUSED long inplace) {
+    if (op1 == op2) {
+        Py_RETURN_FALSE;
+    }
+    #if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_CheckExact(op1))) {
+        const long b = intval;
+        long a = PyInt_AS_LONG(op1);
+        if (a != b) Py_RETURN_TRUE; else Py_RETURN_FALSE;
+    }
+    #endif
+    #if CYTHON_USE_PYLONG_INTERNALS
+    if (likely(PyLong_CheckExact(op1))) {
+        int unequal;
+        unsigned long uintval;
+        Py_ssize_t size = Py_SIZE(op1);
+        const digit* digits = ((PyLongObject*)op1)->ob_digit;
+        if (intval == 0) {
+            if (size != 0) Py_RETURN_TRUE; else Py_RETURN_FALSE;
+        } else if (intval < 0) {
+            if (size >= 0)
+                Py_RETURN_TRUE;
+            intval = -intval;
+            size = -size;
+        } else {
+            if (size <= 0)
+                Py_RETURN_TRUE;
+        }
+        uintval = (unsigned long) intval;
+#if PyLong_SHIFT * 4 < SIZEOF_LONG*8
+        if (uintval >> (PyLong_SHIFT * 4)) {
+            unequal = (size != 5) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
+                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[2] != ((uintval >> (2 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[3] != ((uintval >> (3 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[4] != ((uintval >> (4 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
+        } else
+#endif
+#if PyLong_SHIFT * 3 < SIZEOF_LONG*8
+        if (uintval >> (PyLong_SHIFT * 3)) {
+            unequal = (size != 4) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
+                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[2] != ((uintval >> (2 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[3] != ((uintval >> (3 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
+        } else
+#endif
+#if PyLong_SHIFT * 2 < SIZEOF_LONG*8
+        if (uintval >> (PyLong_SHIFT * 2)) {
+            unequal = (size != 3) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
+                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[2] != ((uintval >> (2 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
+        } else
+#endif
+#if PyLong_SHIFT * 1 < SIZEOF_LONG*8
+        if (uintval >> (PyLong_SHIFT * 1)) {
+            unequal = (size != 2) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
+                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
+        } else
+#endif
+            unequal = (size != 1) || (((unsigned long) digits[0]) != (uintval & (unsigned long) PyLong_MASK));
+        if (unequal != 0) Py_RETURN_TRUE; else Py_RETURN_FALSE;
+    }
+    #endif
+    if (PyFloat_CheckExact(op1)) {
+        const long b = intval;
+        double a = PyFloat_AS_DOUBLE(op1);
+        if ((double)a != (double)b) Py_RETURN_TRUE; else Py_RETURN_FALSE;
+    }
+    return (
+        PyObject_RichCompare(op1, op2, Py_NE));
+}
+
+/* PyIntBinop */
+#if !CYTHON_COMPILING_IN_PYPY
+#if PY_MAJOR_VERSION < 3 || CYTHON_USE_PYLONG_INTERNALS
+#define __Pyx_PyInt_RemainderObjC_ZeroDivisionError(operand)\
+    if (unlikely(zerodivision_check && ((operand) == 0))) {\
+        PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");\
+        return NULL;\
+    }
+#endif
+static PyObject* __Pyx_PyInt_RemainderObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, int inplace, int zerodivision_check) {
+    (void)inplace;
+    (void)zerodivision_check;
+    #if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_CheckExact(op1))) {
+        const long b = intval;
+        long x;
+        long a = PyInt_AS_LONG(op1);
+            __Pyx_PyInt_RemainderObjC_ZeroDivisionError(b)
+            x = a % b;
+            x += ((x != 0) & ((x ^ b) < 0)) * b;
+            return PyInt_FromLong(x);
+    }
+    #endif
+    #if CYTHON_USE_PYLONG_INTERNALS
+    if (likely(PyLong_CheckExact(op1))) {
+        const long b = intval;
+        long a, x;
+#ifdef HAVE_LONG_LONG
+        const PY_LONG_LONG llb = intval;
+        PY_LONG_LONG lla, llx;
+#endif
+        const digit* digits = ((PyLongObject*)op1)->ob_digit;
+        const Py_ssize_t size = Py_SIZE(op1);
+        if (likely(__Pyx_sst_abs(size) <= 1)) {
+            a = likely(size) ? digits[0] : 0;
+            if (size == -1) a = -a;
+        } else {
+            switch (size) {
+                case -2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case -3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case -4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                default: return PyLong_Type.tp_as_number->nb_remainder(op1, op2);
+            }
+        }
+                __Pyx_PyInt_RemainderObjC_ZeroDivisionError(b)
+                x = a % b;
+                x += ((x != 0) & ((x ^ b) < 0)) * b;
+            return PyLong_FromLong(x);
+#ifdef HAVE_LONG_LONG
+        long_long:
+                llx = lla % llb;
+                llx += ((llx != 0) & ((llx ^ llb) < 0)) * llb;
+            return PyLong_FromLongLong(llx);
+#endif
+        
+        
+    }
+    #endif
+    return (inplace ? PyNumber_InPlaceRemainder : PyNumber_Remainder)(op1, op2);
+}
+#endif
+
+/* PyIntBinop */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_SubtractCObj(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, int inplace, int zerodivision_check) {
+    (void)inplace;
+    (void)zerodivision_check;
+    #if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_CheckExact(op2))) {
+        const long a = intval;
+        long x;
+        long b = PyInt_AS_LONG(op2);
+            x = (long)((unsigned long)a - b);
+            if (likely((x^a) >= 0 || (x^~b) >= 0))
+                return PyInt_FromLong(x);
+            return PyLong_Type.tp_as_number->nb_subtract(op1, op2);
+    }
+    #endif
+    #if CYTHON_USE_PYLONG_INTERNALS
+    if (likely(PyLong_CheckExact(op2))) {
+        const long a = intval;
+        long b, x;
+#ifdef HAVE_LONG_LONG
+        const PY_LONG_LONG lla = intval;
+        PY_LONG_LONG llb, llx;
+#endif
+        const digit* digits = ((PyLongObject*)op2)->ob_digit;
+        const Py_ssize_t size = Py_SIZE(op2);
+        if (likely(__Pyx_sst_abs(size) <= 1)) {
+            b = likely(size) ? digits[0] : 0;
+            if (size == -1) b = -b;
+        } else {
+            switch (size) {
+                case -2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        b = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        llb = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        b = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        llb = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case -3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        b = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        llb = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        b = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        llb = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case -4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        b = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        llb = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        b = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        llb = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                default: return PyLong_Type.tp_as_number->nb_subtract(op1, op2);
+            }
+        }
+                x = a - b;
+            return PyLong_FromLong(x);
+#ifdef HAVE_LONG_LONG
+        long_long:
+                llx = lla - llb;
+            return PyLong_FromLongLong(llx);
+#endif
+        
+        
+    }
+    #endif
+    if (PyFloat_CheckExact(op2)) {
+        const long a = intval;
+        double b = PyFloat_AS_DOUBLE(op2);
+            double result;
+            PyFPE_START_PROTECT("subtract", return NULL)
+            result = ((double)a) - (double)b;
+            PyFPE_END_PROTECT(result)
+            return PyFloat_FromDouble(result);
+    }
+    return (inplace ? PyNumber_InPlaceSubtract : PyNumber_Subtract)(op1, op2);
+}
+#endif
 
 /* PyObjectCall2Args */
 static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
@@ -26186,57 +27978,9 @@ done:
     return result;
 }
 
-/* PyErrExceptionMatches */
-#if CYTHON_FAST_THREAD_STATE
-static int __Pyx_PyErr_ExceptionMatchesTuple(PyObject *exc_type, PyObject *tuple) {
-    Py_ssize_t i, n;
-    n = PyTuple_GET_SIZE(tuple);
-#if PY_MAJOR_VERSION >= 3
-    for (i=0; i<n; i++) {
-        if (exc_type == PyTuple_GET_ITEM(tuple, i)) return 1;
-    }
-#endif
-    for (i=0; i<n; i++) {
-        if (__Pyx_PyErr_GivenExceptionMatches(exc_type, PyTuple_GET_ITEM(tuple, i))) return 1;
-    }
-    return 0;
-}
-static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err) {
-    PyObject *exc_type = tstate->curexc_type;
-    if (exc_type == err) return 1;
-    if (unlikely(!exc_type)) return 0;
-    if (unlikely(PyTuple_Check(err)))
-        return __Pyx_PyErr_ExceptionMatchesTuple(exc_type, err);
-    return __Pyx_PyErr_GivenExceptionMatches(exc_type, err);
-}
-#endif
-
-/* GetAttr */
-static CYTHON_INLINE PyObject *__Pyx_GetAttr(PyObject *o, PyObject *n) {
-#if CYTHON_USE_TYPE_SLOTS
-#if PY_MAJOR_VERSION >= 3
-    if (likely(PyUnicode_Check(n)))
-#else
-    if (likely(PyString_Check(n)))
-#endif
-        return __Pyx_PyObject_GetAttrStr(o, n);
-#endif
-    return PyObject_GetAttr(o, n);
-}
-
-/* GetAttr3 */
-static PyObject *__Pyx_GetAttr3Default(PyObject *d) {
-    __Pyx_PyThreadState_declare
-    __Pyx_PyThreadState_assign
-    if (unlikely(!__Pyx_PyErr_ExceptionMatches(PyExc_AttributeError)))
-        return NULL;
-    __Pyx_PyErr_Clear();
-    Py_INCREF(d);
-    return d;
-}
-static CYTHON_INLINE PyObject *__Pyx_GetAttr3(PyObject *o, PyObject *n, PyObject *d) {
-    PyObject *r = __Pyx_GetAttr(o, n);
-    return (likely(r)) ? r : __Pyx_GetAttr3Default(d);
+/* None */
+static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname) {
+    PyErr_Format(PyExc_UnboundLocalError, "local variable '%s' referenced before assignment", varname);
 }
 
 /* Import */
@@ -26316,24 +28060,6 @@ static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
         #endif
     }
     return value;
-}
-
-/* HasAttr */
-static CYTHON_INLINE int __Pyx_HasAttr(PyObject *o, PyObject *n) {
-    PyObject *r;
-    if (unlikely(!__Pyx_PyBaseString_Check(n))) {
-        PyErr_SetString(PyExc_TypeError,
-                        "hasattr(): attribute name must be string");
-        return -1;
-    }
-    r = __Pyx_GetAttr(o, n);
-    if (unlikely(!r)) {
-        PyErr_Clear();
-        return 0;
-    } else {
-        Py_DECREF(r);
-        return 1;
-    }
 }
 
 /* GetItemInt */
@@ -26421,6 +28147,24 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
     }
 #endif
     return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+}
+
+/* HasAttr */
+static CYTHON_INLINE int __Pyx_HasAttr(PyObject *o, PyObject *n) {
+    PyObject *r;
+    if (unlikely(!__Pyx_PyBaseString_Check(n))) {
+        PyErr_SetString(PyExc_TypeError,
+                        "hasattr(): attribute name must be string");
+        return -1;
+    }
+    r = __Pyx_GetAttr(o, n);
+    if (unlikely(!r)) {
+        PyErr_Clear();
+        return 0;
+    } else {
+        Py_DECREF(r);
+        return 1;
+    }
 }
 
 /* GetTopmostException */
@@ -27573,25 +29317,6 @@ __pyx_capsule_create(void *p, CYTHON_UNUSED const char *sig)
         return (target_type) value;\
     }
 
-static PyObject* __pyx_convert__to_py_struct__heif_error(struct heif_error s) {
-  PyObject* res;
-  PyObject* member;
-  res = __Pyx_PyDict_NewPresized(3); if (unlikely(!res)) return NULL;
-  member = __Pyx_PyInt_From_enum__heif_error_code(s.code); if (unlikely(!member)) goto bad;
-  if (unlikely(PyDict_SetItem(res, __pyx_n_s_code, member) < 0)) goto bad;
-  Py_DECREF(member);
-  member = __Pyx_PyInt_From_int(s.subcode); if (unlikely(!member)) goto bad;
-  if (unlikely(PyDict_SetItem(res, __pyx_n_s_subcode, member) < 0)) goto bad;
-  Py_DECREF(member);
-  member = __Pyx_PyObject_FromString(s.message); if (unlikely(!member)) goto bad;
-  if (unlikely(PyDict_SetItem(res, __pyx_n_s_message, member) < 0)) goto bad;
-  Py_DECREF(member);
-  return res;
-  bad:
-  Py_XDECREF(member);
-  Py_DECREF(res);
-  return NULL;
-}
 /* IsLittleEndian */
 static CYTHON_INLINE int __Pyx_Is_Little_Endian(void)
 {
@@ -28350,6 +30075,37 @@ __pyx_fail:
     return result;
 }
 
+static PyObject* __pyx_convert__to_py_struct__heif_error(struct heif_error s) {
+    PyObject* res;
+    PyObject* member;
+    res = __Pyx_PyDict_NewPresized(3); if (unlikely(!res)) return NULL;
+    member = __Pyx_PyInt_From_enum__heif_error_code(s.code); if (unlikely(!member)) goto bad;
+    if (unlikely(PyDict_SetItem(res, __pyx_n_s_code, member) < 0)) goto bad;
+    Py_DECREF(member);
+    member = __Pyx_PyInt_From_int(s.subcode); if (unlikely(!member)) goto bad;
+    if (unlikely(PyDict_SetItem(res, __pyx_n_s_subcode, member) < 0)) goto bad;
+    Py_DECREF(member);
+    member = __Pyx_PyObject_FromString(s.message); if (unlikely(!member)) goto bad;
+    if (unlikely(PyDict_SetItem(res, __pyx_n_s_message, member) < 0)) goto bad;
+    Py_DECREF(member);
+    return res;
+    bad:
+    Py_XDECREF(member);
+    Py_DECREF(res);
+    return NULL;
+  }
+  /* MemviewDtypeToObject */
+  static CYTHON_INLINE PyObject *__pyx_memview_get_unsigned_char(const char *itemp) {
+    return (PyObject *) __Pyx_PyInt_From_unsigned_char(*(unsigned char *) itemp);
+}
+static CYTHON_INLINE int __pyx_memview_set_unsigned_char(const char *itemp, PyObject *obj) {
+    unsigned char value = __Pyx_PyInt_As_unsigned_char(obj);
+    if ((value == (unsigned char)-1) && PyErr_Occurred())
+        return 0;
+    *(unsigned char *) itemp = value;
+    return 1;
+}
+
 /* MemviewDtypeToObject */
   static CYTHON_INLINE PyObject *__pyx_memview_get_unsigned_char__const__(const char *itemp) {
     return (PyObject *) __Pyx_PyInt_From_unsigned_char(*(unsigned char const  *) itemp);
@@ -28422,396 +30178,42 @@ no_fail:
     return new_mvs;
 }
 
-/* CIntFromPy */
-  static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
+/* CIntToPy */
+  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
 #endif
-    const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
+    const int neg_one = (int) -1, const_zero = (int) 0;
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
 #pragma GCC diagnostic pop
 #endif
     const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(size_t) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (size_t) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (size_t) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
-                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
-                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
-                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (size_t) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(size_t) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
+    if (is_unsigned) {
+        if (sizeof(int) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(int) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
 #ifdef HAVE_LONG_LONG
-            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
 #endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (size_t) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(size_t) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            size_t val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (size_t) -1;
         }
     } else {
-        size_t val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (size_t) -1;
-        val = __Pyx_PyInt_As_size_t(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to size_t");
-    return (size_t) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to size_t");
-    return (size_t) -1;
-}
-
-/* CIntFromPy */
-  static CYTHON_INLINE enum heif_error_code __Pyx_PyInt_As_enum__heif_error_code(PyObject *x) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const enum heif_error_code neg_one = (enum heif_error_code) -1, const_zero = (enum heif_error_code) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(enum heif_error_code) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(enum heif_error_code, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (enum heif_error_code) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (enum heif_error_code) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(enum heif_error_code, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(enum heif_error_code) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum heif_error_code) >= 2 * PyLong_SHIFT) {
-                            return (enum heif_error_code) (((((enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(enum heif_error_code) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum heif_error_code) >= 3 * PyLong_SHIFT) {
-                            return (enum heif_error_code) (((((((enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(enum heif_error_code) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum heif_error_code) >= 4 * PyLong_SHIFT) {
-                            return (enum heif_error_code) (((((((((enum heif_error_code)digits[3]) << PyLong_SHIFT) | (enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (enum heif_error_code) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(enum heif_error_code) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum heif_error_code, unsigned long, PyLong_AsUnsignedLong(x))
+        if (sizeof(int) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
 #ifdef HAVE_LONG_LONG
-            } else if (sizeof(enum heif_error_code) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum heif_error_code, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
 #endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (enum heif_error_code) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(enum heif_error_code, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(enum heif_error_code,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(enum heif_error_code) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum heif_error_code) - 1 > 2 * PyLong_SHIFT) {
-                            return (enum heif_error_code) (((enum heif_error_code)-1)*(((((enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(enum heif_error_code) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum heif_error_code) - 1 > 2 * PyLong_SHIFT) {
-                            return (enum heif_error_code) ((((((enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(enum heif_error_code) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum heif_error_code) - 1 > 3 * PyLong_SHIFT) {
-                            return (enum heif_error_code) (((enum heif_error_code)-1)*(((((((enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(enum heif_error_code) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum heif_error_code) - 1 > 3 * PyLong_SHIFT) {
-                            return (enum heif_error_code) ((((((((enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(enum heif_error_code) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum heif_error_code) - 1 > 4 * PyLong_SHIFT) {
-                            return (enum heif_error_code) (((enum heif_error_code)-1)*(((((((((enum heif_error_code)digits[3]) << PyLong_SHIFT) | (enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(enum heif_error_code) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum heif_error_code) - 1 > 4 * PyLong_SHIFT) {
-                            return (enum heif_error_code) ((((((((((enum heif_error_code)digits[3]) << PyLong_SHIFT) | (enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(enum heif_error_code) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum heif_error_code, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(enum heif_error_code) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum heif_error_code, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
         }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            enum heif_error_code val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (enum heif_error_code) -1;
-        }
-    } else {
-        enum heif_error_code val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (enum heif_error_code) -1;
-        val = __Pyx_PyInt_As_enum__heif_error_code(tmp);
-        Py_DECREF(tmp);
-        return val;
     }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to enum heif_error_code");
-    return (enum heif_error_code) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to enum heif_error_code");
-    return (enum heif_error_code) -1;
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(int),
+                                     little, !is_unsigned);
+    }
 }
 
 /* CIntFromPy */
@@ -29010,6 +30412,670 @@ raise_neg_overflow:
     return (int) -1;
 }
 
+/* CIntToPy */
+  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__heif_chroma(enum heif_chroma value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const enum heif_chroma neg_one = (enum heif_chroma) -1, const_zero = (enum heif_chroma) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(enum heif_chroma) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(enum heif_chroma) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(enum heif_chroma) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(enum heif_chroma) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(enum heif_chroma) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(enum heif_chroma),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntFromPy */
+  static CYTHON_INLINE enum heif_chroma __Pyx_PyInt_As_enum__heif_chroma(PyObject *x) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const enum heif_chroma neg_one = (enum heif_chroma) -1, const_zero = (enum heif_chroma) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(enum heif_chroma) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(enum heif_chroma, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (enum heif_chroma) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (enum heif_chroma) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(enum heif_chroma, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(enum heif_chroma) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_chroma, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_chroma) >= 2 * PyLong_SHIFT) {
+                            return (enum heif_chroma) (((((enum heif_chroma)digits[1]) << PyLong_SHIFT) | (enum heif_chroma)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(enum heif_chroma) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_chroma, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_chroma) >= 3 * PyLong_SHIFT) {
+                            return (enum heif_chroma) (((((((enum heif_chroma)digits[2]) << PyLong_SHIFT) | (enum heif_chroma)digits[1]) << PyLong_SHIFT) | (enum heif_chroma)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(enum heif_chroma) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_chroma, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_chroma) >= 4 * PyLong_SHIFT) {
+                            return (enum heif_chroma) (((((((((enum heif_chroma)digits[3]) << PyLong_SHIFT) | (enum heif_chroma)digits[2]) << PyLong_SHIFT) | (enum heif_chroma)digits[1]) << PyLong_SHIFT) | (enum heif_chroma)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (enum heif_chroma) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(enum heif_chroma) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_chroma, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(enum heif_chroma) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_chroma, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (enum heif_chroma) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(enum heif_chroma, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(enum heif_chroma,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(enum heif_chroma) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_chroma, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_chroma) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum heif_chroma) (((enum heif_chroma)-1)*(((((enum heif_chroma)digits[1]) << PyLong_SHIFT) | (enum heif_chroma)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(enum heif_chroma) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_chroma, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_chroma) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum heif_chroma) ((((((enum heif_chroma)digits[1]) << PyLong_SHIFT) | (enum heif_chroma)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(enum heif_chroma) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_chroma, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_chroma) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum heif_chroma) (((enum heif_chroma)-1)*(((((((enum heif_chroma)digits[2]) << PyLong_SHIFT) | (enum heif_chroma)digits[1]) << PyLong_SHIFT) | (enum heif_chroma)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(enum heif_chroma) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_chroma, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_chroma) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum heif_chroma) ((((((((enum heif_chroma)digits[2]) << PyLong_SHIFT) | (enum heif_chroma)digits[1]) << PyLong_SHIFT) | (enum heif_chroma)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(enum heif_chroma) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_chroma, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_chroma) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum heif_chroma) (((enum heif_chroma)-1)*(((((((((enum heif_chroma)digits[3]) << PyLong_SHIFT) | (enum heif_chroma)digits[2]) << PyLong_SHIFT) | (enum heif_chroma)digits[1]) << PyLong_SHIFT) | (enum heif_chroma)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(enum heif_chroma) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_chroma, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_chroma) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum heif_chroma) ((((((((((enum heif_chroma)digits[3]) << PyLong_SHIFT) | (enum heif_chroma)digits[2]) << PyLong_SHIFT) | (enum heif_chroma)digits[1]) << PyLong_SHIFT) | (enum heif_chroma)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(enum heif_chroma) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_chroma, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(enum heif_chroma) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_chroma, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            enum heif_chroma val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (enum heif_chroma) -1;
+        }
+    } else {
+        enum heif_chroma val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (enum heif_chroma) -1;
+        val = __Pyx_PyInt_As_enum__heif_chroma(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to enum heif_chroma");
+    return (enum heif_chroma) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to enum heif_chroma");
+    return (enum heif_chroma) -1;
+}
+
+/* CIntToPy */
+  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__heif_colorspace(enum heif_colorspace value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const enum heif_colorspace neg_one = (enum heif_colorspace) -1, const_zero = (enum heif_colorspace) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(enum heif_colorspace) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(enum heif_colorspace) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(enum heif_colorspace) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(enum heif_colorspace) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(enum heif_colorspace) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(enum heif_colorspace),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntFromPy */
+  static CYTHON_INLINE enum heif_colorspace __Pyx_PyInt_As_enum__heif_colorspace(PyObject *x) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const enum heif_colorspace neg_one = (enum heif_colorspace) -1, const_zero = (enum heif_colorspace) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(enum heif_colorspace) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(enum heif_colorspace, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (enum heif_colorspace) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (enum heif_colorspace) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(enum heif_colorspace, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(enum heif_colorspace) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_colorspace, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_colorspace) >= 2 * PyLong_SHIFT) {
+                            return (enum heif_colorspace) (((((enum heif_colorspace)digits[1]) << PyLong_SHIFT) | (enum heif_colorspace)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(enum heif_colorspace) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_colorspace, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_colorspace) >= 3 * PyLong_SHIFT) {
+                            return (enum heif_colorspace) (((((((enum heif_colorspace)digits[2]) << PyLong_SHIFT) | (enum heif_colorspace)digits[1]) << PyLong_SHIFT) | (enum heif_colorspace)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(enum heif_colorspace) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_colorspace, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_colorspace) >= 4 * PyLong_SHIFT) {
+                            return (enum heif_colorspace) (((((((((enum heif_colorspace)digits[3]) << PyLong_SHIFT) | (enum heif_colorspace)digits[2]) << PyLong_SHIFT) | (enum heif_colorspace)digits[1]) << PyLong_SHIFT) | (enum heif_colorspace)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (enum heif_colorspace) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(enum heif_colorspace) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_colorspace, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(enum heif_colorspace) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_colorspace, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (enum heif_colorspace) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(enum heif_colorspace, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(enum heif_colorspace,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(enum heif_colorspace) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_colorspace, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_colorspace) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum heif_colorspace) (((enum heif_colorspace)-1)*(((((enum heif_colorspace)digits[1]) << PyLong_SHIFT) | (enum heif_colorspace)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(enum heif_colorspace) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_colorspace, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_colorspace) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum heif_colorspace) ((((((enum heif_colorspace)digits[1]) << PyLong_SHIFT) | (enum heif_colorspace)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(enum heif_colorspace) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_colorspace, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_colorspace) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum heif_colorspace) (((enum heif_colorspace)-1)*(((((((enum heif_colorspace)digits[2]) << PyLong_SHIFT) | (enum heif_colorspace)digits[1]) << PyLong_SHIFT) | (enum heif_colorspace)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(enum heif_colorspace) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_colorspace, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_colorspace) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum heif_colorspace) ((((((((enum heif_colorspace)digits[2]) << PyLong_SHIFT) | (enum heif_colorspace)digits[1]) << PyLong_SHIFT) | (enum heif_colorspace)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(enum heif_colorspace) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_colorspace, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_colorspace) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum heif_colorspace) (((enum heif_colorspace)-1)*(((((((((enum heif_colorspace)digits[3]) << PyLong_SHIFT) | (enum heif_colorspace)digits[2]) << PyLong_SHIFT) | (enum heif_colorspace)digits[1]) << PyLong_SHIFT) | (enum heif_colorspace)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(enum heif_colorspace) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_colorspace, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_colorspace) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum heif_colorspace) ((((((((((enum heif_colorspace)digits[3]) << PyLong_SHIFT) | (enum heif_colorspace)digits[2]) << PyLong_SHIFT) | (enum heif_colorspace)digits[1]) << PyLong_SHIFT) | (enum heif_colorspace)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(enum heif_colorspace) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_colorspace, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(enum heif_colorspace) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_colorspace, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            enum heif_colorspace val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (enum heif_colorspace) -1;
+        }
+    } else {
+        enum heif_colorspace val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (enum heif_colorspace) -1;
+        val = __Pyx_PyInt_As_enum__heif_colorspace(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to enum heif_colorspace");
+    return (enum heif_colorspace) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to enum heif_colorspace");
+    return (enum heif_colorspace) -1;
+}
+
+/* CIntFromPy */
+  static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(size_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (size_t) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
+                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
+                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
+                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (size_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            size_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (size_t) -1;
+        }
+    } else {
+        size_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (size_t) -1;
+        val = __Pyx_PyInt_As_size_t(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to size_t");
+    return (size_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to size_t");
+    return (size_t) -1;
+}
+
 /* TypeInfoToFormat */
   static struct __pyx_typeinfo_string __Pyx_TypeInfoToFormat(__Pyx_TypeInfo *type) {
     struct __pyx_typeinfo_string result = { {0} };
@@ -29052,6 +31118,202 @@ raise_neg_overflow:
             break;
     }
     return result;
+}
+
+/* CIntFromPy */
+  static CYTHON_INLINE enum heif_error_code __Pyx_PyInt_As_enum__heif_error_code(PyObject *x) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const enum heif_error_code neg_one = (enum heif_error_code) -1, const_zero = (enum heif_error_code) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(enum heif_error_code) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(enum heif_error_code, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (enum heif_error_code) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (enum heif_error_code) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(enum heif_error_code, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(enum heif_error_code) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_error_code) >= 2 * PyLong_SHIFT) {
+                            return (enum heif_error_code) (((((enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(enum heif_error_code) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_error_code) >= 3 * PyLong_SHIFT) {
+                            return (enum heif_error_code) (((((((enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(enum heif_error_code) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_error_code) >= 4 * PyLong_SHIFT) {
+                            return (enum heif_error_code) (((((((((enum heif_error_code)digits[3]) << PyLong_SHIFT) | (enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (enum heif_error_code) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(enum heif_error_code) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_error_code, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(enum heif_error_code) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_error_code, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (enum heif_error_code) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(enum heif_error_code, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(enum heif_error_code,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(enum heif_error_code) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_error_code) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum heif_error_code) (((enum heif_error_code)-1)*(((((enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(enum heif_error_code) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_error_code) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum heif_error_code) ((((((enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(enum heif_error_code) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_error_code) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum heif_error_code) (((enum heif_error_code)-1)*(((((((enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(enum heif_error_code) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_error_code) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum heif_error_code) ((((((((enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(enum heif_error_code) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_error_code) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum heif_error_code) (((enum heif_error_code)-1)*(((((((((enum heif_error_code)digits[3]) << PyLong_SHIFT) | (enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(enum heif_error_code) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum heif_error_code, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum heif_error_code) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum heif_error_code) ((((((((((enum heif_error_code)digits[3]) << PyLong_SHIFT) | (enum heif_error_code)digits[2]) << PyLong_SHIFT) | (enum heif_error_code)digits[1]) << PyLong_SHIFT) | (enum heif_error_code)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(enum heif_error_code) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_error_code, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(enum heif_error_code) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum heif_error_code, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            enum heif_error_code val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (enum heif_error_code) -1;
+        }
+    } else {
+        enum heif_error_code val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (enum heif_error_code) -1;
+        val = __Pyx_PyInt_As_enum__heif_error_code(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to enum heif_error_code");
+    return (enum heif_error_code) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to enum heif_error_code");
+    return (enum heif_error_code) -1;
 }
 
 /* CIntFromPy */
@@ -29485,120 +31747,6 @@ raise_neg_overflow:
 }
 
 /* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const int neg_one = (int) -1, const_zero = (int) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(int) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
-                                     little, !is_unsigned);
-    }
-}
-
-/* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__heif_chroma(enum heif_chroma value) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const enum heif_chroma neg_one = (enum heif_chroma) -1, const_zero = (enum heif_chroma) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(enum heif_chroma) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(enum heif_chroma) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(enum heif_chroma) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(enum heif_chroma) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(enum heif_chroma) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(enum heif_chroma),
-                                     little, !is_unsigned);
-    }
-}
-
-/* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__heif_colorspace(enum heif_colorspace value) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const enum heif_colorspace neg_one = (enum heif_colorspace) -1, const_zero = (enum heif_colorspace) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(enum heif_colorspace) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(enum heif_colorspace) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(enum heif_colorspace) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(enum heif_colorspace) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(enum heif_colorspace) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(enum heif_colorspace),
-                                     little, !is_unsigned);
-    }
-}
-
-/* CIntToPy */
   static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__heif_compression_format(enum heif_compression_format value) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
 #pragma GCC diagnostic push
@@ -29672,6 +31820,202 @@ raise_neg_overflow:
         return _PyLong_FromByteArray(bytes, sizeof(unsigned char),
                                      little, !is_unsigned);
     }
+}
+
+/* CIntFromPy */
+  static CYTHON_INLINE unsigned char __Pyx_PyInt_As_unsigned_char(PyObject *x) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const unsigned char neg_one = (unsigned char) -1, const_zero = (unsigned char) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(unsigned char) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(unsigned char, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (unsigned char) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (unsigned char) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(unsigned char, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(unsigned char) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned char) >= 2 * PyLong_SHIFT) {
+                            return (unsigned char) (((((unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(unsigned char) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned char) >= 3 * PyLong_SHIFT) {
+                            return (unsigned char) (((((((unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(unsigned char) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned char) >= 4 * PyLong_SHIFT) {
+                            return (unsigned char) (((((((((unsigned char)digits[3]) << PyLong_SHIFT) | (unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (unsigned char) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(unsigned char) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned char, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(unsigned char) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned char, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (unsigned char) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(unsigned char, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(unsigned char,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(unsigned char) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned char, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned char) - 1 > 2 * PyLong_SHIFT) {
+                            return (unsigned char) (((unsigned char)-1)*(((((unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(unsigned char) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned char) - 1 > 2 * PyLong_SHIFT) {
+                            return (unsigned char) ((((((unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(unsigned char) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned char, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned char) - 1 > 3 * PyLong_SHIFT) {
+                            return (unsigned char) (((unsigned char)-1)*(((((((unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(unsigned char) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned char) - 1 > 3 * PyLong_SHIFT) {
+                            return (unsigned char) ((((((((unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(unsigned char) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned char, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned char) - 1 > 4 * PyLong_SHIFT) {
+                            return (unsigned char) (((unsigned char)-1)*(((((((((unsigned char)digits[3]) << PyLong_SHIFT) | (unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(unsigned char) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned char) - 1 > 4 * PyLong_SHIFT) {
+                            return (unsigned char) ((((((((((unsigned char)digits[3]) << PyLong_SHIFT) | (unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(unsigned char) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned char, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(unsigned char) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned char, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            unsigned char val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (unsigned char) -1;
+        }
+    } else {
+        unsigned char val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (unsigned char) -1;
+        val = __Pyx_PyInt_As_unsigned_char(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to unsigned char");
+    return (unsigned char) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to unsigned char");
+    return (unsigned char) -1;
 }
 
 /* CIntToPy */

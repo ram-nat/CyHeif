@@ -121,6 +121,11 @@ cdef extern from "libheif/heif.h":
         heif_channel channel,
         int* out_stride)
 
+    uint8_t* heif_image_get_plane(
+        heif_image* img,
+        heif_channel channel,
+        int* out_stride)
+
     int heif_image_get_primary_width(const heif_image* img)
 
     int heif_image_get_primary_height(const heif_image* img)
@@ -219,3 +224,18 @@ cdef extern from "libheif/heif.h":
     heif_error heif_context_set_primary_image(heif_context* ctx, heif_image_handle* handle)
 
     heif_error heif_context_write_to_file(heif_context* ctx, const char* filename)
+
+    # HEIF Image create APIs
+    heif_error heif_image_create(
+        int width, 
+        int height,
+        heif_colorspace colorspace,
+        heif_chroma chroma,
+        heif_image** out_image)
+
+    heif_error heif_image_add_plane(
+        heif_image* image,
+        heif_channel channel,
+        int width, 
+        int height, 
+        int bit_depth)
