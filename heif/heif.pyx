@@ -221,7 +221,6 @@ cdef class HeifImageHandle:
         cdef int stride = 0
         data[0] = cheif.heif_image_get_plane_readonly(self._img, cheif.heif_channel.heif_channel_interleaved, &stride)
         sz[0] = img_attr.height * stride
-        print('Width: {}, Height: {}, Stride: {}'.format(img_attr.width, img_attr.height, stride))
         if data is NULL:
             raise Exception('Read failed')
         return img_attr
@@ -312,7 +311,7 @@ cdef class HeifImageHandle:
         res = cheif.heif_context_write_to_file(self._ctx._heif_ctx, file_name)
         HeifError(res)
 
-def get_pil_image(
+def get_pil_image(    
     const char* file_name,
     bint apply_transformations=True, 
     bint retain_exif=True) -> Image:
