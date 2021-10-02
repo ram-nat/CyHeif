@@ -16,7 +16,7 @@ Supports the following:
 
 Known Issues
 ------------
-No Documentation - working on it. No binary distributions yet - help welcome to create these. See example.py for usage of key functionality.
+No Documentation - working on it. No binary distributions yet - help welcome to create these. See example/run.py for usage of key functionality.
 
 Requirements
 ------------
