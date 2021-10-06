@@ -1,5 +1,7 @@
 import sys
 
+# cyheifloader allows specifying the path to heif.dll on Windows
+# using the environment variable LIBHEIF_PATH.
 from cyheifloader import cyheif
 
 from PIL import Image
