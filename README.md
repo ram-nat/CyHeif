@@ -37,4 +37,4 @@ sudo apt install libheif
 sudo apt install libheif-dev
 ```
 
-Once the installation is successful, you should be able to use the extension module by running `pip install`. See `example/run.py` for how to use this extension module.
+Once the installation is successful, you should be able to use the extension module by running `pip install`. See `example/run.py` for how to use this extension module. Set the environment variable LIBHEIF_PATH to the folder containing heif.dll in Windows installations (defaults to `c:\vcpkg\installed\x64-windows\bin` if not set).
