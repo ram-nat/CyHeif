@@ -311,10 +311,29 @@ cdef class HeifImageHandle:
         res = cheif.heif_context_write_to_file(self._ctx._heif_ctx, file_name)
         HeifError(res)
 
+cdef postprocess_exif_data(
+    exif_buffer: HeifBuffer,
+    bint remove_exif_orientation):
+
+    exif = Image.Exif()
+    cdef const unsigned char[:] data_view = <const unsigned char[:exif_buffer._sz]>exif_buffer._data
+    # HACK - Reading PIL.Image.Exif sources shows passing a byte array to Exif.load will work
+    # HACK - Unfortunately, it needs to be a byte array as load calls starts_with on it
+    # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
+    exif.load(bytes(data_view[4:]))
+
+    if remove_exif_orientation:
+        # Remove the Orientation tag from the exif if it exists
+        exif.pop(0x0112, None)
+
+    return exif
+
+
 def get_pil_image(    
     const char* file_name,
     bint apply_transformations=True, 
-    bint retain_exif=True) -> Image:
+    bint retain_exif=True,
+    bint remove_exif_orientation=True) -> Image:
 
     heifImageHandle = HeifImageHandle.from_file(file_name)
     cdef int num_bytes
@@ -335,7 +354,7 @@ def get_pil_image(
         heif_buffer = heifImageHandle.get_image_exif_data()
         # HACK - Reading PIL Image sources shows setting this dictionary item will make Image.getExif work
         # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
-        pil_image.info['exif'] = bytes(heif_buffer._data[4:heif_buffer._sz])
+        pil_image.info['exif'] = postprocess_exif_data(heif_buffer, remove_exif_orientation).tobytes()
     return pil_image
 
 def write_pil_image(
@@ -363,16 +382,12 @@ def write_pil_image(
         int(len(exif_bytes)))
     output_image.write_to_file(output_file_name)
 
-def get_exif_data(const char* file_name) -> Image.Exif:
+def get_exif_data(
+    const char* file_name,
+    bint remove_exif_orientation=True) -> Image.Exif:
     cdef HeifImageHandle heifImageHandle = HeifImageHandle.from_file(file_name)
     heif_buffer = heifImageHandle.get_image_exif_data()
-    exif = Image.Exif()
-    cdef const unsigned char[:] data_view = <const unsigned char[:heif_buffer._sz]>heif_buffer._data
-    # HACK - Reading PIL.Image.Exif sources shows passing a byte array to Exif.load will work
-    # HACK - Unfortunately, it needs to be a byte array as load calls starts_with on it
-    # TODO: Replace hard-coded 4 with the right offset read from the EXIF stream
-    exif.load(bytes(data_view[4:]))
-    return exif
+    return postprocess_exif_data(heif_buffer, remove_exif_orientation)
 
 def write_exif_data_from_bytes(
     const char* input_file_name,
