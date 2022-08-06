@@ -14,6 +14,29 @@ Supports the following:
 - Writing a Pillow Image out as a HEIC file
 - Use Pillow functionality for other image manipulations - resize, transforms etc.
 
+Examples
+--------
+
+Import heif file into a PIL image
+
+```python
+from cyheifloader import cyheif
+
+img = cyheif.get_pil_image("my_heif_file.heic".encode()) # Filename must be in bytes
+# Now can use `img` as if you ran Image.open() from PIL or pillow 
+```
+
+View EXIF data
+
+```python 
+from cyheifloader import cyheif
+
+exif = cyheif.get_exif_data("my_heif_file.heif".encode())
+exif_readable = {TAGS.get(k):v for (k, v) in exif.items()}
+print(exif_readable)
+```
+
+
 Known Issues
 ------------
 No Documentation - working on it. No binary distributions yet - help welcome to create these. See example/run.py for usage of key functionality.
@@ -33,7 +56,7 @@ More details on [vcpkg is available here.](https://docs.microsoft.com/en-us/cpp/
 On Linux, Ubuntu based distributions can install libheif and libheif-dev with the following commands:
 
 ```
-sudo apt install libheif
+sudo apt install libheif1
 sudo apt install libheif-dev
 ```
 

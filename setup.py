@@ -5,9 +5,11 @@ import sys
 import os
 import argparse
 
+default_vcpkg_root = os.getenv("VCPKG_ROOT", "C:/vcpkg")
+
 argparser = argparse.ArgumentParser(add_help=False)
 argparser.add_argument('--use-cython', action='store_true', default=False)
-argparser.add_argument('--libheif_path', default='C:/vcpkg/installed/x64-windows')
+argparser.add_argument('--libheif_path', default=f"{default_vcpkg_root}/installed/x64-windows")
 args, unknown = argparser.parse_known_args()
 sys.argv = [sys.argv[0]] + unknown
 
@@ -45,7 +47,7 @@ if args.use_cython:
 
 setup(
     name='cyheif',
-    version='0.0.5',
+    version='0.0.6',
     description='Python wrapper for libheif',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -54,5 +56,7 @@ setup(
     keywords='libheif, heif, heic, high-efficiency image format',
     python_requires='>=3.6',
     ext_modules=extensions,
-    packages=['cyheifloader']
+    packages=['cyheifloader'],
+    install_requires=['pillow'],
+    data_files=[('bin', [str(x.absolute()) for x in pathlib.Path(lib_dirs[0]).glob("*.dll")])] if sys.platform.startswith('win32') else [],
 )
