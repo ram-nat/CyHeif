@@ -20,12 +20,15 @@ long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 lib_dirs = []
 inc_dirs = []
+bin_files = []
 if sys.platform.startswith('win32'):
+    required_dlls = ("heif.dll", "libde265.dll", "libx265.dll")
     libheif_bin_path = os.path.join(args.libheif_path, 'bin')
     libheif_lib_path = os.path.join(args.libheif_path, 'lib')
     libheif_inc_path = os.path.join(args.libheif_path, 'include')
     lib_dirs = [libheif_bin_path, libheif_lib_path]
     inc_dirs = [libheif_inc_path]
+    bin_files = [str(x.absolute()) for x in pathlib.Path(libheif_bin_path).glob("*") if x.name in required_dlls]
 
 ext = '.pyx' if args.use_cython else '.c'
 
@@ -58,5 +61,5 @@ setup(
     ext_modules=extensions,
     packages=['cyheifloader'],
     install_requires=['pillow'],
-    data_files=[('bin', [str(x.absolute()) for x in pathlib.Path(lib_dirs[0]).glob("*.dll")])] if sys.platform.startswith('win32') else [],
+    data_files=[('bin', bin_files)] if sys.platform.startswith('win32') else [],
 )

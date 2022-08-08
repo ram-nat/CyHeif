@@ -24,11 +24,17 @@ from cyheifloader import cyheif
 
 img = cyheif.get_pil_image("my_heif_file.heic".encode()) # Filename must be in bytes
 # Now can use `img` as if you ran Image.open() from PIL or pillow 
+
+img.thumbnail((256, 256))
+
+# Need to use cyheif to write back to heif files, or can use img.save if using another supported image format 
+cyheif.write_pil_image(img, b"thumb.heif")
 ```
 
 View EXIF data
 
 ```python 
+from PIL.ExifTags import TAGS
 from cyheifloader import cyheif
 
 exif = cyheif.get_exif_data("my_heif_file.heif".encode())
