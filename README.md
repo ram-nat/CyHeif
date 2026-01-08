@@ -49,7 +49,7 @@ No Documentation - working on it. No binary distributions yet - help welcome to 
 
 Requirements
 ------------
-You need a compiled, installed, working, accessible version of heif.dll on Windows. You will also need a working C compiler. To get a C compiler, you can download the [Microsoft Visual Studio Community Edition.](https://visualstudio.microsoft.com/vs/community/)
+You need a compiled, installed, working, accessible version of libheif (version >= 1.18.0) and heif.dll on Windows. You will also need a working C compiler. To get a C compiler, you can download the [Microsoft Visual Studio Community Edition.](https://visualstudio.microsoft.com/vs/community/)
 
 You can compile and install libheif on Windows through vcpkg by running the following command:
 

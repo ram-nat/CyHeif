@@ -5,7 +5,7 @@ cdef extern from "libheif/heif.h":
 
     ctypedef unsigned int heif_item_id
 
-    cpdef enum heif_error_code:
+    cdef enum heif_error_code:
         # Everything ok, no error occurred.
         heif_error_Ok = 0,
 
@@ -39,7 +39,7 @@ cdef extern from "libheif/heif.h":
         # Application has asked for a color profile type that does not exist
         heif_error_Color_profile_does_not_exist = 10
 
-    cpdef enum heif_chroma:
+    cdef enum heif_chroma:
         heif_chroma_undefined = 99,
         heif_chroma_monochrome = 0,
         heif_chroma_420 = 1,
@@ -52,13 +52,13 @@ cdef extern from "libheif/heif.h":
         heif_chroma_interleaved_RRGGBB_LE = 14,
         heif_chroma_interleaved_RRGGBBAA_LE = 15
 
-    cpdef enum heif_colorspace:
+    cdef enum heif_colorspace:
         heif_colorspace_undefined = 99,
         heif_colorspace_YCbCr = 0,
         heif_colorspace_RGB = 1,
         heif_colorspace_monochrome = 2
 
-    cpdef enum heif_channel:
+    cdef enum heif_channel:
         heif_channel_Y = 0,
         heif_channel_Cb = 1,
         heif_channel_Cr = 2,
@@ -180,7 +180,7 @@ cdef extern from "libheif/heif.h":
     struct heif_encoding_options:
         pass
 
-    cpdef enum heif_compression_format:
+    cdef enum heif_compression_format:
         heif_compression_undefined = 0,
         heif_compression_HEVC = 1,
         heif_compression_AVC = 2,

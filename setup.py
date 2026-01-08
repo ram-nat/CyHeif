@@ -50,7 +50,7 @@ if args.use_cython:
 
 setup(
     name='cyheif',
-    version='0.0.6',
+    version='0.0.7',
     description='Python wrapper for libheif',
     long_description=long_description,
     long_description_content_type='text/markdown',
